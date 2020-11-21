@@ -20,16 +20,6 @@ export default class index extends React.Component {
     //   firebase.auth().signInWithEmailAndPassword('test@test.com', 'Test123')
     //     .catch(error => { alert(error.message) });
     // }).catch(error => { console.log(error.message) });
-
-
-
-    // firebase.auth().onAuthStateChanged(user => {
-    //   if (user) {
-    //     alert(JSON.stringify(user))
-    //   } else {
-    //     alert('nouser!')
-    //   }
-    // });
   };
   render() {
     return (
