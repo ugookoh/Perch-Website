@@ -1,0 +1,151 @@
+.container {
+    width: 100vw;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.laptopSize {
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.tabSize {
+    width: 100vw;
+    height: 1551.128px;
+    position: absolute;
+    bottom: 50px
+}
+
+.phoneSize {
+    width: 100%;
+    height: 1266.85px;
+    position: absolute;
+    bottom: 70px
+}
+
+.topLogo {
+    width: 112.2px;
+    height: 176.37px;
+}
+
+.logoDiv {
+    margin-top: 200px;
+    z-index: 1;
+    width: 90vw;
+    max-width: 1486px;
+}
+
+.introText {
+    color: #959AAC;
+    line-height: 35px;
+}
+
+.lowerContainer {
+    width: 90vw;
+    justify-content: space-between;
+    margin-bottom: 60px;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    max-width: 1486px;
+}
+
+.box1 {
+    display: flex;
+    width: 690px;
+}
+
+.box2 {
+    display: flex;
+    flex-direction: column;
+    margin-left: 5vw;
+    padding: 0px;
+    white-space: nowrap;
+}
+
+.box2C {
+    display: flex;
+    flex-direction: row;
+}
+
+.link {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+.titleText {
+    font-family: 'Gilroy-SemiBold';
+    color: #000000;
+    margin: 0px;
+    font-size: 18px;
+    text-size-adjust: none;
+}
+
+.lowerText:hover {
+    cursor: pointer;
+    color: #4EB848;
+}
+
+.lowerText {
+    font-family: 'Gilroy-SemiBold';
+    color: #959AAC;
+    margin: 0px;
+    text-size-adjust: none;
+}
+
+.line {
+    width: 90vw;
+}
+
+.cR {
+    color: #959AAC;
+    font-size: 15px;
+}
+
+.cRContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5px;
+    z-index: 1;
+}
+
+@media only screen and (max-width: 1024px) {
+    /*Tablets (portrait and landscape)*/
+    .box1 {
+        width: 100%;
+    }
+    .lowerContainer {
+        flex-direction: column;
+    }
+    .box2 {
+        margin-left: 0px;
+        margin-top: 30px;
+    }
+    .box2C {
+        flex-direction: column;
+    }
+    .topLogo {
+        width: 82.2px;
+        height: 136.37px;
+    }
+    .container {
+        padding-top: 580px;
+        margin-top: -500px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .container {
+        padding-top: 210px;
+        margin-top: -200px;
+    }
+}

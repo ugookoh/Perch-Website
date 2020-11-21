@@ -1,0 +1,30 @@
+.container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+.logo {
+    height: 236.67px;
+    width: 150.55px;
+}
+
+@media only screen and (max-width: 1024px) {
+    /*Tablets (portrait and landscape)*/
+    .logo {
+        height: 147.09px;
+        width: 93.57px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .logo {
+        height: 90.23px;
+        width: 64.85px;
+    }
+}

@@ -1,0 +1,215 @@
+.container1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    position: fixed;
+    z-index: 3;
+    width: 100vw;
+
+}
+
+.container {
+    display: flex;
+    width: 100vw;
+    height: 84px;
+    align-items: center;
+    flex-direction: row;
+    padding-left: 50px;
+    padding-right: 50px;
+    justify-content: space-between;
+    background-color: white;
+    max-width: 1486px;
+
+}
+
+.logo {
+    height: 69.85px;
+    width: 49.44px;
+    display: inline-block;
+    overflow: visible;
+}
+
+ .circle {
+    background-color: #4EB848;
+    width: 38px;
+    height: 38px;
+    border-radius: 38px;
+    margin-left: 35px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.logOut {
+    height: 25px;
+    width: 20px;
+}
+
+.circle, .logo:hover {
+    cursor: pointer;
+}
+
+.circle:active {
+    opacity: 0.6;
+}
+
+.link:hover {
+    color: #4EB848;
+    cursor: pointer;
+}
+
+.link1 {
+    color: #4EB848;
+    cursor: pointer;
+}
+
+.link_ {
+    margin-left: 30px;
+}
+
+.link_:hover {
+    color: #4EB848;
+    cursor: pointer;
+}
+
+.text {
+    font-family: 'Gilroy-SemiBold';
+    font-size: 18px;
+    margin: 0px;
+    height: 84px;
+    align-items: center;
+    display: flex;
+}
+
+.text_ {
+    font-family: 'Gilroy-SemiBold';
+    font-size: 18px;
+    margin: 0px;
+    height: 84px;
+    align-items: center;
+    display: flex;
+    color: #4EB848;
+}
+
+.text_:hover {
+    cursor: default;
+}
+
+.text:hover {
+    border-bottom: 2px solid #4EB848;
+}
+
+.textRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 350px;
+}
+
+.textRow1 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dp {
+    width: 38px;
+    height: 38px;
+    border-radius: 38px;
+    border: 2px solid #959AAC;
+    margin-right: 5px;
+}
+
+.menu {
+    color: #4EB848;
+    display: none;
+    position: absolute;
+    cursor: pointer;
+}
+
+.menuIcon {
+    height: 35px;
+    width: 35px;
+}
+
+.lowersection {
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    width: 100vw;
+    align-items: center;
+}
+
+.lowerLink {
+    color: #4EB848;
+    cursor: pointer;
+    padding-left: 0px;
+    width: 90%;
+}
+
+.lowerLinkText_, .lowerLinkText {
+    font-size: 16px;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    font-family: 'Gilroy-SemiBold';
+}
+
+.lowerLinkText_ {
+    width: 90%;
+    padding-left: 0px;
+    cursor: default;
+    color: #959AAC;
+}
+
+.animated {
+    position: absolute;
+    top: 75px;
+    display: none;
+    background-color: white;
+    padding-bottom: 15px;
+}
+
+.hr {
+    width: 90vw;
+    border-width: 1px;
+    border-color: #959AAC;
+    background-color: #959AAC;
+}
+
+@media only screen and (max-width: 1024px) {
+    /*Tablets (portrait and landscape)*/
+    .animated {
+        display: flex;
+    }
+    .logo {
+        height: 55.6px;
+        width: 35.37px;
+    }
+    .container {
+        justify-content: center;
+    }
+    .textRow1, .textRow {
+        display: none;
+    }
+    .menu {
+        display: flex;
+        left: 30pt;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .logo {
+        height: 48.33px;
+        width: 30.74px;
+    }
+    .menu {
+        left: 23pt;
+    }
+    .menuIcon {
+        height: 25px;
+        width: 25px;
+    }
+}

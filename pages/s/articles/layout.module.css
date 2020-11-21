@@ -1,0 +1,641 @@
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    padding: 0px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.body {
+    margin: 0px;
+    margin-top: 100px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+}
+
+.mainPageBack1 {
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 60px;
+}
+
+.subTitle, .contactUsLasttext {
+    width: 90%;
+    color: #959AAC;
+    font-family: 'Gilroy-SemiBold';
+    z-index: 1;
+    font-size: 130%;
+    line-height: 160%;
+    max-width: 1486px;
+    margin-top: 0px;
+}
+
+.mainPageBack2 {
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 220vh;
+}
+
+.c, .c_ {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    align-items: center;
+    max-width: 1486px;
+}
+
+.map1Trip, .noCommitmentNoSchedule {
+    width: 493.2px;
+    height: auto;
+    object-fit: cover;
+    margin-left: 5%;
+}
+
+.girlsJumpingGivingGifts, .exchangeMoney {
+    width: 555.48px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
+}
+
+.screenshot {
+    width: auto;
+    height: 404px;
+    object-fit: fill;
+    z-index: 1;
+}
+
+._2screenshot {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    max-width: 1486px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exchangeMoney {
+    width: 405.48px;
+}
+
+.glassSavings, .manOnBlueCar {
+    width: 411px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
+}
+
+.manOnBlueCar {
+    width: 551px;
+}
+
+.downloadContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 450px;
+}
+
+.shareIcon_C {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.shareIcon:hover {
+    cursor: pointer;
+}
+
+.shareIcon {
+    width: auto;
+    height: 30px;
+    object-fit: fill;
+}
+
+.appIcon {
+    width: auto;
+    height: 55px;
+    object-fit: fill;
+}
+
+#app2 {
+    display: none;
+}
+
+.boxBlueLogo {
+    width: 300.48px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
+}
+
+.t1 {
+    font-family: 'Gilroy-Bold';
+    font-size: 240%;
+    margin-bottom: 0px;
+}
+
+.t {
+    font-family: 'Gilroy-Bold';
+    font-size: 160%;
+    margin-bottom: 0px;
+    max-width: 1486px;
+}
+
+.text, .textBox {
+    font-family: 'Gilroy-Regular';
+    color: #959AAC;
+    line-height: 190%;
+    font-size: 120%;
+    text-size-adjust: none;
+    z-index: 1;
+}
+
+.textBox {
+    width: 90%;
+    max-width: 1486px;
+}
+
+.carPicture {
+    width: 80%;
+    height: auto;
+    object-fit: fill;
+    z-index: 1;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    max-width: 1024px;
+}
+
+.helpDesk {
+    width: 40%;
+    height: auto;
+    object-fit: fill;
+}
+
+.buttonC {
+    display: flex;
+    flex-direction: column;
+}
+
+.button1, .button2 {
+    background-color: #4EB848;
+    width: 80%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    min-height: 50px;
+    z-index: 1;
+}
+
+.button2 {
+    width: 250px;
+    height: 43px;
+    min-height: initial;
+}
+
+.button1:hover, .button2:hover {
+    cursor: pointer;
+}
+
+.button1:active, .button2:active {
+    opacity: 0.6;
+}
+
+.buttonText1, .buttonText2 {
+    font-family: 'Gilroy-SemiBold';
+    color: white;
+    font-size: larger;
+}
+
+.buttonText2 {
+    font-size: 90%;
+}
+
+.contactUsCont {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    align-items: center;
+    max-width: 1486px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 10px 10px 30px -14px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 10px 10px 30px -14px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 30px -14px rgba(0, 0, 0, 0.75);
+}
+
+.contactUsLC {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    max-width: 1486px;
+    margin-top: 15px;
+}
+
+.selectTopic {
+    font-family: 'Gilroy-Regular';
+    font-size: 90%;
+    border-radius: 5px;
+    border: 1px solid rgba(112, 112, 112, 0.19);
+    height: 48px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    width: 90%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url('/dropdownArrow.svg');
+    background-repeat: no-repeat;
+    background-position-x: 97%;
+    background-position-y: 50%;
+}
+
+.selectTopic:focus, .contactUsEmail:focus, .contactUsContent:focus {
+    outline: none;
+}
+
+.contactUsTitle {
+    width: 90%;
+    font-family: 'Gilroy-SemiBold';
+    font-size: 110%;
+}
+
+.contactUsEmail, .contactUsContent {
+    -webkit-appearance: none;
+    margin-top: 15px;
+    font-size: 90%;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid rgba(112, 112, 112, 0.19);
+    height: 48px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    width: 90%;
+    font-family: 'Gilroy-Regular';
+}
+
+.contactUsContent {
+    width: 90%;
+    height: 180px;
+    padding-top: 15px;
+    margin-bottom: 40px;
+    resize: none;
+}
+
+.contactUsLasttext {
+    font-size: 70%;
+    margin-top: 10px;
+}
+
+.lowerFAQImageCont {
+    display: flex;
+    width: 80%;
+    flex-direction: row-reverse;
+    z-index: 0;
+    max-width: 1486px;
+    margin-top: 0px;
+    align-items: center;
+}
+
+.faqChoice:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.manChecklist {
+    width: 502.06px;
+    height: auto;
+    object-fit: fill;
+}
+
+.p_ {
+    width: 90%;
+    max-width: 1486px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    position: relative;
+    margin: 0px;
+}
+
+.inv {
+    width: 300px;
+    background-color: rebeccapurple;
+    height: 100%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.dash {
+    height: 100%;
+    width: 4px;
+    background-color: #707070;
+    position: absolute;
+    z-index: 0;
+}
+
+.c_dash {
+    height: 20px;
+    width: 20px;
+    border-radius: 30px;
+    border: 4px solid #707070;
+    background-color: white;
+    position: absolute;
+    z-index: 1;
+}
+
+.hpwImage {
+    width: 400px;
+    height: auto;
+    object-fit: fill;
+}
+
+#tripDetailsPanel {
+    width: 550px;
+}
+
+.sFill, .sFill_ {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    align-items: center;
+}
+
+.panel {
+    width: 70%;
+    min-width: 302px;
+    background-color: white;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 10px 10px 116px -21px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 10px 10px 116px -21px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 116px -21px rgba(0, 0, 0, 0.75);
+}
+
+.panelTitle {
+    width: 90%;
+    font-family: 'Gilroy-SemiBold';
+    font-size: 120%;
+    margin: 0px;
+    margin-top: 30px;
+}
+
+.panelText {
+    width: 90%;
+    font-family: 'Gilroy-Regular';
+    font-size: 100%;
+    line-height: 150%;
+    color: #959AAC;
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#leftPanel {
+    flex-direction: row-reverse;
+}
+
+@media only screen and (max-width: 1024px) {
+    /*Tablets (portrait and landscape)*/
+    .c {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .c_ {
+        flex-direction: column;
+        align-items: center;
+    }
+    .map1Trip, .girlsJumpingGivingGifts, .exchangeMoney, .glassSavings, .manOnBlueCar, .noCommitmentNoSchedule {
+        margin-right: 0px;
+        height: auto;
+        width: 80%;
+        object-fit: fill;
+        align-self: initial;
+        max-width: 400px;
+    }
+    .manOnBlueCar {
+        width: 60%;
+        max-width: initial;
+    }
+    .boxBlueLogo {
+        margin-right: 0px;
+        width: 30%;
+        height: auto;
+        object-fit: fill;
+        align-self: initial;
+        max-width: 400px;
+    }
+    .t1, .t, .subTitle {
+        text-align: center;
+    }
+    .t1 {
+        line-height: 140%;
+        font-size: 150%;
+        padding-bottom: 15px;
+    }
+    .t1, .t {
+        margin-bottom: 0px;
+    }
+    .subTitle {
+        font-size: 90%;
+    }
+    .t {
+        font-size: 120%;
+    }
+    .text, .textBox {
+        line-height: 180%;
+        font-size: 100%;
+    }
+    .buttonText1 {
+        font-size: 100%;
+    }
+    .buttonC {
+        align-items: center;
+    }
+    .button1 {
+        width: 100%;
+        margin-bottom: 60px;
+    }
+    #app1 {
+        display: none;
+    }
+    .appIcon {
+        height: auto;
+        width: 45%;
+        object-fit: fill;
+        z-index: 1;
+    }
+    .appIcon:hover {
+        cursor: pointer;
+    }
+    .appIcon:active {
+        opacity: 0.5;
+    }
+    #app2 {
+        margin-top: 40px;
+        display: flex;
+    }
+    .body {
+        margin-top: 100px;
+    }
+    .shareIcon_C {
+        width: 130px;
+    }
+    .shareIcon {
+        height: 20px;
+    }
+    .screenshot {
+        width: 48%;
+        max-width: 420px;
+        height: auto;
+    }
+    ._2screenshot {
+        flex-direction: row;
+    }
+    .helpDesk {
+        width: 50%;
+    }
+    .manChecklist {
+        width: 50%;
+        height: auto;
+        object-fit: fill;
+        max-width: 400px;
+    }
+    .inv {
+        display: none;
+    }
+    .dash {
+        left: 8px;
+    }
+    .c_dash {
+        left: 0px;
+    }
+    .p_ {
+        flex-direction: column;
+    }
+    #p__ {
+        flex-direction: column-reverse;
+    }
+    #leftPanel {
+        flex-direction: row;
+    }
+    .sFill, .sFill_ {
+        padding: 0px;
+        justify-content: center;
+        margin-left: 5%;
+    }
+    #panelBottom, .sFill_ {
+        padding-bottom: 70px;
+    }
+    .hpwImage, #tripDetailsPanel {
+        margin-bottom: 40px;
+        max-width: 450px;
+        width: 80%;
+    }
+    #tripDetailsPanel {
+        width: 90%;
+    }
+    #c_dash2nd {
+        top: 0px;
+    }
+    .panel {
+        width: 90%;
+        margin-top: 0px;
+    }
+}
+
+@media only screen and (max-width:750px) {
+    .screenshot {
+        width: 90%;
+        height: auto;
+    }
+    ._2screenshot {
+        flex-direction: column;
+    }
+    #sdt5 {
+        margin-left: 20%;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .map1Trip, .girlsJumpingGivingGifts, .exchangeMoney, .glassSavings, .manOnBlueCar, .noCommitmentNoSchedule {
+        margin-right: 0px;
+        height: auto;
+        width: 80vw;
+        object-fit: fill;
+    }
+    .t1 {
+        line-height: 130%;
+        padding-bottom: 5px;
+    }
+    .text, .textBox {
+        line-height: 190%;
+    }
+    .glassSavings {
+        width: 70%;
+    }
+    .shareIcon_C {
+        width: 120px;
+    }
+    .body {
+        margin-top: 80px;
+    }
+    .button2 {
+        width: 100%;
+    }
+    .helpDesk {
+        width: 90%;
+    }
+    .manChecklist {
+        width: 85%;
+    }
+    .dash {
+        left: 4px;
+        width: 2px;
+    }
+    .c_dash {
+        height: 10px;
+        width: 10px;
+        border: 2px solid #707070;
+    }
+    .hpwImage {
+        margin-bottom: 20px;
+    }
+    .panel {
+        min-width: initial;
+    }
+    .panelTitle {
+        font-size: 110%;
+        margin-top: 20px;
+    }
+    .panelText {
+        font-size: 90%;
+        line-height: 140%;
+    }
+    #panelBottom, .sFill_ {
+        padding-bottom: 170px;
+    }
+}
