@@ -258,7 +258,7 @@ export default class index extends React.Component {
                                 </p>
                                 <p className={styles.panelText}>
                                     Tell us how great our service was and what we need to improve.
-                                    Always feel free to provide feedback using our <a href='/s/articles/contact_us'><span style={{ fontFamily: 'Gilroy-Semibold' }} className={styles.faqChoice}>Contact Us</span></a> feature. Happy commuting !
+                                    Always feel free to provide feedback using our <a href='/contact_us'><span style={{ fontFamily: 'Gilroy-Semibold' }} className={styles.faqChoice}>Contact Us</span></a> feature. Happy commuting !
                                 </p>
                             </div>
                         </div>

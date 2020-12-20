@@ -5,21 +5,25 @@ import React from 'react';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
 import Router from 'next/router';
+import firebase from 'firebase';
+
 
 export default class index extends React.Component {
   constructor() {
     super();
 
     this.state = {
-      loggedIn: false,
+
     };
   };
   componentDidMount() {
-    // Router.push('./s/articles/procedures_for_taking_a_picture').then(() => window.scrollTo(0, 0));
-    // firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
-    //   firebase.auth().signInWithEmailAndPassword('test@test.com', 'Test123')
-    //     .catch(error => { alert(error.message) });
-    // }).catch(error => { console.log(error.message) });
+    // firebase.auth().onAuthStateChanged((user) => {
+    //   if (user) {
+
+    //   } else {
+
+    //   }
+    // });
   };
   render() {
     return (
@@ -30,7 +34,7 @@ export default class index extends React.Component {
           <link rel="icon" href="/favicon.ico" />
           <html lang="en"></html>
         </Head>
-        <Header loggedIn={this.state.loggedIn} />
+        <Header />
 
         <img src="/mainPageBack1.svg" alt="Perch Carpool" className={styles.mainPageBack1} />
         {/* <img src="/mainPageBack2.svg" alt="Perch Carpool" className={styles.mainPageBack2} /> */}
@@ -46,7 +50,7 @@ export default class index extends React.Component {
           <div className={styles.c_} style={{ marginTop: '100px' }}>
             <div className={styles.buttonC}>
               <p className={styles.t}>{`How does Perch work?`}</p>
-              <p className={styles.text}>{`Unlike other ride-sharing or carpooling options, driving for Perch does need a schedule or some free time. All it needs is a destination to go to. Because of this, as drivers drive to their destination, it is at no extra cost to pick up riders. As riders get paired with drivers going in their direction all they have to do is walk a little distance into the path of the driver and get a ride along with them to their destination at a very affordable cost. `}</p>
+              <p className={styles.text}>{`Unlike other ride-sharing or carpooling options, driving for Perch does not need a schedule or some designated time. All it needs is a destination to go to. Because of this, as drivers drive to their destination, it is at no extra cost to pick up riders. As riders get paired with drivers going in their direction all they have to do is walk a little distance into the path of the driver and get a ride along with them to their destination at a very affordable cost. `}</p>
               <a className={styles.button1}>
                 <p className={styles.buttonText1}>See how it works</p>
               </a>

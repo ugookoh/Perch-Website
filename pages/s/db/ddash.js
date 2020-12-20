@@ -24,7 +24,9 @@ export default class index extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
         firebase.auth().onAuthStateChanged(user => {
             if (user)
-                this.setState({ loggedIn: 'TRUE' });
+                firebase.database().ref(`users/${user.uid}/driverID`).once('value', (snap) => {
+                    this.setState({ loggedIn: snap.val() ? 'TRUE' : 'FALSE', });
+                }).catch(error => { console.log(error.message) });
             else
                 this.setState({ loggedIn: 'FALSE' });
         });
@@ -67,7 +69,7 @@ export default class index extends React.Component {
     }
     render() {
         if (this.state.loggedIn == 'FALSE')
-            Router.push('/s/auth/d_si_su');
+            Router.push('/s/auth/d_si_su').then(() => window.scrollTo(0, 0));
         if (this.state.loggedIn != 'TRUE')
             return <LoadingScreen />;
 

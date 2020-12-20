@@ -13,10 +13,12 @@ import { CgAdd } from 'react-icons/cg';
 import { GiClick } from 'react-icons/gi';
 import Loader from 'react-loader-spinner'
 import DatePicker from "react-datepicker";
+import firebase from 'firebase';
+import { sendFeedback } from '../../../functions/functions'
 
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
-const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7'];
+const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE, PURPLE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7', '#A031AF'];
 const M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
@@ -103,24 +105,75 @@ export class UserDashBoard extends React.Component {
     }
 };
 export class TripHistory extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            result: true,
+            result: false,
             date: new Date().getTime(),
+            userDetails: this.props.userDetails,
         };
+    };
+
+    componentDidMount() {
+        this.loadResult();
     }
+
+    loadResult = () => {
+        if (this.state.userDetails) {
+            this.setState({ result: null }, () => {
+                firebase.database().ref(`userHistory/${this.state.userDetails.userID}/carpool/${new Date(this.state.date).getFullYear()}/${M[new Date(this.state.date).getMonth()]}`).once('value', snapshot => {
+                    this.setState({ result: snapshot.val() ? snapshot.val() : 'NORESULTS' });
+                }).catch(error => { console.log(error.message) });
+            });
+        }
+    };
+    sorter(a, b) {
+        function numbergetter(time) {
+            let slash1 = 0, slash2 = 0, slash3 = 0;
+            for (let k = 0; k < time.length; k++) {
+                if (time.charAt(k) == '-')
+                    slash1 == 0 ? slash1 = k : slash2 == 0 ? slash2 = k : slash3 = k;
+            };
+
+            const DAY = Number(time.substring(0, slash1)) * 86400;
+            const HOUR = Number(time.substring(slash1 + 1, slash2)) * 3600;
+            const MINS = Number(time.substring(slash2 + 1, slash3)) * 60;
+            const SECS = Number(time.substring(slash3 + 1, time.length));
+
+            return (DAY + HOUR + MINS + SECS)
+        };
+
+        let a_time = numbergetter(a)
+        let b_time = numbergetter(b)
+
+        if (a_time > b_time)
+            return -1;
+        else
+            return 1
+    };
     render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
         let trips = [];
-        for (let i = 0; i < 6; i++) {
-            trips.push(
-                <Trip lastItem={i == 5} type='Rider' />
-            );
+
+        if (this.state.result && this.state.result != 'NORESULTS') {
+            const keys = Object.keys(this.state.result).sort(this.sorter);
+            for (let i = 0; i < keys.length; i++) {
+                trips.push(
+                    <Trip
+                        key={keys[i]}
+                        date={timeAndDate(keys[i], M[new Date(this.state.date).getMonth()], new Date(this.state.date).getFullYear())}
+                        data={this.state.result[keys[i]]}
+                        lastItem={i == keys.length - 1}
+                        type='Rider'
+                    />
+                );
+            }
         }
         return (
             <>
-
                 <div className={styles.cont} style={{ height: '100%', paddingTop: '10px', position: 'relative' }}>
 
                     <div className={styles.tripPanelDesc} >
@@ -129,7 +182,7 @@ export class TripHistory extends React.Component {
                             <DatePicker
                                 className={styles.calendarDate}
                                 placeholderText={`${M[new Date(this.state.date).getMonth()].toUpperCase()} ${new Date(this.state.date).getFullYear()}`}
-                                onChange={date => { this.setState({ date: date }); }}
+                                onChange={date => { this.setState({ date: date }, () => { this.loadResult() }); }}
                                 dateFormat="MM/yyyy"
                                 showMonthYearPicker
                             />
@@ -143,7 +196,7 @@ export class TripHistory extends React.Component {
                             <div className={styles.tripPanelLoading} id={styles.tripPanelLoading_}>
                                 <img src="/noResultsWoman.svg" className={styles.noResultsWoman} alt="No Results" />
                                 <p className={styles.contactUsLasttext} style={{ width: 'initial', fontSize: '90%', margin: '0px' }} id={styles.tripPanelLoadingText}>
-                                    Surprisingly, You haven't booked any rides during this time.
+                                    Surprisingly, you haven't booked any rides during this time.
                                 </p>
                             </div> :
                             trips :
@@ -314,6 +367,8 @@ export class ContactUs extends React.Component {
 
         this.state = {
             topic: 'unselected',
+            message: '',
+            loading: false
         };
     }
     render() {
@@ -332,21 +387,41 @@ export class ContactUs extends React.Component {
                         style={this.state.topic === 'unselected' ? { color: 'rgba(112, 112, 112, 0.7)' } : {}}
                     >
                         <option value="unselected">(--Select a topic--)</option>
-                        <option value="Enter a problem">Enter a problem</option>
-                        <option value="Enter a problem">Enter a problem</option>
-                        <option value="Enter a problem">Enter a problem</option>
+                        <option value="Give feedback about our services">Give feedback about our services</option>
+                        <option value="Missing item">Missing item</option>
+                        <option value="Change your name">Change your name</option>
+                        <option value="Report a driver">Report a driver</option>
+                        <option value="Work with us">Work with us</option>
+                        <option value="Other">Other</option>
                     </select>
 
-                    <textarea type="text" placeholder="Enter your message here" className={styles.contactUsContent} />
+                    <textarea
+                        type="text"
+                        placeholder="Enter your message here"
+                        className={styles.contactUsContent}
+                        value={this.state.message}
+                        onChange={(event) => { this.setState({ message: event.target.value }); }} />
                 </div>
 
-                <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: '150px' }}>
-                    <a className={styles.button1} id={styles.sendMessageContactUS} style={this.props.type == 'Driver' ? { backgroundColor: BLUE } : {}}>
+                <div className={styles.contactUsLC} style={{ marginTop: '15px', }}>
+                    <a className={styles.button1} id={styles.sendMessageContactUS} style={this.props.type == 'Driver' ? { backgroundColor: BLUE } : {}}
+                        onClick={() => {
+                            if (!this.state.loading)
+                                sendFeedback.call(this);
+                        }}>
                         <p className={styles.buttonText1}>Send Message</p>
                     </a>
                     <p className={styles.contactUsLasttext}>
                         We responds to your queries via user mails
                     </p>
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', marginBottom: '150%' }}>
+                    <p className={styles.title} style={{ color: BLACK }}>Previous messages</p>
+                    <p className={styles.text} style={{ color: GREY }}>
+                        Here are some of your previous messages. Messages would be answered within 2-4 business days
+                    </p>
+                    
                 </div>
             </div>
         );
@@ -608,29 +683,62 @@ class Trip extends React.Component {
 
     }
     render() {
-        if (this.props.type == 'Rider')
+        if (this.props.type == 'Rider') {
+            let bar = <></>;
+            const data = JSON.parse(this.props.data.data);
+            let totalDistance = 0;
+            switch (this.props.data.driverDetails.steps) {
+                case 1: {
+                    totalDistance = data.firstDistance;
+                    bar = <div className={styles.tripPanelNoOfTrips} style={{ backgroundColor: GREEN }} >
+                    </div>;
+                } break;
+                case 2: {
+                    totalDistance = data.firstDistance + data.secondDistance;
+                    bar = <div className={styles.tripPanelNoOfTrips}>
+                        <div className={styles.tripPanelNoOfTrips} style={{ width: ((data.firstDistance / totalDistance) * 100) + '%', backgroundColor: GREEN, borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} >
+                        </div>
+                        <div className={styles.tripPanelNoOfTrips} style={{ width: ((data.secondDistance / totalDistance) * 100) + '%', backgroundColor: BLUE, borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} >
+                        </div>
+                    </div>
+                } break;
+                case 3: {
+                    totalDistance = data.firstDistance + data.secondDistance + data.thirdDistance;
+                    bar = <div className={styles.tripPanelNoOfTrips}>
+                        <div className={styles.tripPanelNoOfTrips} style={{ width: ((data.firstDistance / totalDistance) * 100) + '%', backgroundColor: GREEN, borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} >
+                        </div>
+                        <div className={styles.tripPanelNoOfTrips} style={{ width: ((data.secondDistance / totalDistance) * 100) + '%', backgroundColor: BLUE, borderRadius: '0px' }} >
+                        </div>
+                        <div className={styles.tripPanelNoOfTrips} style={{ width: ((data.thirdDistance / totalDistance) * 100) + '%', backgroundColor: PURPLE, borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} >
+                        </div>
+
+                    </div>
+                } break;
+            };
+            totalDistance > 100 ?
+                totalDistance = `${(totalDistance / 1000).toFixed(1)} kilometers` :
+                totalDistance = `${(totalDistance).toFixed(totalDistance != 0 ? 1 : 0)} meters`;
             return (
                 <>
                     <div id={styles.tripPanelCont} >
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px' }}>
-                            <p className={styles.tripPanelTitle}>{`3-leg trip`}</p>
-                            <p className={styles.tripPanelTime}>{`11/20/2017`}</p>
+                            <p className={styles.tripPanelTitle}>{`${this.props.data.driverDetails.steps}-leg trip`}</p>
+                            <p className={styles.tripPanelTime}>{this.props.date}</p>
                         </div>
 
-                        <div className={styles.tripPanelNoOfTrips} style={{ backgroundColor: GREEN }} >
-                        </div>
+                        {bar}
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', justifyContent: 'initial', marginTop: '20px' }}>
                             <HiOutlineLocationMarker color={GREEN} style={{ margin: '0px', marginRight: '10px' }} className={styles.driverHistory_ICON} />
-                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{`10012 87 Ave Northwest`}</p>
+                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{this.props.data.location.description}</p>
                         </div>
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', justifyContent: 'initial', marginTop: '10px' }}>
                             <BiStopCircle color={GREEN} style={{ marginRight: '10px' }} className={styles.driverHistory_ICON} />
-                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{`University of Alberta`}</p>
+                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{this.props.data.destination.description}</p>
                         </div>
                         <div className={styles.tripPanelNoOfTrips} style={{ backgroundColor: GREY, height: '1px', marginTop: '17px' }} >
                         </div>
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', marginTop: '10px', marginBottom: '15px' }}>
-                            <p className={styles.tripPanelTitle} style={{ fontFamily: 'Gilroy-Medium', margin: '0px' }}>{`8.9 kilometers`}</p>
+                            <p className={styles.tripPanelTitle} style={{ fontFamily: 'Gilroy-Medium', margin: '0px' }}>{totalDistance}</p>
                             <p className={styles.tripPanelCash} >{`$ 5.99`}</p>
                         </div>
                     </div>
@@ -641,6 +749,7 @@ class Trip extends React.Component {
                     }
                 </>
             );
+        }
         else if (this.props.type == 'Driver')
             return (
                 <>
@@ -676,7 +785,6 @@ class Trip extends React.Component {
             );
     }
 };
-
 
 
 export class DriverDashBoard extends React.Component {
@@ -771,35 +879,33 @@ export class DriverTripHistory extends React.Component {
                             To see the details of a trip please use the mobile app
                         </p>
                     </div>
-                    {
-                        this.state.result && this.state.result !== 'NORESULTS' ?
-                            <div id={styles.tripPanelCont} >
-                                <p className={styles.title} style={{ width: '95%', marginTop: '20px', fontSize: '100%' }}>Total Summary</p>
-                                <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Number of passengers`}</p>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
-                                        {`16`} <span className={styles.driverTH_HIDESUMMARY}>passengers</span>
-                                    </p>
-                                </div>
+                    {this.state.result && this.state.result !== 'NORESULTS' ?
+                        <div id={styles.tripPanelCont} >
+                            <p className={styles.title} style={{ width: '95%', marginTop: '20px', fontSize: '100%' }}>Total Summary</p>
+                            <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Number of passengers`}</p>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
+                                    {`16`} <span className={styles.driverTH_HIDESUMMARY}>passengers</span>
+                                </p>
+                            </div>
 
-                                <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Total kilometers provided`}</p>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
-                                        {`213`} <span className={styles.driverTH_HIDESUMMARY}>kilometers</span>
-                                    </p>
-                                </div>
+                            <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Total kilometers provided`}</p>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
+                                    {`213`} <span className={styles.driverTH_HIDESUMMARY}>kilometers</span>
+                                </p>
+                            </div>
 
-                                <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '10px', marginBottom: '15px' }}>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px', fontSize: '100%', fontFamily: 'Gilroy-Bold' }}>
-                                        {`TOTAL MADE`}
-                                    </p>
-                                    <p className={styles.text} style={{ width: 'initial', marginTop: '0px', fontSize: '105%', color: BLUE, fontFamily: 'Gilroy-Bold' }}>
-                                        {`$ 1256.90`}
-                                    </p>
-                                </div>
-                            </div> :
-                            <></>
-                    }
+                            <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '10px', marginBottom: '15px' }}>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px', fontSize: '100%', fontFamily: 'Gilroy-Bold' }}>
+                                    {`TOTAL MADE`}
+                                </p>
+                                <p className={styles.text} style={{ width: 'initial', marginTop: '0px', fontSize: '105%', color: BLUE, fontFamily: 'Gilroy-Bold' }}>
+                                    {`$ 1256.90`}
+                                </p>
+                            </div>
+                        </div> :
+                        <></>}
                     {this.state.result ?
                         this.state.result == 'NORESULTS' ?
                             <div className={styles.tripPanelLoading} id={styles.tripPanelLoading_}>
@@ -1424,4 +1530,21 @@ export class ApplicationStatus extends React.Component {
         )
 
     }
+};
+
+function timeAndDate(time, month, year) {
+    let slash1 = 0, slash2 = 0, slash3 = 0;
+    for (let k = 0; k < time.length; k++) {
+        if (time.charAt(k) == '-')
+            slash1 == 0 ? slash1 = k : slash2 == 0 ? slash2 = k : slash3 = k;
+    }
+
+    const HOUR = Number(time.substring(slash1 + 1, slash2)) == 0 ? 12 : Number(time.substring(slash1 + 1, slash2)) > 12 ? Number(time.substring(slash1 + 1, slash2)) - 12 : Number(time.substring(slash1 + 1, slash2));
+    const MIN = Number(time.substring(slash2 + 1, slash3)) < 10 ? `0` + time.substring(slash2 + 1, slash3) : Number(time.substring(slash2 + 1, slash3));
+    const MERIDIAN = Number(time.substring(slash1 + 1, slash2)) < 12 ? 'AM' : 'PM';
+    const DAY = time.substring(0, slash1);
+    const MONTH = M.indexOf(month) + 1;
+    const formattedDate = `${DAY}/${MONTH}/${year}, ${HOUR}:${MIN} ${MERIDIAN}`;
+
+    return (formattedDate);
 };
