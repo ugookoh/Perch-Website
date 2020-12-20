@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import styles from './layout.module.css';
+import styles from './s/articles/layout.module.css';
 import React from 'react';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
+import Header from './components/header/header';
+import Footer from './components/footer/footer';
 import Router from 'next/router';
 
 export default class index extends React.Component {

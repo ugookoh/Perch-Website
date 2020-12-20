@@ -120,6 +120,7 @@
     border-radius: 38px;
     border: 2px solid #959AAC;
     margin-right: 5px;
+    object-fit: cover;
 }
 
 .menu {

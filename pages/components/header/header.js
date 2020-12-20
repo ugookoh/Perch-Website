@@ -6,6 +6,8 @@ import { Logo } from '../../images/vectors';
 import { IoIosMenu } from "react-icons/io";
 import { Animated } from "react-animated-css";
 import { ImExit } from "react-icons/im";
+import firebase from 'firebase';
+import { signOut } from '../../../functions/functions';
 
 export default class index extends React.Component {
     constructor() {
@@ -14,6 +16,10 @@ export default class index extends React.Component {
         this.state = {
             dropDownMenu: false,
             hideMenu: false,
+            firstName: null,
+            isDriver: false,
+            url: null,
+            loggedIn: false,
         };
     };
     componentDidMount() {
@@ -22,7 +28,26 @@ export default class index extends React.Component {
                 this.setState({ dropDownMenu: false, hideMenu: true })
             else if (window.innerWidth < 1024 && this.state.hideMenu == true)
                 this.setState({ hideMenu: false })
-        })
+        });
+
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                firebase.database().ref(`users/${user.uid}/firstName`).once('value', (snapshot) => {
+                    firebase.database().ref(`users/${user.uid}/driverID`).once('value', (snap) => {
+                        this.setState({ isDriver: snap.val() ? true : false, firstName: snapshot.val(), loggedIn: true });
+                    }).catch(error => { console.log(error.message) });
+                }).catch(error => { console.log(error.message) });
+
+                firebase.database().ref(`users/${user.uid}/photoRef`).once('value', (snapshot) => {
+                    firebase.storage().ref(`${snapshot.val()}`).getDownloadURL()
+                        .then(result => {
+                            this.setState({ url: result })
+                        }).catch(error => { console.log(error.message) });
+                }).catch(error => { console.log(error.message) });
+            }
+            else
+                this.setState({ loggedIn: false });
+        });
     }
 
     componentWillUnmount() {
@@ -45,13 +70,25 @@ export default class index extends React.Component {
                             <Logo color={'#4EB848'} />
                         </div>
                     </a>
-                    {this.props.loggedIn ?
+                    {this.state.loggedIn ?
                         <div className={styles.textRow1}>
-                            <div className={styles.dp}></div>
-                            <p className={styles.text_}>{'Hello, Ugochukwu'}</p>
-                            <a className={styles.link_} ><p className={styles.text}>My dashboard</p></a>
-                            <a className={styles.link_} ><p className={styles.text}>How it works</p></a>
-                            <div className={styles.circle}>
+                            {this.state.firstName ?
+                                <>
+                                    {this.state.url ?
+                                        <img src={this.state.url} className={styles.dp} style={{ borderWidth: '0px' }} /> :
+                                        <div className={styles.dp}></div>}
+                                    <p className={styles.text_}>{`Hello, ${this.state.firstName}`}</p>
+                                </> : <></>}
+                            {
+                                this.state.isDriver ?
+                                    <>
+                                        <a className={styles.link_} href='/s/db/ddash'><p className={styles.text}>Driver dashboard</p></a>
+                                        <a className={styles.link_} href='/s/db/udash'><p className={styles.text}>Rider dashboard</p></a>
+                                    </> :
+                                    <a className={styles.link_} href='/s/db/udash'><p className={styles.text}>My dashboard</p></a>
+                            }
+                            <a className={styles.link_} href='/s/articles/how_perch_works'><p className={styles.text}>How it works</p></a>
+                            <div className={styles.circle} onClick={() => { signOut.call(this, true); }}>
                                 <ImExit color={'#FFFFFF'} className={styles.logOut} />
                             </div>
                         </div> :
@@ -73,12 +110,19 @@ export default class index extends React.Component {
                         className={styles.animated}>
                         <div className={styles.lowersection}>
                             <hr className={styles.hr} />
-                            {this.props.loggedIn ?
+                            {this.state.loggedIn ?
                                 <>
-                                    <p className={styles.lowerLinkText_}>{'Hello, Ugochukwu'}</p>
-                                    <a className={styles.lowerLink}><p className={styles.lowerLinkText}>Dashboard</p></a>
-                                    <a className={styles.lowerLink}><p className={styles.lowerLinkText}>How it works</p></a>
-                                    <a className={styles.lowerLink}><p className={styles.lowerLinkText}>Log out</p></a>
+                                    <p className={styles.lowerLinkText_} >{`Hello, ${this.state.firstName}`}</p>
+                                    {
+                                        this.state.isDriver ?
+                                            <>
+                                                <a className={styles.lowerLink} href='/s/db/ddash'><p className={styles.lowerLinkText}>Driver dashboard</p></a>
+                                                <a className={styles.lowerLink} href='/s/db/udash'><p className={styles.lowerLinkText}>Rider dashboard</p></a>
+                                            </> :
+                                            <a className={styles.lowerLink} href='/s/db/udash'><p className={styles.lowerLinkText}>My dashboard</p></a>
+                                    }
+                                    <a className={styles.lowerLink} href='/s/articles/how_perch_works'><p className={styles.lowerLinkText}>How it works</p></a>
+                                    <a className={styles.lowerLink} onClick={() => { signOut.call(this, true); }}><p className={styles.lowerLinkText}>Log out</p></a>
 
                                 </> : <>
                                     <a className={styles.lowerLink} href='/s/articles/how_perch_works'><p className={styles.lowerLinkText}>How it works</p></a>

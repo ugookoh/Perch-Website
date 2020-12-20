@@ -59,7 +59,7 @@ export default class index extends React.Component {
                             <a className={styles.link} href='/s/articles/how_perch_works'><p className={styles.lowerText} >How it works</p></a>
                             <a className={styles.link} href='/s/articles/help_and_frequently_asked_questions'><p className={styles.lowerText} >{`Help & FAQ`}</p></a>
                             <a className={styles.link}><p className={styles.lowerText}>Cities</p></a>
-                            <a className={styles.link} href='/s/articles/contact_us'><p className={styles.lowerText} >Contact Us</p></a>
+                            <a className={styles.link} href='/contact_us'><p className={styles.lowerText} >Contact Us</p></a>
                         </div>
                         <div className={styles.box2}>
                             <a className={styles.link}><p className={styles.titleText}>Driver</p></a>

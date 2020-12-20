@@ -52,7 +52,7 @@ export default class index extends React.Component {
     }
     render() {
         if (this.state.loggedIn == 'FALSE') //ALSO TEST TO SEE IF THE DRIVER HAS A PENDING APPLICATION OR ELSE NAVIGATE TO DRIVER DASHBOARD OR MAYBE JUST LEAVE IT AT COMPLETED? 
-            Router.push('/s/auth/d_si_su');
+            Router.push('/s/auth/d_si_su').then(() => window.scrollTo(0, 0));
         if (this.state.loggedIn != 'TRUE')
             return <LoadingScreen />;
 

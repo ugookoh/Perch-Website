@@ -8,6 +8,8 @@ import Router from 'next/router';
 import { UserDashBoard, PerchWallet, ContactUs, TripHistory, Settings } from './panels';
 import firebase from 'firebase';
 import LoadingScreen from '../../components/loadingScreen/loadingScreen';
+import { signOut } from '../../../functions/functions';
+
 export default class index extends React.Component {
     constructor() {
         super();
@@ -16,6 +18,8 @@ export default class index extends React.Component {
             optionCode: 'db',
             width: 0, height: 0,
             loggedIn: 'NULL',
+            userDetails: null,
+            url: null,
         }
     };
 
@@ -23,13 +27,23 @@ export default class index extends React.Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         firebase.auth().onAuthStateChanged(user => {
-            if (user)
+            if (user) {
                 this.setState({ loggedIn: 'TRUE' });
+                firebase.database().ref(`users/${user.uid}`).once('value', (snapshot) => {
+                    this.setState({ userDetails: snapshot.val() });
+                    this.setImage(snapshot.val().photoRef);
+                }).catch(error => { console.log(error.message) })
+            }
             else
                 this.setState({ loggedIn: 'FALSE' });
         });
     }
-
+    setImage = (photoRef) => {
+        firebase.storage().ref(`${photoRef}`).getDownloadURL()
+            .then(result => {
+                this.setState({ url: result })
+            }).catch(error => { console.log(error.message) });
+    };
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
@@ -58,7 +72,7 @@ export default class index extends React.Component {
     }
     render() {
         if (this.state.loggedIn == 'FALSE')
-            Router.push('/s/auth/u_si_su');
+            Router.push('/s/auth/u_si_su').then(() => window.scrollTo(0, 0));
         if (this.state.loggedIn != 'TRUE')
             return <LoadingScreen />;
 
@@ -69,23 +83,23 @@ export default class index extends React.Component {
         switch (this.state.optionCode) {
             case 'db': {
                 option = 'Dashboard';
-                content = <UserDashBoard />;
+                content = <UserDashBoard userDetails={this.state.userDetails} />;
             } break;
             case 'th': {
                 option = 'Trip History';
-                content = <TripHistory />;
+                content = <TripHistory userDetails={this.state.userDetails} />;
             } break;
             case 'pw': {
                 option = 'Perch Wallet';
-                content = <PerchWallet />;
+                content = <PerchWallet userDetails={this.state.userDetails} />;
             } break;
             case 'cu': {
                 option = 'Contact Us';
-                content = <ContactUs />;
+                content = <ContactUs userDetails={this.state.userDetails} />;
             } break;
             case 'ss': {
                 option = 'Settings';
-                content = <Settings />
+                content = <Settings userDetails={this.state.userDetails} />;
             } break;
         }
         return (
@@ -109,11 +123,19 @@ export default class index extends React.Component {
                     <div className={styles.optionShadowBox}>
                         <p className={styles.optionTitle}>{option}</p>
                         <div className={styles.textRow1}>
-                            <div className={styles.dp}></div>
-                            <p className={styles.text_}>{'Hello, Ugochukwu'}</p>
-                            <a className={styles.link_}><p className={styles.text}>How it works</p></a>
+                            {
+                                this.state.userDetails ?
+                                    <>
+                                        {this.state.url ?
+                                            <img src={this.state.url} className={styles.dp} style={{ objectFit: 'cover', borderWidth: '0px' }} /> :
+                                            <div className={styles.dp}></div>}
+                                        <p className={styles.text_}>{`Hello, ${this.state.userDetails.firstName}`}</p>
+                                    </> :
+                                    <></>
+                            }
+                            <a className={styles.link_} href='/s/articles/how_perch_works'><p className={styles.text}>How it works</p></a>
                             <a>
-                                <div className={styles.circle}>
+                                <div className={styles.circle} onClick={() => { signOut.call(this, true) }}>
                                     <ImExit color={'#FFFFFF'} className={styles.logOut} />
                                 </div>
                             </a>
