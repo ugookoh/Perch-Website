@@ -3,7 +3,10 @@ import styles from './s/articles/layout.module.css';
 import React from 'react';
 import Header from './components/header/header';
 import Footer from './components/footer/footer';
-import Router from 'next/router';
+import Loader from 'react-loader-spinner';
+import firebase from 'firebase';
+import { sendFeedback } from '../functions/functions';
+
 
 export default class index extends React.Component {
     constructor() {
@@ -12,10 +15,23 @@ export default class index extends React.Component {
         this.state = {
             loggedIn: false,
             topic: 'unselected',
+            userEmail: '',
+            message: '',
+            loading: false,
+            errorMessage: ''
         };
     };
     componentDidMount() {
-
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.setState({ loggedIn: true });
+                firebase.database().ref(`users/${user.uid}/email`).once('value', (snapshot) => {
+                    this.setState({ userEmail: snapshot.val() });
+                }).catch(error => { console.log(error.message) })
+            }
+            else
+                this.setState({ loggedIn: false });
+        });
     };
     render() {
         return (
@@ -26,7 +42,7 @@ export default class index extends React.Component {
                     <link rel="icon" href="/favicon.ico" />
                     <html lang="en"></html>
                 </Head>
-                <Header loggedIn={this.state.loggedIn} />
+                <Header />
                 <img src="/articlesPageBack1.svg" alt="Perch Carpool" className={styles.mainPageBack1} />
                 <div className={styles.body}>
 
@@ -50,18 +66,43 @@ export default class index extends React.Component {
                             style={this.state.topic === 'unselected' ? { color: 'rgba(112, 112, 112, 0.7)' } : {}}
                         >
                             <option value="unselected">(--Select a topic--)</option>
-                            <option value="Enter a problem">Enter a problem</option>
-                            <option value="Enter a problem">Enter a problem</option>
-                            <option value="Enter a problem">Enter a problem</option>
+                            <option value="Give feedback about our services">Give feedback about our services</option>
+                            <option value="Missing item">Missing item</option>
+                            <option value="Change your name">Change your name</option>
+                            <option value="Report a driver">Report a driver</option>
+                            <option value="Work with us">Work with us</option>
+                            <option value="Other">Other</option>
                         </select>
 
-                        <input type="text" placeholder="Enter your email address" className={styles.contactUsEmail} />
-                        <textarea type="text" placeholder="Enter your message here" className={styles.contactUsContent} />
+                        <input type="text"
+                            placeholder="Enter your email address"
+                            className={styles.contactUsEmail}
+                            value={this.state.userEmail}
+                            onChange={(event) => { this.setState({ userEmail: event.target.value }) }} />
 
+                        <textarea
+                            type="text"
+                            placeholder="Enter your message here"
+                            className={styles.contactUsContent}
+                            value={this.state.message}
+                            onChange={(event) => { this.setState({ message: event.target.value }) }} />
+                        <p className={styles.em}>{this.state.errorMessage}</p>
                     </div>
                     <div className={styles.contactUsLC}>
-                        <a className={styles.button2}>
-                            <p className={styles.buttonText2}>Send Message</p>
+                        <a className={styles.button2}
+                            onClick={() => {
+                                if (this.state.userEmail == '')
+                                    this.setState({ errorMessage: 'Please enter an email for us to response to' });
+                                else
+                                    sendFeedback.call(this, true);
+                            }}>
+                            {this.state.loading ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={'#ffffff'}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText2}>Send Message</p>}
                         </a>
                         <p className={styles.contactUsLasttext}>
                             We respond to your inquires via your email. We would not send you promotional emails unless you are already a signed up Perch user.

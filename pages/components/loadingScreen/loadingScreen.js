@@ -30,7 +30,7 @@ export default class index extends React.Component {
                     <link rel="icon" href="../../favicon.ico" />
                 </Head>
                 <div className={styles.logo}>
-                    <Logo color={'#4EB848'} />
+                    <Logo color={this.props.driverLogo?'#1970A7':'#4EB848'} />
                 </div>
             </div>
         )

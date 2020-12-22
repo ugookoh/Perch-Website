@@ -102,11 +102,11 @@
     object-fit: fill;
 }
 
-.downloadApp:hover {
+.downloadApp, .previousMessageSum:hover {
     cursor: pointer;
 }
 
-.downloadApp:active, .driverFAQCont:active, .driverVehicle_UPLOADCONT:active, .driver_ADD_VEHICLE_IMGUPLOAD:active, .driver_ADD_VEHICLE_IMG_GL:active, #driver_APP_TOP_RADIO_CONT:active, #driver_APP_TOP_RADIO_CONT_:active {
+.downloadApp:active, .driverFAQCont:active, .driverVehicle_UPLOADCONT:active, .driver_ADD_VEHICLE_IMGUPLOAD:active, .driver_ADD_VEHICLE_IMG_GL:active, #driver_APP_TOP_RADIO_CONT:active, #driver_APP_TOP_RADIO_CONT_:active, .previousMessageSum:active {
     opacity: 0.7;
 }
 
@@ -720,6 +720,7 @@
     display: flex;
     height: 165px;
     border-radius: 5px;
+    object-fit: cover;
 }
 
 .driver_ADD_VEHICLE_IMGUPLOAD {
@@ -873,7 +874,45 @@
     object-fit: contain;
 }
 
+.previousMessageSum {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
 
+.previousMessageDate {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.previousMessageC {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+.previousMessageCol {
+    max-width: 85%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.em {
+    font-family: 'Gilroy-SemiBold';
+    display: block;
+    color: #FF0000;
+    width: 90%;
+    text-align: center;
+    font-size: smaller;
+    margin: 0px;
+    margin-top: 10px;
+    margin-bottom: 7px;
+}
 
 @media only screen and (max-width: 1170px) {
     /*Tablets (portrait and landscape)*/

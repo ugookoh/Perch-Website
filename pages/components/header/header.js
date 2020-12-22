@@ -20,6 +20,7 @@ export default class index extends React.Component {
             isDriver: false,
             url: null,
             loggedIn: false,
+            driverVerified: '',
         };
     };
     componentDidMount() {
@@ -33,8 +34,8 @@ export default class index extends React.Component {
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 firebase.database().ref(`users/${user.uid}/firstName`).once('value', (snapshot) => {
-                    firebase.database().ref(`users/${user.uid}/driverID`).once('value', (snap) => {
-                        this.setState({ isDriver: snap.val() ? true : false, firstName: snapshot.val(), loggedIn: true });
+                    firebase.database().ref(`users/${user.uid}/driverVerified`).once('value', (snap) => {
+                        this.setState({ isDriver: snap.val() ? true : false, firstName: snapshot.val(), loggedIn: true, driverVerified: snap.val() });
                     }).catch(error => { console.log(error.message) });
                 }).catch(error => { console.log(error.message) });
 
@@ -82,10 +83,15 @@ export default class index extends React.Component {
                             {
                                 this.state.isDriver ?
                                     <>
-                                        <a className={styles.link_} href='/s/db/ddash'><p className={styles.text}>Driver dashboard</p></a>
+                                        {this.state.driverVerified == 'VERIFIED' ?
+                                            <a className={styles.link_} href='/s/db/ddash'><p className={styles.text}>Driver dashboard</p></a> :
+                                            <a className={styles.link_} href='/s/db/d_app_dash'><p className={styles.text}>Continue driver application</p></a>}
                                         <a className={styles.link_} href='/s/db/udash'><p className={styles.text}>Rider dashboard</p></a>
                                     </> :
-                                    <a className={styles.link_} href='/s/db/udash'><p className={styles.text}>My dashboard</p></a>
+                                    <>
+                                        <a className={styles.link_} href='/s/db/udash'><p className={styles.text}>My dashboard</p></a>
+                                        <a className={styles.link_} href='/s/auth/d_si_su'><p className={styles.text}>Become a driver</p></a>
+                                    </>
                             }
                             <a className={styles.link_} href='/s/articles/how_perch_works'><p className={styles.text}>How it works</p></a>
                             <div className={styles.circle} onClick={() => { signOut.call(this, true); }}>
@@ -116,10 +122,16 @@ export default class index extends React.Component {
                                     {
                                         this.state.isDriver ?
                                             <>
-                                                <a className={styles.lowerLink} href='/s/db/ddash'><p className={styles.lowerLinkText}>Driver dashboard</p></a>
+
+                                                {this.state.driverVerified == 'VERIFIED' ?
+                                                    <a className={styles.lowerLink} href='/s/db/ddash'><p className={styles.lowerLinkText}>Driver dashboard</p></a> :
+                                                    <a className={styles.lowerLink} href='/s/db/d_app_dash'><p className={styles.lowerLinkText}>Continue driver application</p></a>}
                                                 <a className={styles.lowerLink} href='/s/db/udash'><p className={styles.lowerLinkText}>Rider dashboard</p></a>
                                             </> :
-                                            <a className={styles.lowerLink} href='/s/db/udash'><p className={styles.lowerLinkText}>My dashboard</p></a>
+                                            <>
+                                                <a className={styles.lowerLink} href='/s/db/udash'><p className={styles.lowerLinkText}>My dashboard</p></a>
+                                                <a className={styles.lowerLink} href='/s/auth/d_si_su'><p className={styles.lowerLinkText}>Become a driver</p></a>
+                                            </>
                                     }
                                     <a className={styles.lowerLink} href='/s/articles/how_perch_works'><p className={styles.lowerLinkText}>How it works</p></a>
                                     <a className={styles.lowerLink} onClick={() => { signOut.call(this, true); }}><p className={styles.lowerLinkText}>Log out</p></a>

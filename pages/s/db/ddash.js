@@ -8,6 +8,7 @@ import Router from 'next/router';
 import { DriverDashBoard, DriverTripHistory, DriverVehicles, HelpAndFAQ, ContactUs, Settings } from './panels';
 import firebase from 'firebase';
 import LoadingScreen from '../../components/loadingScreen/loadingScreen';
+import { signOut } from '../../../functions/functions';
 
 export default class index extends React.Component {
     constructor() {
@@ -24,14 +25,20 @@ export default class index extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
         firebase.auth().onAuthStateChanged(user => {
             if (user)
-                firebase.database().ref(`users/${user.uid}/driverID`).once('value', (snap) => {
-                    this.setState({ loggedIn: snap.val() ? 'TRUE' : 'FALSE', });
+                firebase.database().ref(`users/${user.uid}`).once('value', (snapshot) => {
+                    this.setImage(snapshot.val().photoRef);
+                    this.setState({ loggedIn: snapshot.val() ? 'TRUE' : 'FALSE', userDetails: snapshot.val() });
                 }).catch(error => { console.log(error.message) });
             else
                 this.setState({ loggedIn: 'FALSE' });
         });
     }
-
+    setImage = (photoRef) => {
+        firebase.storage().ref(`${photoRef}`).getDownloadURL()
+            .then(result => {
+                this.setState({ url: result })
+            }).catch(error => { console.log(error.message) });
+    };
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
@@ -71,7 +78,7 @@ export default class index extends React.Component {
         if (this.state.loggedIn == 'FALSE')
             Router.push('/s/auth/d_si_su').then(() => window.scrollTo(0, 0));
         if (this.state.loggedIn != 'TRUE')
-            return <LoadingScreen />;
+            return <LoadingScreen driverLogo={true}/>;
 
 
         let option = '';
@@ -79,29 +86,29 @@ export default class index extends React.Component {
         switch (this.state.optionCode) {
             case 'db': {
                 option = 'Dashboard'
-                content = <DriverDashBoard />;
+                content = <DriverDashBoard userDetails={this.state.userDetails} />;
             } break;
             case 'th': {
                 option = 'Trip History';
-                content = <DriverTripHistory />;
+                content = <DriverTripHistory userDetails={this.state.userDetails} />;
             } break;
             case 'tt': {
                 option = 'Help & FAQ';
-                content = <HelpAndFAQ />;
+                content = <HelpAndFAQ userDetails={this.state.userDetails} />;
             } break;
             case 'vh': {
                 option = 'My Vehicles';
-                content = <DriverVehicles />;
+                content = <DriverVehicles userDetails={this.state.userDetails} />;
             } break;
             case 'tx': { option = 'Tax Information' } break;
             case 'pi': { option = 'Payout Information' } break;
             case 'cu': {
                 option = 'Contact Us';
-                content = <ContactUs type='Driver' />;
+                content = <ContactUs type='Driver' userDetails={this.state.userDetails} />;
             } break;
             case 'ss': {
                 option = 'Settings';
-                content = <Settings type='Driver' />
+                content = <Settings type='Driver' userDetails={this.state.userDetails} />
             } break;
         }
         return (
@@ -125,11 +132,19 @@ export default class index extends React.Component {
                     <div className={styles.optionShadowBox}>
                         <p className={styles.optionTitle}>{option}</p>
                         <div className={styles.textRow1}>
-                            <div className={styles.dp}></div>
-                            <p className={styles.text_d}>{'Hello, Ugochukwu'}</p>
+                            {
+                                this.state.userDetails ?
+                                    <>
+                                        {this.state.url ?
+                                            <img src={this.state.url} className={styles.dp} style={{ objectFit: 'cover', borderWidth: '0px' }} /> :
+                                            <div className={styles.dp}></div>}
+                                        <p className={styles.text_d}>{`Hello, ${this.state.userDetails.firstName}`}</p>
+                                    </> :
+                                    <></>
+                            }
                             <a className={styles.link_d}><p className={styles.text}>How it works</p></a>
                             <a>
-                                <div className={styles.circle_d}>
+                                <div className={styles.circle_d} onClick={() => { signOut.call(this, true) }}>
                                     <ImExit color={'#FFFFFF'} className={styles.logOut} />
                                 </div>
                             </a>

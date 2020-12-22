@@ -323,6 +323,17 @@
     object-fit: fill;
 }
 
+.em {
+    font-family: 'Gilroy-SemiBold';
+    display: block;
+    color: #FF0000;
+    font-size: smaller;
+    margin: 0px;
+    margin-top: 0px;
+    margin-bottom: 17px;
+    width: 90%
+}
+
 .p_ {
     width: 90%;
     max-width: 1486px;
