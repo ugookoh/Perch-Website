@@ -4,18 +4,18 @@ import React from 'react';
 import Router from 'next/router';
 import { MdContentCopy } from 'react-icons/md';
 import { BiStopCircle, } from 'react-icons/bi';
-import { BsClockHistory, BsCloudUpload } from 'react-icons/bs';
+import { BsClockHistory, BsCloudUpload, BsDot } from 'react-icons/bs';
 import { AiOutlineRight, AiOutlineClose, AiFillStar, AiOutlineCamera, AiOutlineCheck } from 'react-icons/ai';
 import { RiShieldCheckFill } from 'react-icons/ri';
 import { VscCalendar } from 'react-icons/vsc';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { CgAdd } from 'react-icons/cg';
 import { GiClick } from 'react-icons/gi';
-import Loader from 'react-loader-spinner'
+import Loader from 'react-loader-spinner';
 import DatePicker from "react-datepicker";
 import firebase from 'firebase';
-import { sendFeedback } from '../../../functions/functions'
-
+import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght,makeid } from '../../../functions/functions'
+import axios from 'axios'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
 const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE, PURPLE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7', '#A031AF'];
@@ -362,93 +362,235 @@ export class PerchWallet extends React.Component {
     }
 };
 export class ContactUs extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             topic: 'unselected',
             message: '',
-            loading: false
+            loading: false,
+            showMessage: false,
+            userDetails: this.props.userDetails,
+            result: null,
+            messageObj: null,
+            errorMessage: '',
         };
     }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+            const ref = this.state.userDetails.driverID ? `driverFeedback/${this.state.userDetails.driverID}` : `userFeedback/${this.state.userDetails.userID}`;
+            firebase.database().ref(ref).once('value', snapshot => {
+                this.setState({ result: snapshot.val() ? snapshot.val() : null });
+            }).catch(error => { console.log(error.message) });
+        }
+    };
     render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        if (this.state.result) {
+            const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+            for (let k = 0; k < keys.length; k++)
+                results.push(
+                    <>
+                        <div className={styles.previousMessageSum} onClick={() => { this.setState({ messageObj: this.state.result[keys[k]], showMessage: true }) }}>
+                            <p style={{ fontSize: '95%' }}>{this.state.result[keys[k]].subject}</p>
+
+                            <div className={styles.previousMessageDate}>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>{dateformat(this.state.result[keys[k]].date)}</p>
+                                <BsDot size={'55px'} color={this.state.result[keys[k]].status == 'PROCESSED' ? this.state.userDetails.driverID ? BLUE : GREEN : RED} />
+                            </div>
+                        </div>
+                        {
+                            k == keys.length - 1 ?
+                                <></> :
+                                <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                        }
+                    </>
+                )
+        }
+
+
         return (
             <div className={styles.cont}>
+                {this.state.showMessage ?
+                    <>
+                        <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                            <p className={styles.title} style={{ color: BLACK, marginBottom: '30px' }}>{this.state.messageObj.subject}</p>
 
-                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
-                    <p className={styles.title} style={{ color: BLACK }}>Contact us form</p>
-                    <p className={styles.text} style={{ color: GREY }}>
-                        Feel free to contact us about issues with your ride or about feeback on how we can better our services.
+                            <div className={styles.previousMessageC} style={{ alignItems: 'flex-end' }}>
+                                <div className={styles.previousMessageCol} style={{ backgroundColor: this.state.userDetails.driverID ? BLUE : GREEN }}>
+                                    <p style={{ fontSize: '95%', color: WHITE, lineHeight: '150%', paddingRight: '10px', paddingLeft: '10px' }}>
+                                        {this.state.messageObj.body}
+                                    </p>
+                                </div>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>{dateformat(this.state.messageObj.date)}</p>
+                            </div>
+                            {this.state.messageObj.status == 'PROCESSED' ?
+                                <div className={styles.previousMessageC} style={{ alignItems: 'flex-start' }}>
+                                    <div className={styles.previousMessageCol} style={{ backgroundColor: 'rgba(145, 134, 134, 0.5)' }}>
+                                        <p style={{ fontSize: '95%', color: BLACK, lineHeight: '150%', paddingRight: '10px', paddingLeft: '10px' }}>
+                                            {this.state.messageObj.response}
+                                        </p>
+                                    </div>
+                                    <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>{dateformat(this.state.messageObj.responseDate)}</p>
+                                </div> : <></>}
+                        </div>
+
+                        <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: '100px' }}>
+                            <a className={styles.button1} id={styles.sendMessageContactUS} style={this.props.type == 'Driver' ? { backgroundColor: BLUE } : {}}
+                                onClick={() => {
+                                    this.setState({ showMessage: false })
+                                }}>
+                                {this.state.loading ?
+                                    <Loader
+                                        type="TailSpin"
+                                        color={WHITE}
+                                        height={'20px'}
+                                        width={'20px'} /> :
+                                    <p className={styles.buttonText1}>Back</p>}
+                            </a>
+                            <p className={styles.contactUsLasttext}>
+                                We responds to your queries via user mails
                     </p>
-                    <select
-                        value={this.state.topic}
-                        className={styles.selectTopic}
-                        onChange={(v) => { this.setState({ topic: v.target.value }) }}
-                        style={this.state.topic === 'unselected' ? { color: 'rgba(112, 112, 112, 0.7)' } : {}}
-                    >
-                        <option value="unselected">(--Select a topic--)</option>
-                        <option value="Give feedback about our services">Give feedback about our services</option>
-                        <option value="Missing item">Missing item</option>
-                        <option value="Change your name">Change your name</option>
-                        <option value="Report a driver">Report a driver</option>
-                        <option value="Work with us">Work with us</option>
-                        <option value="Other">Other</option>
-                    </select>
+                        </div>
 
-                    <textarea
-                        type="text"
-                        placeholder="Enter your message here"
-                        className={styles.contactUsContent}
-                        value={this.state.message}
-                        onChange={(event) => { this.setState({ message: event.target.value }); }} />
-                </div>
-
-                <div className={styles.contactUsLC} style={{ marginTop: '15px', }}>
-                    <a className={styles.button1} id={styles.sendMessageContactUS} style={this.props.type == 'Driver' ? { backgroundColor: BLUE } : {}}
-                        onClick={() => {
-                            if (!this.state.loading)
-                                sendFeedback.call(this);
-                        }}>
-                        <p className={styles.buttonText1}>Send Message</p>
-                    </a>
-                    <p className={styles.contactUsLasttext}>
-                        We responds to your queries via user mails
+                    </> :
+                    <>
+                        <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                            <p className={styles.title} style={{ color: BLACK }}>Contact us form</p>
+                            <p className={styles.text} style={{ color: GREY }}>
+                                Feel free to contact us about issues with your ride or about feeback on how we can better our services.
                     </p>
-                </div>
+                            <select
+                                value={this.state.topic}
+                                className={styles.selectTopic}
+                                onChange={(v) => { this.setState({ topic: v.target.value }) }}
+                                style={this.state.topic === 'unselected' ? { color: 'rgba(112, 112, 112, 0.7)' } : {}}
+                            >
+                                <option value="unselected">(--Select a topic--)</option>
+                                <option value="Give feedback about our services">Give feedback about our services</option>
+                                <option value="Missing item">Missing item</option>
+                                <option value="Change your name">Change your name</option>
+                                {
+                                    this.state.userDetails.driverID ?
+                                        <option value="Report a rider">Report a rider</option>
+                                        : <>
+                                            <option value="Report a driver">Report a driver</option>
+                                            <option value="Work with us">Work with us</option>
+                                        </>
+                                }
+                                <option value="Other">Other</option>
+                            </select>
 
-                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', marginBottom: '150%' }}>
-                    <p className={styles.title} style={{ color: BLACK }}>Previous messages</p>
-                    <p className={styles.text} style={{ color: GREY }}>
-                        Here are some of your previous messages. Messages would be answered within 2-4 business days
+                            <textarea
+                                type="text"
+                                placeholder="Enter your message here"
+                                className={styles.contactUsContent}
+                                value={this.state.message}
+                                onChange={(event) => { this.setState({ message: event.target.value }); }} />
+                            <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
+                        </div>
+
+                        <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: this.state.result ? '0px' : '150px' }}>
+                            <a className={styles.button1} id={styles.sendMessageContactUS} style={this.props.type == 'Driver' ? { backgroundColor: BLUE } : {}}
+                                onClick={() => {
+                                    if (!this.state.loading)
+                                        sendFeedback.call(this);
+                                }}>
+                                <p className={styles.buttonText1}>Send Message</p>
+                            </a>
+                            <p className={styles.contactUsLasttext}>
+                                We responds to your queries via user mails
                     </p>
-                    
-                </div>
+                        </div>
+
+                        {this.state.result ?
+                            <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', marginBottom: '150px' }}>
+                                <p className={styles.title} style={{ color: BLACK }}>Previous messages</p>
+                                <p className={styles.text} style={{ color: GREY, marginBottom: '10px' }}>
+                                    Here are some of your previous messages. Messages would be answered within 2-4 business days
+                                </p>
+
+                                {results}
+                            </div> : <></>}
+
+                    </>}
             </div>
         );
-    }
+    };
 };
 export class Settings extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            toShow: 'default',//default, changePassword, verify, whyDeleteAccount,logInToDeleteAccount
+            toShow: 'default',//default, changePassword, verify, whyDeleteAccount,logInToDeleteAccount,
+            url: null,
+            userDetails: this.props.userDetails,
+            newEmail: this.props.userDetails ? this.props.userDetails.email : '',
+            newPhoneNumber: this.props.userDetails ? this.props.userDetails.phoneNumber : '',
+            currentPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
+            loading: false,
+            errorMessage: '',
+            deleteAccountReason: '',
+            email1: '',
+            password1: '',
         };
     };
-
+    componentDidMount() {
+        this.setImage(this.state.userDetails.photoRef)
+    }
+    setImage = (photoRef) => {
+        firebase.storage().ref(`${photoRef}`).getDownloadURL()
+            .then(result => {
+                this.setState({ url: result })
+            }).catch(error => { console.log(error.message) });
+    };
     render() {
         let content = <></>;
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({
+                userDetails: this.props.userDetails,
+                newEmail: this.props.userDetails.email,
+                newPhoneNumber: this.props.userDetails.phoneNumber,
+            }, () => { this.setImage(this.state.userDetails.photoRef); });
+
         switch (this.state.toShow) {
             case 'default': {
                 content = (<>
                     <p className={styles.title} style={{ color: BLACK, marginBottom: '15px' }}>{`User details`}</p>
 
                     <div className={styles.enterKilometerDiv} style={{ margin: '0px', width: '100%' }}>
-                        <input type="text" placeholder="First Name" className={styles.inputPaymentPanel} id={styles.inputSettings} style={{ width: '49%', margin: '0px' }} />
-                        <input type="text" placeholder="Last Name" className={styles.inputPaymentPanel} id={styles.inputSettings} style={{ width: '49%', margin: '0px' }} />
+                        <input type="text"
+                            placeholder="First Name"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettings} style={{ width: '49%', margin: '0px' }}
+                            value={this.state.userDetails ? this.state.userDetails.firstName : 'First Name'}
+                            disabled={true}
+                        />
+                        <input type="text"
+                            placeholder="Last Name"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettings}
+                            style={{ width: '49%', margin: '0px' }}
+                            value={this.state.userDetails ? this.state.userDetails.lastName : 'Last Name'}
+                            disabled={true}
+                        />
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Email Address" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} />
+                        <input type="text"
+                            placeholder="Email Address"
+                            className={styles.inputPaymentPanel}
+                            value={this.state.newEmail}
+                            onChange={(event) => { this.setState({ newEmail: event.target.value }) }}
+                            id={styles.inputSettingCont_L} />
                         <div className={styles.pickPaymentSelected} style={{ backgroundColor: this.props.type == 'Driver' ? '#39A2E5' : '#5EEF56', }} id={styles.inputSettingCont_R}>
                             <>
                                 <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verified</p>
@@ -457,7 +599,12 @@ export class Settings extends React.Component {
                         </div>
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Phone Number" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} />
+                        <input type="text"
+                            placeholder="Phone Number"
+                            className={styles.inputPaymentPanel}
+                            value={this.state.newPhoneNumber}
+                            onChange={(event) => { this.setState({ newPhoneNumber: event.target.value }) }}
+                            id={styles.inputSettingCont_L} />
                         <div className={styles.pickPaymentSelected} style={{ backgroundColor: '#FF4040' }} id={styles.inputSettingCont_R}>
                             <>
                                 <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verify Now</p>
@@ -485,30 +632,77 @@ export class Settings extends React.Component {
                 content = (<>
                     <p className={styles.title} style={{ color: BLACK }}>Change Password</p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Current Password" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input
+                            type="password"
+                            placeholder="Current Password"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L}
+                            value={this.state.currentPassword}
+                            onChange={(event) => { this.setState({ currentPassword: event.target.value }) }}
+                            style={{ width: '100%' }} />
 
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="New Password" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input
+                            type="password"
+                            placeholder="New Password"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L}
+                            value={this.state.newPassword}
+                            onChange={(event) => { this.setState({ newPassword: event.target.value }) }}
+                            style={{ width: '100%' }}
+                        />
 
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Confirm New Password" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input
+                            type="password"
+                            placeholder="Confirm New Password"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L}
+                            style={{ width: '100%' }}
+                            value={this.state.confirmNewPassword}
+                            onChange={(event) => { this.setState({ confirmNewPassword: event.target.value }) }}
+                        />
 
                     </div>
+                    <p className={styles.em}>{this.state.errorMessage}</p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont__} >
                         <div className={styles.button1}
                             id={styles.deleteAccountButton_}
                             style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
-                            onClick={() => { this.setState({ toShow: 'default' }) }}>
+                            onClick={() => {
+                                if (!this.state.loading)
+                                    this.setState({ toShow: 'default', errorMessage: '', currentPassword: '', newPassword: '', confirmNewPassword: '' });
+                            }}>
                             <p className={styles.buttonText1} id={styles.deleteAccountButton}>Cancel</p>
                         </div>
                         <div
                             className={styles.button1}
                             id={styles.deleteAccountButton_}
                             style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            onClick={() => {
+                                if (!this.state.loading) {
+                                    if (this.state.newPassword == '')
+                                        this.setState({ errorMessage: 'Please enter a new password' })
+                                    else if (this.state.newPassword != this.state.confirmNewPassword)
+                                        this.setState({ errorMessage: 'New password and confirm new password do not match' })
+                                    else
+                                        changePassword.call(this,
+                                            this.state.userDetails.email,
+                                            this.state.currentPassword,
+                                            this.state.newPassword);
+                                }
+                            }}
                         >
-                            <p className={styles.buttonText1} id={styles.deleteAccountButton}>Change Password</p>
+                            {this.state.loading ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1} id={styles.deleteAccountButton}>Change Password</p>
+                            }
                         </div>
                     </div>
                 </>);
@@ -548,22 +742,39 @@ export class Settings extends React.Component {
                     <p className={styles.text} style={{ color: BLACK }}>
                         Please describe briefly why you would like to delete your account
                     </p>
-                    <textarea type="text" placeholder="Enter your message here" className={styles.contactUsContent} style={{ width: '100%' }} />
+                    <textarea
+                        type="text"
+                        placeholder="Enter your message here"
+                        className={styles.contactUsContent}
+                        style={{ width: '100%' }}
+                        value={this.state.deleteAccountReason}
+                        onChange={event => { this.setState({ deleteAccountReason: event.target.value }) }}
+                    />
 
+                    <p className={styles.em}>{this.state.errorMessage}</p>
 
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont__} >
-                        <div className={styles.button1}
-                            id={styles.deleteAccountButton_}
-                            style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
-                            onClick={() => { this.setState({ toShow: 'default' }) }}>
-                            <p className={styles.buttonText1} id={styles.deleteAccountButton}>Cancel</p>
-                        </div>
                         <div
                             className={styles.button1}
                             id={styles.deleteAccountButton_}
-                            style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            onClick={() => {
+                                if (this.state.deleteAccountReason == '')
+                                    this.setState({ errorMessage: 'Please enter a reason to delete your account' });
+                                else if (this.state.deleteAccountReason.length < 15)
+                                    this.setState({ errorMessage: 'Please enter a reason longer than 15 characters' });
+                                else
+                                    this.setState({ toShow: 'logInToDeleteAccount', errorMessage: '' })
+                            }}
                         >
                             <p className={styles.buttonText1} id={styles.deleteAccountButton}>Delete Account</p>
+                        </div>
+
+                        <div className={styles.button1}
+                            id={styles.deleteAccountButton_}
+                            style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            onClick={() => { this.setState({ toShow: 'default', errorMessage: '', deleteAccountReason: '' }) }}>
+                            <p className={styles.buttonText1} id={styles.deleteAccountButton}>Cancel</p>
                         </div>
                     </div>
                 </>);
@@ -575,22 +786,50 @@ export class Settings extends React.Component {
                         Please describe briefly why you would like to delete your account
                     </p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Email" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input type="text"
+                            placeholder="Email"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L}
+                            style={{ width: '100%' }}
+                            value={this.state.email1}
+                            autoComplete={'off'}
+                            onChange={(event) => { this.setState({ email1: event.target.value }) }} />
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Password" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input type="password"
+                            placeholder="Password"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L}
+                            style={{ width: '100%' }}
+                            value={this.state.password1}
+                            autoComplete={'off'}
+                            onChange={(event) => { this.setState({ password1: event.target.value }) }} />
                     </div>
+                    <p className={styles.em}>{this.state.errorMessage}</p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont__} >
                         <div className={styles.button1}
                             id={styles.deleteAccountButton_}
-                            style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}>
-                            <p className={styles.buttonText1} id={styles.deleteAccountButton}>Delete Account</p>
+                            style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            onClick={() => {
+                                if (!this.state.loading)
+                                    deleteAccount.call(this,
+                                        this.state.email1,
+                                        this.state.password1);
+                            }}>
+                            {this.state.loading ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1} id={styles.deleteAccountButton}>Delete Account</p>
+                            }
                         </div>
                         <div
                             className={styles.button1}
                             id={styles.deleteAccountButton_}
                             style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
-                            onClick={() => { this.setState({ toShow: 'default' }) }}
+                            onClick={() => { this.setState({ toShow: 'default', errorMessage: '', email1: '', password1: '' }) }}
                         >
                             <p className={styles.buttonText1} id={styles.deleteAccountButton}>Cancel</p>
                         </div>
@@ -605,7 +844,7 @@ export class Settings extends React.Component {
                     <p className={styles.title} style={{ color: BLACK }}>Rider settings</p>
                     <div className={styles.settingUserDetails} >
                         <div className={styles.displayPicSettings}>
-                            <img src="/doggyProfilePicture.svg" className={styles.doggyProfilePicture} />
+                            <img src={this.state.url} className={styles.doggyProfilePicture} />
                         </div>
                         <div className={styles.settingsCont}>
                             {content}
@@ -677,9 +916,12 @@ class PaymentCard extends React.Component {
     }
 };
 class Trip extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
+        this.state = {
+
+        };
 
     }
     render() {
@@ -750,30 +992,48 @@ class Trip extends React.Component {
                 </>
             );
         }
-        else if (this.props.type == 'Driver')
+        else if (this.props.type == 'Driver') {
+            const data = this.props.data;
+            let passNo = 0, distance = 0, total = '$ 0.00';
+            if (data.trips) {
+                for (let key in data.trips) {
+                    passNo += data.trips[key].details.tripDetails.seatNumber;
+                    distance += (polylineLenght(JSON.parse(data.trips[key].details.tripDetails.leg)) * data.trips[key].details.tripDetails.seatNumber);//seat no * distance
+                };
+            };
+            //distance = distance * passNo;
+            distance > 100 ?
+                distance = `${(distance / 1000).toFixed(1)} KM` :
+                distance = `${(distance).toFixed(distance != 0 ? 1 : 0)} M`;
+
+            distance = distance.toLowerCase();
+            passNo = `${passNo} ${passNo == 1 ? 'person' : 'people'}`;
+            total = '$ 213.00';
+
+
             return (
                 <>
                     <div id={styles.tripPanelCont} >
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px' }}>
-                            <p className={styles.tripPanelTitle}>{`29 passengers`}</p>
-                            <p className={styles.tripPanelTime}>{`11/20/2017`}</p>
+                            <p className={styles.tripPanelTitle}>{passNo}</p>
+                            <p className={styles.tripPanelTime}>{this.props.date}</p>
                         </div>
 
                         <div className={styles.tripPanelNoOfTrips} style={{ backgroundColor: BLUE, height: '10px', }} >
                         </div>
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', justifyContent: 'initial', marginTop: '20px' }}>
                             <HiOutlineLocationMarker color={BLUE} style={{ margin: '0px', marginRight: '10px' }} className={styles.driverHistory_ICON} />
-                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{`10012 87 Ave Northwest`}</p>
+                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{data.locationAddress}</p>
                         </div>
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', justifyContent: 'initial', marginTop: '10px' }}>
                             <BiStopCircle color={BLUE} style={{ marginRight: '10px' }} className={styles.driverHistory_ICON} />
-                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{`University of Alberta`}</p>
+                            <p className={styles.tripPanelTime} style={{ margin: '0px' }}>{data.destinationAddress}</p>
                         </div>
                         <div className={styles.tripPanelNoOfTrips} style={{ backgroundColor: GREY, height: '1px', marginTop: '17px' }} >
                         </div>
                         <div className={styles.enterKilometerDiv} style={{ width: '95%', marginTop: '10px', marginBottom: '15px' }}>
-                            <p className={styles.tripPanelTitle} style={{ fontFamily: 'Gilroy-Medium', margin: '0px' }}>{`289.4 kilometers`}</p>
-                            <p className={styles.tripPanelCash} style={{ color: BLUE }} >{`$ 65.99`}</p>
+                            <p className={styles.tripPanelTitle} style={{ fontFamily: 'Gilroy-Medium', margin: '0px' }}>{distance}</p>
+                            <p className={styles.tripPanelCash} style={{ color: BLUE }} >{total}</p>
                         </div>
                     </div>
                     {
@@ -783,10 +1043,9 @@ class Trip extends React.Component {
                     }
                 </>
             );
+        }
     }
 };
-
-
 export class DriverDashBoard extends React.Component {
     constructor() {
         super();
@@ -838,25 +1097,97 @@ export class DriverDashBoard extends React.Component {
     }
 };
 export class DriverTripHistory extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             result: null,
             date: new Date().getTime(),
+            userDetails: this.props.userDetails,
+            summary: {
+                distance: '...',
+                passengerNo: '...',
+                totalM: '...',
+            },
         };
     }
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({ result: true })
-        }, 3000);
+        this.loadResult();
     }
+    loadResult = () => {
+        if (this.state.userDetails) {
+            this.setState({ result: null }, () => {
+                firebase.database().ref(`driverHistory/${this.state.userDetails.userID}/carpool/${new Date(this.state.date).getFullYear()}/${M[new Date(this.state.date).getMonth()]}`).once('value', snapshot => {
+                    this.setState({ result: snapshot.val() ? snapshot.val() : 'NORESULTS' });
+                    let passengerNo = 0, distance = 0, totalM = '$ 1279.90';
+
+                    for (let k in snapshot.val()) {
+                        const d = snapshot.val()[k].trips;
+                        for (let key in d) {
+                            passengerNo += d[key].details.tripDetails.seatNumber;
+                            distance += polylineLenght(JSON.parse(d[key].details.tripDetails.leg)) * d[key].details.tripDetails.seatNumber;
+                            //work on cash here
+                        };
+                    };
+                    distance > 100 ?
+                        distance = (distance / 1000).toFixed(1) :
+                        distance = (distance).toFixed(distance != 0 ? 1 : 0);
+
+                    this.setState({
+                        summary: {
+                            distance: distance.toLowerCase(),
+                            passengerNo: passengerNo,
+                            totalM: totalM,
+                        },
+                    });
+
+                }).catch(error => { console.log(error.message) });
+            });
+        }
+    };
+    sorter(a, b) {
+        function numbergetter(time) {
+            let slash1 = 0, slash2 = 0, slash3 = 0;
+            for (let k = 0; k < time.length; k++) {
+                if (time.charAt(k) == '-')
+                    slash1 == 0 ? slash1 = k : slash2 == 0 ? slash2 = k : slash3 = k;
+            };
+
+            const DAY = Number(time.substring(0, slash1)) * 86400;
+            const HOUR = Number(time.substring(slash1 + 1, slash2)) * 3600;
+            const MINS = Number(time.substring(slash2 + 1, slash3)) * 60;
+            const SECS = Number(time.substring(slash3 + 1, time.length));
+
+            return (DAY + HOUR + MINS + SECS)
+        };
+
+        let a_time = numbergetter(a)
+        let b_time = numbergetter(b)
+
+        if (a_time > b_time)
+            return -1;
+        else
+            return 1
+    };
     render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
         let trips = [];
-        for (let i = 0; i < 6; i++) {
-            trips.push(
-                <Trip lastItem={i == 5} type='Driver' />
-            );
+
+        if (this.state.result && this.state.result != 'NORESULTS') {
+            const keys = Object.keys(this.state.result).sort(this.sorter);
+            for (let i = 0; i < keys.length; i++) {
+                trips.push(
+                    <Trip
+                        key={keys[i]}
+                        date={timeAndDate(keys[i], M[new Date(this.state.date).getMonth()], new Date(this.state.date).getFullYear())}
+                        data={this.state.result[keys[i]]}
+                        lastItem={i == keys.length - 1}
+                        type='Driver'
+                    />
+                );
+            }
         }
         return (
             <>
@@ -870,7 +1201,7 @@ export class DriverTripHistory extends React.Component {
                                 className={styles.calendarDate}
                                 id={styles.calendarDate}
                                 placeholderText={`${M[new Date(this.state.date).getMonth()].toUpperCase()} ${new Date(this.state.date).getFullYear()}`}
-                                onChange={date => { this.setState({ date: date }); }}
+                                onChange={date => { this.setState({ date: date }, () => { this.loadResult() }); }}
                                 dateFormat="MM/yyyy"
                                 showMonthYearPicker
                             />
@@ -885,14 +1216,14 @@ export class DriverTripHistory extends React.Component {
                             <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
                                 <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Number of passengers`}</p>
                                 <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
-                                    {`16`} <span className={styles.driverTH_HIDESUMMARY}>passengers</span>
+                                    {this.state.summary.passengerNo} <span className={styles.driverTH_HIDESUMMARY}>{this.state.summary.passengerNo == 1 ? 'passenger' : 'passengers'}</span>
                                 </p>
                             </div>
 
                             <div className={styles.enterKilometerDiv} style={{ width: '95%', margin: '0px', marginTop: '5px' }}>
                                 <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>{`Total kilometers provided`}</p>
                                 <p className={styles.text} style={{ width: 'initial', marginTop: '0px' }}>
-                                    {`213`} <span className={styles.driverTH_HIDESUMMARY}>kilometers</span>
+                                    {this.state.summary.distance} <span className={styles.driverTH_HIDESUMMARY}>{this.state.summary.distance > 100 ? 'kilometers' : 'meters'}</span>
                                 </p>
                             </div>
 
@@ -901,7 +1232,7 @@ export class DriverTripHistory extends React.Component {
                                     {`TOTAL MADE`}
                                 </p>
                                 <p className={styles.text} style={{ width: 'initial', marginTop: '0px', fontSize: '105%', color: BLUE, fontFamily: 'Gilroy-Bold' }}>
-                                    {`$ 1256.90`}
+                                    {this.state.summary.totalM}
                                 </p>
                             </div>
                         </div> :
@@ -909,7 +1240,7 @@ export class DriverTripHistory extends React.Component {
                     {this.state.result ?
                         this.state.result == 'NORESULTS' ?
                             <div className={styles.tripPanelLoading} id={styles.tripPanelLoading_}>
-                                <img src="/noResultsWoman.svg" className={styles.noResultsWoman} alt="No Results" />
+                                <img src="/noResultsWomanBlue.svg" className={styles.noResultsWoman} alt="No Results" />
                                 <p className={styles.contactUsLasttext} style={{ width: 'initial', fontSize: '90%', margin: '0px' }} id={styles.tripPanelLoadingText}>
                                     Surprisingly, You haven't booked any rides during this time.
                                 </p>
@@ -929,25 +1260,85 @@ export class DriverTripHistory extends React.Component {
     }
 };
 export class DriverVehicles extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             result: null,
             addVehicle: false,
+            userDetails: this.props.userDetails,
+
+            make: '',
+            model: '',
+            year: '',
+            color: '',
+            plateNumber: '',
+
+
+            vehicleImage: '',
+            vehicleImagePreview: '',
+            registration: '',
+            insurance: '',
+            inspection: '',
+            loading: false,
+
+            errorMessage: '',
         };
+
     }
     componentDidMount() {
-        setTimeout(() => {
-            this.setState({ result: true })
-        }, 3000);
-    }
+        this.loadResult();
+    };
+
+    handleFileUpload() {
+        this.setState({ loading: true }, () => {
+            const randomID=makeid(6);
+            firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/registeration`).put(this.state.registration).catch(error => { console.log(error.message) });
+            firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/insurance`).put(this.state.insurance).catch(error => { console.log(error.message) });
+            firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/inspection`).put(this.state.inspection).catch(error => { console.log(error.message) });
+            firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/vehicleImage`).put(this.state.vehicleImage).catch(error => { console.log(error.message) });
+            firebase.storage().ref(`vehicles/${this.state.userDetails.userID}/${randomID}`).put(this.state.vehicleImage).catch(error => { console.log(error.message) });
+
+            axios.post('https://us-central1-perch-01.cloudfunctions.net/addVehicle', {
+                userID: this.state.userDetails.userID,
+                vehicle: {
+                    make: this.state.make,
+                    model: this.state.model,
+                    color: this.state.color,
+                    year: this.state.year,
+                    plateNumber: this.state.plateNumber.toUpperCase(),
+                    maxSeatNumber:3,
+                    displayImage:`vehicles/${this.state.userDetails.userID}/${randomID}`,
+                },
+            })
+                .then(() => {
+                    this.setState({ errorMessage: '', loading: false, make: '', model: '', year: '', color: '', plateNumber: '', addVehicle: false }, () => { this.loadResult(); })
+                }).catch(error => { this.setState({ errorMessage: error.message, loading: false }) })
+
+
+        });
+    };
+    loadResult = () => {
+        if (this.state.userDetails)
+            firebase.database().ref(`vehicles/${this.state.userDetails.userID}`).once('value', snapshot => {
+                this.setState({ result: snapshot.val() });
+            }).catch(error => { console.log(error.message) });
+    };
     render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
         let vehicle = [];
-        for (let i = 0; i < 6; i++) {
-            vehicle.push(
-                <Vehicle lastItem={i == 5} />
-            );
+        if (this.state.result) {
+            const keys = Object.keys(this.state.result);
+            for (let k = 0; k < keys.length; k++)
+                if (keys[k] != 'selected')
+                    vehicle.push(
+                        <Vehicle
+                            data={this.state.result[keys[k]]}
+                            lastItem={k == keys.length - 1}
+                        />
+                    );
         }
         return (
             <>
@@ -958,55 +1349,141 @@ export class DriverVehicles extends React.Component {
                             <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
                                 <p className={styles.title} style={{ color: BLACK }}>Add a vehicle</p>
                                 <div className={styles.enterKilometerDiv} style={{ marginTop: '15px', }}>
-                                    <input type="text" placeholder={"Vehicle Make"} className={styles.inputPaymentPanel} style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD} />
-                                    <input type="text" placeholder={"Vehicle Model"} className={styles.inputPaymentPanel} style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD} />
+                                    <input type="text"
+                                        placeholder={"Vehicle Make"}
+                                        className={styles.inputPaymentPanel}
+                                        style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD}
+                                        value={this.state.make}
+                                        onChange={event => { this.setState({ make: event.target.value }) }}
+                                    />
+                                    <input type="text"
+                                        placeholder={"Vehicle Model"}
+                                        className={styles.inputPaymentPanel}
+                                        style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD}
+                                        value={this.state.model}
+                                        onChange={event => { this.setState({ model: event.target.value }) }} />
                                 </div>
                                 <div className={styles.enterKilometerDiv} style={{ marginTop: '10px', }}>
-                                    <input type="text" placeholder={"Vehicle Year"} className={styles.inputPaymentPanel} style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD} />
-                                    <input type="text" placeholder={"Vehicle Color"} className={styles.inputPaymentPanel} style={{ width: '49%', margin: '0px' }} id={styles.inputPaymentPanel_ADD} />
+                                    <input type="text"
+                                        placeholder={"Vehicle Year"}
+                                        className={styles.inputPaymentPanel}
+                                        style={{ width: '49%', margin: '0px' }}
+                                        id={styles.inputPaymentPanel_ADD}
+                                        value={this.state.year}
+                                        onChange={event => { this.setState({ year: event.target.value }) }} />
+                                    <input type="text"
+                                        placeholder={"Vehicle Color"}
+                                        className={styles.inputPaymentPanel}
+                                        style={{ width: '49%', margin: '0px' }}
+                                        id={styles.inputPaymentPanel_ADD}
+                                        value={this.state.color}
+                                        onChange={event => { this.setState({ color: event.target.value }) }} />
                                 </div>
-                                <input type="text" placeholder="Plate Number" className={styles.inputPaymentPanel} id={styles.inputPaymentPanel_ADD} style={{ marginTop: '10px' }} />
+                                <input type="text"
+                                    placeholder="Plate Number"
+                                    className={styles.inputPaymentPanel}
+                                    id={styles.inputPaymentPanel_ADD}
+                                    style={{ marginTop: '10px' }}
+                                    value={this.state.plateNumber}
+                                    onChange={event => { this.setState({ plateNumber: event.target.value }) }} />
                                 <div className={styles.driver_ADD_VEHICLE_LOWER}>
 
-                                    <div className={styles.driver_ADD_VEHICLE_IMGUPLOAD}>
-                                        <AiOutlineCamera className={styles.driverVehicle_CAMERA} />
-                                        <p className={styles.driverVehicle_CAMERATEXT}>
-                                            UPLOAD A PICTURE OF YOUR VEHICLE
+                                    {
+                                        this.state.vehicleImagePreview == '' ?
+                                            <div className={styles.driver_ADD_VEHICLE_IMGUPLOAD} onClick={() => { this.vehicleImage.click() }}>
+                                                <AiOutlineCamera className={styles.driverVehicle_CAMERA} />
+                                                <p className={styles.driverVehicle_CAMERATEXT}>
+                                                    UPLOAD A PICTURE OF YOUR VEHICLE
                                         </p>
-                                    </div>
-                                    <div className={styles.driver_ADD_VEHICLE_IMG_GL}>
+                                            </div> :
+                                            <img className={styles.driver_ADD_VEHICLE_IMGUPLOAD} src={this.state.vehicleImagePreview} onClick={() => { this.vehicleImage.click() }} />
+                                    }
+                                    <a className={styles.driver_ADD_VEHICLE_IMG_GL} href='/s/articles/procedures_for_taking_a_picture'>
                                         <img src="/cameraGuidelinesForPictures.svg" className={styles.driverVehicle_GUIDELINES_CAM} />
                                         <p className={styles.driverVehicle_GUIDELINES_CAM_TEXT}>Guidelines for taking a picture of your vehicle</p>
-                                    </div>
+                                    </a>
                                     <div className={styles.driver_ADD_VEHICLE_DOCSUPLOAD}>
-                                        <input type='file' ref={this.vehicleRegistrationRef} className={styles.driverVehicle_INPUT} />
-                                        <input type='file' ref={this.vehicleInsuranceRef} className={styles.driverVehicle_INPUT} />
-                                        <input type='file' ref={this.vehicleInspectionRef} className={styles.driverVehicle_INPUT} />
 
-                                        <div className={styles.driverVehicle_UPLOADCONT} id={styles.driverVehicle_UPLOADCONT_}>
-                                            <p className={styles.driverVehicle_UPLOADTEXT} >Upload vehicle registration</p>
-                                            <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />
+                                        <input type='file'
+                                            ref={(ref) => this.vehicleRegistrationRef = ref}
+                                            className={styles.driverVehicle_INPUT}
+                                            onChange={event => { this.setState({ registration: event.target.files[0] }) }} />
+
+                                        <input type='file'
+                                            ref={(ref) => this.vehicleInsuranceRef = ref}
+                                            className={styles.driverVehicle_INPUT}
+                                            onChange={event => { this.setState({ insurance: event.target.files[0] }) }} />
+
+                                        <input type='file'
+                                            ref={(ref) => this.vehicleInspectionRef = ref}
+                                            className={styles.driverVehicle_INPUT}
+                                            onChange={event => { this.setState({ inspection: event.target.files[0] }) }} />
+
+                                        <input type='file'
+                                            ref={(ref) => this.vehicleImage = ref}
+                                            className={styles.driverVehicle_INPUT}
+                                            onChange={event => { this.setState({ vehicleImage: event.target.files[0], vehicleImagePreview: URL.createObjectURL(event.target.files[0]) }) }} />
+
+                                        <div
+                                            className={styles.driverVehicle_UPLOADCONT} id={styles.driverVehicle_UPLOADCONT_}
+                                            onClick={() => { this.vehicleRegistrationRef.click() }}>
+                                            <p className={styles.driverVehicle_UPLOADTEXT}>{this.state.registration == '' ? 'Upload vehicle registration' : this.state.registration.name}</p>
+                                            {this.state.registration == '' ?
+                                                <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} /> :
+                                                <AiOutlineCheck size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />}
                                         </div>
 
-                                        <div className={styles.driverVehicle_UPLOADCONT}>
-                                            <p className={styles.driverVehicle_UPLOADTEXT}>Upload vehicle insurance</p>
-                                            <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />
+                                        <div
+                                            className={styles.driverVehicle_UPLOADCONT}
+                                            onClick={() => { this.vehicleInsuranceRef.click() }}>
+                                            <p className={styles.driverVehicle_UPLOADTEXT}>{this.state.insurance == '' ? 'Upload vehicle insurance' : this.state.insurance.name}</p>
+                                            {this.state.insurance == '' ?
+                                                <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} /> :
+                                                <AiOutlineCheck size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />}
                                         </div>
 
-                                        <div className={styles.driverVehicle_UPLOADCONT}>
-                                            <p className={styles.driverVehicle_UPLOADTEXT}>Upload vehicle inspection</p>
-                                            <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />
+                                        <div
+                                            className={styles.driverVehicle_UPLOADCONT}
+                                            onClick={() => { this.vehicleInspectionRef.click() }}>
+                                            <p className={styles.driverVehicle_UPLOADTEXT}>{this.state.inspection == '' ? 'Upload vehicle inspection' : this.state.inspection.name}</p>
+                                            {this.state.inspection == '' ?
+                                                <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} /> :
+                                                <AiOutlineCheck size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={WHITE} />}
                                         </div>
                                     </div>
-
                                 </div>
+                                <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
                             </div>
                             <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginLeft: '2.5%', width: '95%' }}>
-                                <div className={styles.button2} style={{ backgroundColor: RED }} id={styles.buttonBottom} onClick={() => { this.setState({ addVehicle: false }) }}>
+                                <div className={styles.button2} style={{ backgroundColor: RED }}
+                                    id={styles.buttonBottom}
+                                    onClick={() => {
+                                        if (!this.state.loading)
+                                            this.setState({ addVehicle: false, errorMessage: '' });
+                                    }}>
                                     <p className={styles.buttonText1}>Cancel</p>
                                 </div>
-                                <div className={styles.button2} style={{ backgroundColor: BLUE }} id={styles.buttonBottom}>
-                                    <p className={styles.buttonText1}>Add vehicle</p>
+                                <div className={styles.button2} style={{ backgroundColor: BLUE }} id={styles.buttonBottom}
+                                    onClick={() => {
+                                        if (!this.state.loading) {
+                                            if (this.state.color == '' || this.state.model == '' || this.state.make == '' || this.state.year == '' || this.state.plateNumber == '')
+                                                this.setState({ errorMessage: 'Please fill all fields' });
+                                            else if (this.state.inspection == '' || this.state.registration == '' || this.state.insurance == '')
+                                                this.setState({ errorMessage: 'Please upload all documents needed' });
+                                            else if (this.state.vehicleImage == '')
+                                                this.setState({ errorMessage: 'Please upload an image of your vehicle. It does not have to fit perfectly in frame.' });
+                                            else
+                                                this.handleFileUpload();
+                                        }
+                                    }}>
+                                    {this.state.loading ?
+                                        <Loader
+                                            type="TailSpin"
+                                            color={WHITE}
+                                            height={'20px'}
+                                            width={'20px'}
+                                        /> :
+                                        <p className={styles.buttonText1}>Add vehicle</p>}
                                 </div>
                             </div>
                             <div style={{ height: '150px', width: '10px' }}></div>
@@ -1136,7 +1613,7 @@ class DriverDashBoardSummary extends React.Component {
                         <p className={styles.title} style={{ color: BLACK, width: 'initial', }}>Overall history</p>
                         <p className={styles.driverDashboard_BOXTITLE} style={{ margin: '0px', textAlign: 'center', marginLeft: '20px' }}><span id={styles.driverDashboard_HALFDATE}>{`Joined 09/2019`}</span><span id={styles.driverDashboard_FULLDATE}>{`Joined September 2019`}</span></p>
                     </div> :
-                    <p className={styles.title} style={{ color: BLACK }}>Weekly history</p>}
+                    <p className={styles.title} style={{ color: BLACK }}>Monthly history</p>}
 
                 <div className={styles.driverDashboardCont}>
                     <div className={styles.driverDashboard_TE}>
@@ -1184,25 +1661,36 @@ class DriverDashBoardSummary extends React.Component {
     }
 };
 class Vehicle extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            verified: true,
+            verified: this.props.data.verifyStatus == 'VERIFIED',
+            url: null,
         }
     }
+    componentDidMount() {
+        this.setImage(this.props.data.displayImage);
+    };
+    setImage = (photoRef) => {
+        firebase.storage().ref(`${photoRef}`).getDownloadURL()
+            .then(result => {
+                this.setState({ url: result })
+            }).catch(error => { console.log(error.message) });
+    };
     render() {
+        const data = this.props.data;
         return (
             <>
                 <div id={styles.tripPanelCont_} style={{ overflow: 'hidden', flexDirection: 'row' }}>
                     <div className={styles.driverVehicle_PIC_CONT}>
-                        <img src="/developmentCar.jpg" className={styles.driverVehicle_PIC} />
+                        <img src={this.state.url} className={styles.driverVehicle_PIC} />
                     </div>
                     <p className={styles.driverVehicle_DESC}>
-                        Color - {'Black'}<br />
-                        Year - {'2017'}<br />
-                        Make - {'Hyundai'}<br />
-                        Model - {'Sonata'}
+                        Color - {data.color}<br />
+                        Year - {data.year}<br />
+                        Make - {data.make}<br />
+                        Model - {data.model}
                     </p>
                     {this.state.verified ?
                         <div id={styles.driverVehicle_VERIFYCONT} style={{ backgroundColor: '#39A2E5' }}>
@@ -1214,7 +1702,7 @@ class Vehicle extends React.Component {
                             <p id={styles.driverVehicle_VERIFYCONTTEXT}>Verifying</p>
                             <BsClockHistory className={styles.settingsVerifyOrNotIcon} style={{ margin: '0px' }} color={WHITE} />
                         </div>}
-                    <p id={styles.driverVehiclePLATENUMBER}>{`HKA8PA-09`}</p>
+                    <p id={styles.driverVehiclePLATENUMBER}>{data.plateNumber}</p>
                 </div>
                 {
                     this.props.lastItem ?//just for padding at the bottom
@@ -1225,7 +1713,6 @@ class Vehicle extends React.Component {
         );
     }
 };
-
 
 export class VehicleConfirmation extends React.Component {
     constructor() {

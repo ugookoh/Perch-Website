@@ -11,7 +11,7 @@ import Truncate from 'react-truncate';
 import Router from 'next/router';
 import Loader from 'react-loader-spinner'
 import { signIn, signUp, signOut } from '../../../functions/functions';
-const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7'];
+const [WHITE] = ['#FFFFFF'];
 
 export default class index extends React.Component {
     constructor() {
@@ -102,6 +102,7 @@ export default class index extends React.Component {
                             <p className={styles.ca}>Wrong account?</p>
                             <a className={styles.caC}
                                 onClick={() => {
+                                    this.setState({ email: '', password: '', displayVerification: false, isFlipped: false });
                                     signOut.call(this);
                                 }}>
                                 <p className={styles.ca_}>Sign out</p>
