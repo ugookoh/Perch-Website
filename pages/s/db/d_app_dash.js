@@ -142,7 +142,7 @@ export default class index extends React.Component {
                                     </> :
                                     <></>
                             }
-                            <a className={styles.link_}><p className={styles.text}>How it works</p></a>
+                            <a className={styles.link_} href='/s/articles/how_perch_works'><p className={styles.text}>How it works</p></a>
                             <a>
                                 <div className={styles.circle} onClick={() => { signOut.call(this, true) }}>
                                     <ImExit color={'#FFFFFF'} className={styles.logOut} />

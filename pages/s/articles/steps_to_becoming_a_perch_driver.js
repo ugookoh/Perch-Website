@@ -64,7 +64,7 @@ export default class index extends React.Component {
                         For the third part, we might contact you for extra documents that we need or we might just validate your driver’s account.
                         That’s how to become a Perch driver!
                      </p>
-                    <a className={styles.button1} style={{ maxWidth: '430px', marginTop: '30px', width: '90%' }}>
+                    <a className={styles.button1} style={{ maxWidth: '430px', marginTop: '30px', width: '90%' }} href='/s/auth/d_si_su'>
                         <p className={styles.buttonText1}>Start your driver application now!</p>
                     </a>
 

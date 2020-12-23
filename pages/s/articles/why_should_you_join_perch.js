@@ -45,8 +45,8 @@ export default class index extends React.Component {
                         <div >
                             <p className={styles.t}>{`Go about your daily commute in a new better way.\nEnter Perch.`}</p>
                             <p className={styles.text}>{`Perch is a new carpooling solution aimed at streamlining commuters journeys by pairing them with the thousands of empty seats in the cars of drivers. You no longer have two options of either hailing a cab or using public transport .With our amazing app, Perch gives you an avenue to solve this by providing you with access to drivers going towards your destination. There are is no need for scheduling or booking beforehand as the booking process is as streamlined as possible, all you need to do is open the app and enter your destination and we pair all drivers currently on that path with you. They then pick you and drop you off at a very close distance to your destination !`}</p>
-                            <a className={styles.button1}>
-                                <p className={styles.buttonText1}>Learn more</p>
+                            <a className={styles.button1} href='/s/articles/how_perch_works'>
+                                <p className={styles.buttonText1}>How does Perch work?</p>
                             </a>
                         </div>
                         <img src="/map1Trip.svg" alt="Perch Carpool" className={styles.map1Trip} />
