@@ -74,7 +74,7 @@ export default class index extends React.Component {
                         The map also provides you with real time updates of the drivers locations.
                         After the map we provided a trip details tab and on scrolling down , you would see the trip breakdown tab which contains full details of your commute.
                         The trip breakdown includes the type of cars that would pick you up, the starting and stopping locations for the drivers ,the time of their arrival and the distance they would carry you.
-                        It is with this distance that the <span className={styles.faqChoice} style={{ fontFamily: 'Gilroy-Semibold' }}>cost of the ride is calculated</span>.
+                        It is with this distance that the <a href='/s/articles/why_should_you_join_perch'><span className={styles.faqChoice} style={{ fontFamily: 'Gilroy-Semibold' }}>cost of the ride is calculated</span></a>.
                         Click on any one of the driver’s tabs in the trip breakdown to see the driver profile of that car.
                     </p>
                     <div className={styles._2screenshot}>

@@ -63,7 +63,7 @@ export default class index extends React.Component {
                         <div>
                             <p className={styles.t}>{`You are already driving with Perch, just make it official`}</p>
                             <p className={styles.text}>{`Driving with Perch is the same thing as driving by yourself ! The only difference is that the empty seats in your car would always be full and you might arrive at your destination a little later than usual, but the passive income you make, simply by filling your empty car seats, overcompensates it. Join Perch now and start enjoying these benefits and many more. `}</p>
-                            <a className={styles.button1}>
+                            <a className={styles.button1} href='/s/articles/steps_to_becoming_a_perch_driver'>
                                 <p className={styles.buttonText1}>Learn more</p>
                             </a>
                         </div>
