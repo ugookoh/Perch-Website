@@ -235,6 +235,10 @@
     cursor: pointer;
 }
 
+#optionDescriptionCont_, #optionIcon_:hover {
+    cursor: default;
+}
+
 .optionDescription {
     margin-left: 10px;
     font-family: 'Gilroy-Medium';

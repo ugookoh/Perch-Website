@@ -45,7 +45,7 @@
     margin-top: 12px;
 }
 
-.copy, .driverFAQCont, .driverVehicle_UPLOADCONT, .driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL, #driver_APP_TOP_RADIO_CONT, #driver_APP_TOP_RADIO_CONT_:hover {
+.copy, .driverFAQCont, .driverVehicle_UPLOADCONT, .driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL, #driver_APP_TOP_RADIO_CONT, #driver_APP_TOP_RADIO_CONT_, .uploadDocumentIconCont:hover {
     cursor: pointer;
 }
 
@@ -106,7 +106,7 @@
     cursor: pointer;
 }
 
-.downloadApp:active, .driverFAQCont:active, .driverVehicle_UPLOADCONT:active, .driver_ADD_VEHICLE_IMGUPLOAD:active, .driver_ADD_VEHICLE_IMG_GL:active, #driver_APP_TOP_RADIO_CONT:active, #driver_APP_TOP_RADIO_CONT_:active, .previousMessageSum:active {
+.downloadApp:active, .driverFAQCont:active, .driverVehicle_UPLOADCONT:active, .driver_ADD_VEHICLE_IMGUPLOAD:active, .driver_ADD_VEHICLE_IMG_GL:active, #driver_APP_TOP_RADIO_CONT:active, #driver_APP_TOP_RADIO_CONT_:active, .previousMessageSum:active, .uploadDocumentIconCont:active {
     opacity: 0.7;
 }
 

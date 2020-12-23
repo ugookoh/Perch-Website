@@ -67,10 +67,13 @@ export default class index extends React.Component {
                         >
                             <option value="unselected">(--Select a topic--)</option>
                             <option value="Give feedback about our services">Give feedback about our services</option>
+                            <option value="Help with driver application">Give feedback about our services</option>
                             <option value="Missing item">Missing item</option>
                             <option value="Change your name">Change your name</option>
                             <option value="Report a driver">Report a driver</option>
+                            <option value="Report a driver">Report a rider</option>
                             <option value="Work with us">Work with us</option>
+                            <option value="Report a bug">Report a rider</option>
                             <option value="Other">Other</option>
                         </select>
 

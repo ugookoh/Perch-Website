@@ -14,11 +14,11 @@ import { GiClick } from 'react-icons/gi';
 import Loader from 'react-loader-spinner';
 import DatePicker from "react-datepicker";
 import firebase from 'firebase';
-import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght,makeid } from '../../../functions/functions'
+import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght, makeid } from '../../../functions/functions'
 import axios from 'axios'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
-const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE, PURPLE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7', '#A031AF'];
+const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE, PURPLE, YELLOW] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7', '#A031AF', '#F0E23D'];
 const M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 
@@ -484,6 +484,7 @@ export class ContactUs extends React.Component {
                                             <option value="Work with us">Work with us</option>
                                         </>
                                 }
+                                <option value="Report a bug">Report a rider</option>
                                 <option value="Other">Other</option>
                             </select>
 
@@ -1291,8 +1292,8 @@ export class DriverVehicles extends React.Component {
     };
 
     handleFileUpload() {
-        this.setState({ loading: true }, () => {
-            const randomID=makeid(6);
+        this.setState({ loading: true, errorMessage: '' }, () => {
+            const randomID = makeid(6);
             firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/registeration`).put(this.state.registration).catch(error => { console.log(error.message) });
             firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/insurance`).put(this.state.insurance).catch(error => { console.log(error.message) });
             firebase.storage().ref(`driverAddVehicleApplication/${this.state.userDetails.userID}/inspection`).put(this.state.inspection).catch(error => { console.log(error.message) });
@@ -1307,8 +1308,8 @@ export class DriverVehicles extends React.Component {
                     color: this.state.color,
                     year: this.state.year,
                     plateNumber: this.state.plateNumber.toUpperCase(),
-                    maxSeatNumber:3,
-                    displayImage:`vehicles/${this.state.userDetails.userID}/${randomID}`,
+                    maxSeatNumber: 3,
+                    displayImage: `vehicles/${this.state.userDetails.userID}/${randomID}`,
                 },
             })
                 .then(() => {
@@ -1407,22 +1408,50 @@ export class DriverVehicles extends React.Component {
                                         <input type='file'
                                             ref={(ref) => this.vehicleRegistrationRef = ref}
                                             className={styles.driverVehicle_INPUT}
-                                            onChange={event => { this.setState({ registration: event.target.files[0] }) }} />
+                                            onChange={event => {
+                                                if (event.target.files.length != 0) {
+                                                    if (((event.target.files[0].size / 1024) / 1024) > 15)
+                                                        this.setState({ errorMessage: 'File size is too large. A maximum of 15 megabytes is permitted for uploads' })
+                                                    else
+                                                        this.setState({ registration: event.target.files[0] })
+                                                }
+                                            }} />
 
                                         <input type='file'
                                             ref={(ref) => this.vehicleInsuranceRef = ref}
                                             className={styles.driverVehicle_INPUT}
-                                            onChange={event => { this.setState({ insurance: event.target.files[0] }) }} />
+                                            onChange={event => {
+                                                if (event.target.files.length != 0) {
+                                                    if (((event.target.files[0].size / 1024) / 1024) > 15)
+                                                        this.setState({ errorMessage: 'File size is too large. A maximum of 15 megabytes is permitted for uploads' })
+                                                    else
+                                                        this.setState({ insurance: event.target.files[0] })
+                                                }
+                                            }} />
 
                                         <input type='file'
                                             ref={(ref) => this.vehicleInspectionRef = ref}
                                             className={styles.driverVehicle_INPUT}
-                                            onChange={event => { this.setState({ inspection: event.target.files[0] }) }} />
+                                            onChange={event => {
+                                                if (event.target.files.length != 0) {
+                                                    if (((event.target.files[0].size / 1024) / 1024) > 15)
+                                                        this.setState({ errorMessage: 'File size is too large. A maximum of 15 megabytes is permitted for uploads' })
+                                                    else
+                                                        this.setState({ inspection: event.target.files[0] })
+                                                }
+                                            }} />
 
                                         <input type='file'
                                             ref={(ref) => this.vehicleImage = ref}
                                             className={styles.driverVehicle_INPUT}
-                                            onChange={event => { this.setState({ vehicleImage: event.target.files[0], vehicleImagePreview: URL.createObjectURL(event.target.files[0]) }) }} />
+                                            onChange={event => {
+                                                if (event.target.files.length != 0) {
+                                                    if (((event.target.files[0].size / 1024) / 1024) > 15)
+                                                        this.setState({ errorMessage: 'File size is too large. A maximum of 15 megabytes is permitted for uploads' })
+                                                    else
+                                                        this.setState({ vehicleImage: event.target.files[0], vehicleImagePreview: URL.createObjectURL(event.target.files[0]) })
+                                                }
+                                            }} />
 
                                         <div
                                             className={styles.driverVehicle_UPLOADCONT} id={styles.driverVehicle_UPLOADCONT_}
@@ -1722,10 +1751,40 @@ export class VehicleConfirmation extends React.Component {
             s1: false,
             s2: false,
             s3: false,
+            errorMessage: '',
+            city: '',
+            loading1: false,
+            loading2: false,
+            cityVerified: false,
         };
     };
     componentDidMount() {
     };
+    nextStage = () => {
+        this.setState({ loading2: true, errorMessage: '' }, () => {
+            firebase.database().ref(`driverApplications/${this.props.userID}`).update({
+                stage: 'two',
+                city: this.capitalizeFirstLetter(this.state.city.toLowerCase()),
+            })
+                .then(() => { this.props.nextStage('two') })
+                .catch(error => { console.log(error.message) });
+        });
+    };
+    verifyCity = () => {
+        if (!this.state.cityVerified)
+            this.setState({ loading1: true }, () => {
+                firebase.database().ref(`cities/${this.capitalizeFirstLetter(this.state.city.toLowerCase())}`).once('value', snapshot => {
+                    if (snapshot.val()) {
+                        this.setState({ cityVerified: true, loading1: false, errorMessage: '' })
+                    }
+                    else
+                        this.setState({ loading1: false, errorMessage: 'Sadly Perch does not yet operate in your city. When we get there we would let you know. For further information please contact us.' })
+                }).catch(error => { console.log(erroe.message) })
+            })
+    };
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
     render() {
         return (
             <div className={styles.cont}>
@@ -1794,21 +1853,62 @@ export class VehicleConfirmation extends React.Component {
                     </div>
 
                     <p className={styles.text} style={{ color: GREY, marginTop: '20px' }}>
-                        Enter your city to see if Perch is currently operating there.
+                        Enter your city to see if Perch is currently operating there. Please spell it out correctly.
                     </p>
                     <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px', marginBottom: '30px' }} >
-                        <input type="text" placeholder="Enter your city" className={styles.inputPaymentPanel} style={{ width: '150px', margin: '0px', fontSize: '90%', border: '1px solid rgba(149, 154, 172, 0.5)' }} />
-                        <div className={styles.button2} style={{ backgroundColor: GREEN, width: '80px', margin: '0px', marginLeft: '10px' }} id={styles.buttonBottom}>
-                            <p className={styles.buttonText1}>Verify</p>
+                        <input type="text"
+                            placeholder="Enter your city"
+                            className={styles.inputPaymentPanel}
+                            style={{ width: '150px', margin: '0px', fontSize: '90%', border: '1px solid rgba(149, 154, 172, 0.5)' }}
+                            value={this.state.city}
+                            onChange={event => {
+                                this.setState({ city: event.target.value });
+                                if (this.state.cityVerified)
+                                    this.setState({ cityVerified: false })
+                            }} />
+                        <div className={styles.button2}
+                            style={{ backgroundColor: GREEN, width: '80px', margin: '0px', marginLeft: '10px' }}
+                            id={styles.buttonBottom}
+                            onClick={() => {
+                                if (!this.state.loading1)
+                                    this.verifyCity();
+                            }}>
+                            {this.state.loading1 ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1}>
+                                    {this.state.cityVerified ? 'Verified' : 'Verify'}
+                                </p>
+                            }
                         </div>
                     </div>
+                    <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
                 </div>
                 <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: '150px' }}>
-                    <a className={styles.button1} id={styles.sendMessageContactUS} >
-                        <p className={styles.buttonText1}>Confirm</p>
+                    <a className={styles.button1} id={styles.sendMessageContactUS} onClick={() => {
+                        if (!this.state.loading2) {
+                            if (!this.state.s1 || !this.state.s2 || !this.state.s3)
+                                this.setState({ errorMessage: 'Please tick out all the Perch car requirements if your vehicle meets them.' });
+                            else if (!this.state.cityVerified)
+                                this.setState({ errorMessage: 'Please verify your city.' });
+                            else
+                                this.nextStage();
+                        }
+                    }}>
+                        {
+                            this.state.loading2 ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1}>Confirm</p>}
                     </a>
                     <p className={styles.contactUsLasttext}>
-                        Having issues? <span id={styles.driver_APP_CU1}>Contact Us</span>.
+                        Having issues? <a href='/contact_us'><span id={styles.driver_APP_CU1}>Contact Us</span></a>.
                     </p>
                 </div>
                 <div style={{ height: '100px', width: '20px', backgroundColor: 'transparent' }}></div>
@@ -1818,17 +1918,102 @@ export class VehicleConfirmation extends React.Component {
     }
 };
 export class UploadDocuments extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             uploadDocs: false,
-            s: [true],
+            userID: this.props.userID,
+            s: [//ORDER IS IMPORTANT FOR SERVER
+                false, // "Driver's licence",
+                false, // "Proof of work eligibility",
+                false, // "EPS background check",
+                false, // "Vehicle insurance",
+                false, // "Vehicle registration",
+                false, // "Vehicle inspection",
+            ],
+            docList: [
+                "Driver's licence",
+                "Proof of work eligibility",
+                "EPS background check",
+                "Vehicle insurance",
+                "Vehicle registration",
+                "Vehicle inspection",
+            ],
+            docID: [
+                "driversLicence",
+                "proofOfWorkEligibility",
+                "epsBackgroundCheck",
+                "vehicleInsurance",
+                "vehicleRegistration",
+                "vehicleInspection",
+            ],
+            docNames: [
+                false, // "Driver's licence",
+                false, // "Proof of work eligibility",
+                false, // "EPS background check",
+                false, // "Vehicle insurance",
+                false, // "Vehicle registration",
+                false, // "Vehicle inspection",
+            ],
+            selectedIndex: 0,
+            loading: false,
+            errorMessage: ''
         };
     };
     componentDidMount() {
+        firebase.database().ref(`driverApplications/${this.state.userID}/documentsSubmitted`).once('value', snapshot => {
+            if (snapshot.val()) {
+                this.setState({ s: JSON.parse(snapshot.val()), docNames: JSON.parse(snapshot.val()) });
+            };
+        }).catch(error => { console.log(error.message) });
     };
+
+    submitDoc = () => {
+        firebase.storage().ref(`driverApplication/${this.state.userID}/${this.state.docID[this.state.selectedIndex]}`)
+            .put(this.state.s[this.state.selectedIndex])
+            .then(() => {
+                firebase.database().ref(`driverApplications/${this.state.userID}`).update({
+                    documentsSubmitted: JSON.stringify(this.state.docNames),
+                })
+                    .then(() => { this.setState({ loading: false }) })
+                    .catch(error => {
+                        console.log(error.message);
+                        this.setState({ loading: false });
+                    })
+            })
+            .catch(error => {
+                console.log(error.message);
+                this.setState({ loading: false });
+            });
+    }
+    nextStage = () => {
+        firebase.database().ref(`driverApplications/${this.state.userID}`).update({
+            stage: 'three',
+            progress: JSON.stringify(['done', 'done', 'ongoing', 'undone', 'undone']),
+        })
+            .then(() => {
+                firebase.database().ref(`completedDriverApplications`).update({
+                    [this.state.userID]: 'UNPROCESSED',
+                }).catch(error => { console.log(error.message) })
+            })
+            .then(() => { this.props.nextStage('three'); })
+            .catch(error => { console.log(error.message) })
+
+    }
     render() {
+        let requirements = [];
+        for (let i = 0; i < this.state.docList.length; i++)
+            requirements.push(
+                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}
+                    onClick={() => { this.setState({ uploadDocs: true, selectedIndex: i, errorMessage: '' }) }}>
+                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>{this.state.docList[i]}</p>
+                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[i] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
+                        {this.state.s[i] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
+                    </div>
+                </div>
+            );
+
         return (
             <div className={styles.cont}>
                 <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', }}>
@@ -1845,7 +2030,7 @@ export class UploadDocuments extends React.Component {
                     {
                         this.state.uploadDocs ?
                             <>
-                                <p className={styles.title} style={{ color: BLACK }}>{`Upload your driver's license`}</p>
+                                <p className={styles.title} style={{ color: BLACK }}>{`Upload your ${this.state.docList[this.state.selectedIndex]}`}</p>
                                 <p className={styles.text} style={{ color: GREY }}>
                                     Documents can be submitted as a scanned pdf or a photograph of the document.<br />
                                     Pictures should be :<br />
@@ -1853,10 +2038,22 @@ export class UploadDocuments extends React.Component {
                                     • Show details clearly
                                 </p>
 
-                                <div className={styles.uploadDocumentIconCont}>
-                                    <img src='/uploadDocumentIcon.svg' className={styles.uploadDocumentPIC} />
-                                </div>
-
+                                {this.state.s[this.state.selectedIndex] ?
+                                    <div
+                                        className={styles.uploadDocumentIconCont}
+                                        onClick={() => { this.document.click() }}
+                                        style={{ flexDirection: 'column' }}>
+                                        <img src="/documentsSubmitted.svg" className={styles.uploadDocumentPIC} style={{ height: '70%', marginTop: '10px' }} />
+                                        <p className={styles.text}
+                                            style={{ width: 'initial', fontFamily: 'Gilroy-Semibold', fontSize: '95%', color: GREY, maxWidth: '90%' }}>
+                                            {this.state.s[this.state.selectedIndex].name}
+                                        </p>
+                                    </div> :
+                                    <div className={styles.uploadDocumentIconCont} onClick={() => { this.document.click() }}>
+                                        <img src='/uploadDocumentIcon.svg' className={styles.uploadDocumentPIC} />
+                                    </div>
+                                }
+                                <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
                             </>
                             :
                             <>
@@ -1864,73 +2061,82 @@ export class UploadDocuments extends React.Component {
                                 <p className={styles.text} style={{ color: GREY }}>
                                     All that is left to do is to submit the required documents and you’re on your way to becoming a Perch driver.
                                 </p>
-
                                 <p className={styles.title} style={{ color: GREY, fontSize: '95%', marginTop: '20px' }}>{`Required Documents`}</p>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}
-                                    onClick={() => { this.setState({ uploadDocs: true }) }}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
-
-                                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_}>
-                                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>Requirement</p>
-                                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.s[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                                        {this.state.s[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                                    </div>
-                                </div>
+                                {requirements}
+                                <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
                             </>
                     }
-
                 </div>
+                <input type='file'
+                    ref={(ref) => this.document = ref}
+                    className={styles.driverVehicle_INPUT}
+                    onChange={event => {
+                        if (event.target.files.length != 0) {
+                            let files = this.state.s;
+                            let docNames = this.state.docNames;
+                            const filesize = ((event.target.files[0].size / 1024) / 1024).toFixed(4); // MB
+                            if (filesize > 15)
+                                this.setState({ errorMessage: 'File is too large. A maximum of 15 megabytes is permitted for uploads' });
+                            else {
+                                files[this.state.selectedIndex] = event.target.files[0];
+                                docNames[this.state.selectedIndex] = { name: event.target.files[0].name };
+                                this.setState({ s: files, docNames: docNames, loading: true }, () => { this.submitDoc(); });
+                            }
+                        }
+                    }} />
                 <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: '150px' }}>
                     {this.state.uploadDocs ?
                         <div className={styles.driverFAQ_PICDESC} style={{ width: '100%', justifyContent: 'space-between' }}>
                             <a className={styles.button1} id={styles.sendMessageContactUS}
-                                onClick={() => { this.setState({ uploadDocs: false }) }}
+                                onClick={() => {
+                                    if (!this.state.loading)
+                                        this.setState({ uploadDocs: false, errorMessage: '' })
+                                }}
                                 style={{ backgroundColor: RED, width: '48%' }}>
                                 <p className={styles.buttonText1}>Cancel</p>
                             </a>
-                            <a className={styles.button1} id={styles.sendMessageContactUS} style={{ width: '48%' }}>
-                                <p className={styles.buttonText1}>Upload</p>
+
+                            <a className={styles.button1}
+                                id={styles.sendMessageContactUS}
+                                style={{ width: '48%' }}
+                                onClick={() => {
+                                    if (!this.state.loading) {
+                                        if (this.state.s[this.state.selectedIndex])
+                                            this.setState({ uploadDocs: false, errorMessage: '' })
+                                        else
+                                            this.document.click();
+                                    }
+                                }}>
+                                {this.state.loading ?
+                                    <Loader
+                                        type="TailSpin"
+                                        color={WHITE}
+                                        height={'20px'}
+                                        width={'20px'} /> :
+                                    <p className={styles.buttonText1}>{this.state.s[this.state.selectedIndex] ? 'Done' : 'Upload'}</p>
+                                }
                             </a>
                         </div>
                         :
-                        <a className={styles.button1} id={styles.sendMessageContactUS} >
-                            <p className={styles.buttonText1}>Confirm</p>
+                        <a className={styles.button1} id={styles.sendMessageContactUS}
+                            onClick={() => {
+                                if (this.state.s.includes(false))
+                                    this.setState({ errorMessage: 'Please upload all the required documents' });
+                                else
+                                    this.setState({ loading: true }, () => {
+                                        this.nextStage();
+                                    })
+                            }}>
+                            {this.state.loading ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1}>Confirm</p>}
                         </a>}
                     <p className={styles.contactUsLasttext}>
-                        Having issues? <span id={styles.driver_APP_CU1}>Contact Us</span>.
+                        Having issues? <a href='/contact_us'><span id={styles.driver_APP_CU1}>Contact Us</span></a>.
                     </p>
                 </div>
                 <div style={{ height: '100px', width: '20px', backgroundColor: 'transparent' }}></div>
@@ -1940,16 +2146,50 @@ export class UploadDocuments extends React.Component {
     }
 };
 export class ApplicationStatus extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            completed: [true],
+            userID: this.props.userID,
+            completed: [
+                'done',
+                'done',
+                'ongoing',
+                'undone',
+                'undone',
+            ],
+            steps: [
+                'Submit Application',
+                'Upload Documents',
+                'Verifying submitted documents',
+                'Final Assessment / Interview',
+                'Welcome to Perch!'
+            ],
         };
     };
     componentDidMount() {
+        firebase.database().ref(`driverApplications/${this.state.userID}/progress`).once('value', (snapshot => {
+            this.setState({ completed: JSON.parse(snapshot.val()) });
+        })).catch(error => { console.log(error.message) });
     };
     render() {
+        let steps = [];
+        for (let i = 0; i < this.state.steps.length; i++)
+            steps.push(
+                <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
+                    <div className={styles.driver_APP_RADIO}
+                        style={{
+                            backgroundColor: this.state.completed[i] == 'done' ?
+                                GREEN :
+                                this.state.completed[i] == 'ongoing' ?
+                                    'rgba(78, 184, 72,0.5)' :
+                                    `rgb(149, 154, 172,0.5)`
+                        }}>
+                        {this.state.completed[i] == 'done' ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
+                    </div>
+                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>{this.state.steps[i]}</p>
+                </div>
+            )
         return (
             <div className={styles.cont}>
 
@@ -1970,50 +2210,16 @@ export class ApplicationStatus extends React.Component {
                     <p className={styles.text} style={{ color: GREY }}>
                         We are currently working on your profile. Updates would be sent via mail so no need to worry about missing them.
                     </p>
-
-                    <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
-                        <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.completed[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                            {this.state.completed[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                        </div>
-                        <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>Submit Application</p>
-                    </div>
-
-                    <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
-                        <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.completed[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                            {this.state.completed[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                        </div>
-                        <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>Upload Documents</p>
-                    </div>
-
-                    <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
-                        <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.completed[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                            {this.state.completed[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                        </div>
-                        <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>We are verifying your documents</p>
-                    </div>
-
-                    <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
-                        <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.completed[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                            {this.state.completed[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                        </div>
-                        <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>Final Assessment</p>
-                    </div>
-
-                    <div className={styles.driverFAQ_PICDESC} style={{ width: '90%', marginTop: '10px' }}>
-                        <div className={styles.driver_APP_RADIO} style={{ backgroundColor: this.state.completed[0] ? GREEN : `rgba(78, 184, 72,0.5)` }}>
-                            {this.state.completed[0] ? <AiOutlineCheck color={WHITE} size={'15px'} /> : <></>}
-                        </div>
-                        <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px' }}>You can start driving</p>
-                    </div>
-
+                    {steps}
                 </div>
 
                 <div className={styles.contactUsLC} style={{ marginTop: '15px', marginBottom: '150px' }}>
                     <p className={styles.contactUsLasttext}>
-                        Having issues? <span id={styles.driver_APP_CU1}>Contact Us</span>.
+                        Having issues? <a href='/contact_us'><span id={styles.driver_APP_CU1}>Contact Us</span></a>.
                     </p>
                 </div>
-                <div style={{ height: '100px', width: '20px', backgroundColor: 'transparent' }}></div>            </div>
+                <div style={{ height: '100px', width: '20px', backgroundColor: 'transparent' }}></div>
+            </div>
         )
 
     }
