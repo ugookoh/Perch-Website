@@ -18,6 +18,7 @@ export default class index extends React.Component {
             optionCode: 'db',
             width: 0, height: 0,
             loggedIn: 'NULL',
+            url:null,
         }
     };
     componentDidMount() {
