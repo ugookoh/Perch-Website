@@ -2,7 +2,7 @@ import styles from './layout.module.css';
 import React, { Component } from 'react';
 import Router from 'next/router';
 import Head from 'next/head';
-import { Logo } from '../../images/vectors';
+import { Logo } from '../../../functions/images/vectors';
 import { IoIosMenu } from "react-icons/io";
 import { Animated } from "react-animated-css";
 import { ImExit } from "react-icons/im";

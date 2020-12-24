@@ -14,7 +14,7 @@ import { GiClick } from 'react-icons/gi';
 import Loader from 'react-loader-spinner';
 import DatePicker from "react-datepicker";
 import firebase from 'firebase';
-import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght, makeid } from '../../../functions/functions'
+import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght, makeid } from '../functions'
 import axios from 'axios'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
