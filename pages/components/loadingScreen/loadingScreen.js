@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from './layout.module.css';
 import React, { Component, useEffect, useState } from 'react';
-import { Logo } from '../../images/vectors';
+import { Logo } from '../../../functions/images/vectors';
 
 export default class index extends React.Component {
     constructor() {

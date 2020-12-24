@@ -2,7 +2,7 @@ import styles from './layout.module.css';
 import React, { Component } from 'react';
 import Router from 'next/router';
 import Head from 'next/head';
-import { Logo, Footer } from '../../images/vectors';
+import { Logo, Footer } from '../../../functions/images/vectors';
 
 export default class index extends React.Component {
     constructor() {
