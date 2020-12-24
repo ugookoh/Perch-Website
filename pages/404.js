@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../styles/error_layout.module.css';
 
-import { Logo } from './images/vectors';
+import { Logo } from '../functions/images/vectors';
 import React from 'react';
 import Router from 'next/router';
 

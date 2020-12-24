@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styles from './layout.module.css';
 import Head from 'next/head';
 import { ImExit } from "react-icons/im";
-import { Logo, DashboardIcons } from '../../images/vectors';
+import { Logo, DashboardIcons } from '../../../functions/images/vectors';
 import Router from 'next/router';
 import { UserDashBoard, PerchWallet, ContactUs, TripHistory, Settings } from '../../../functions/panels/panels';
 import firebase from 'firebase';

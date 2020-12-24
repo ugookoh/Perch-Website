@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './layout.module.css';
 import Head from 'next/head';
-import { Logo } from '../../images/vectors';
+import { Logo } from '../../../functions/images/vectors';
 import { FaEnvelope } from 'react-icons/fa';
 import { BsFillLockFill, BsEye, BsEyeSlash } from 'react-icons/bs';
 import { CgKeyboard } from 'react-icons/cg';
