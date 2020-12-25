@@ -4,9 +4,9 @@
   "private": true,
   "homepage": "http://perchrides.com",
   "scripts": {
-    "dev": "next",
+    "dev": "node server.js",
     "build": "next build && next export",
-    "start": "cross-env server.js"
+    "start": "cross-env NODE_ENV=production  NODE_ENV=production node server.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
