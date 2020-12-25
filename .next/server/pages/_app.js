@@ -782,7 +782,28 @@ class index extends react__WEBPACK_IMPORTED_MODULE_3___default.a.Component {
           content: "width=device-width, initial-scale=1"
         }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("link", {
           rel: "icon",
-          href: "../../favicon.ico"
+          type: "image/png",
+          sizes: "32x32",
+          href: "/favicon-32x32.png"
+        }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("link", {
+          rel: "icon",
+          type: "image/png",
+          sizes: "16x16",
+          href: "/favicon-16x16.png"
+        }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("link", {
+          rel: "apple-touch-icon",
+          sizes: "180x180",
+          href: "/apple-touch-icon.png"
+        }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("link", {
+          rel: "manifest",
+          href: "/site.webmanifest"
+        }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("link", {
+          rel: "mask-icon",
+          href: "/safari-pinned-tab.svg",
+          color: "#5bbad5"
+        }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("meta", {
+          name: "theme-color",
+          content: "#ffffff"
         })]
       }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_0__["jsx"])("div", {
         className: _layout_module_css__WEBPACK_IMPORTED_MODULE_2___default.a.logo,

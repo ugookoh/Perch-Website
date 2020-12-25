@@ -22,7 +22,12 @@ export default class index extends React.Component {
                 <Head>
                     <title>Joint Rides | Perch</title>
                     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
-                    <link rel="icon" href="/favicon.ico" />
+                    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+                    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+                    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+                    <link rel="manifest" href="/site.webmanifest" />
+                    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+                    <meta name="theme-color" content="#ffffff" />
                     <html lang="en"></html>
                 </Head>
                 <Header loggedIn={this.state.loggedIn} />
@@ -56,7 +61,7 @@ export default class index extends React.Component {
                         All scheduled trips are also one step trips
                     </p>
                     <img src={`/map1Trip.svg`} alt={'Perch Carpool'} className={styles.map1Trip} />
-                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px',width:'70%',fontSize:'smaller' }}>
+                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px', width: '70%', fontSize: 'smaller' }}>
                         A one-step trip takes you directly to your destination with one vehicle
                     </p>
 
@@ -68,7 +73,7 @@ export default class index extends React.Component {
                          You don’t have to worry about not arriving on time as all the arrival times of the cars have been calculated.
                         </p>
                     <img src={`/map2Trip.svg`} alt={'Perch Carpool'} className={styles.map1Trip} />
-                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px',width:'70%',fontSize:'smaller' }}>
+                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px', width: '70%', fontSize: 'smaller' }}>
                         A two-step trip involves two drivers taking you to your direction
                     </p>
                     <p className={styles.textBox}>
@@ -79,7 +84,7 @@ export default class index extends React.Component {
                         You don’t have to worry about not arriving on time as all the arrival times of the cars have been calculated.
                         </p>
                     <img src={`/map3Trip.svg`} alt={'Perch Carpool'} className={styles.map1Trip} />
-                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px',width:'70%',fontSize:'smaller' }}>
+                    <p style={{ maxWidth: '1486px', textAlign: 'center', margin: '0px', width: '70%', fontSize: 'smaller' }}>
                         A three-step trip involves three drivers taking you to your direction
                     </p>
 
