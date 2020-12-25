@@ -4,12 +4,14 @@
   "private": true,
   "homepage": "http://perchrides.com",
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build && next export",
-    "start": "next start -p 80"
+    "start": "cross-env NODE_ENV=production  NODE_ENV=production node server.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
+    "cross-env": "^7.0.3",
+    "express": "^4.17.1",
     "firebase": "^8.0.2",
     "next": "9.5.5",
     "next-fonts": "^1.4.0",
