@@ -39,11 +39,19 @@ export default class index extends React.Component {
             showPassword2: false,
 
             loading: false,
+            width: '100vw', height: '100vh',
         };
     };
     componentDidMount() {
-
+        window.addEventListener('resize', this.updateWindowDimensions);
     };
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+
+    updateWindowDimensions = () => {
+        this.setState({ width: window.innerWidth, height: window.innerHeight });
+    }
     render() {
         return (
             <div className={styles.container}>
@@ -55,11 +63,11 @@ export default class index extends React.Component {
                 </Head>
 
                 {this.state.isFlipped ?
-                    <img src="/d_su.svg" alt="Sign in" className={styles.img} /> :
-                    <img src="/d_si.svg" alt="Log in" className={styles.img} />}
+                    <img src="/d_su.svg" alt="Sign in" className={styles.img} style={{ height: this.state.height, width: this.state.width }}/> :
+                    <img src="/d_si.svg" alt="Log in" className={styles.img} style={{ height: this.state.height, width: this.state.width }} />}
                 {
                     this.state.displayVerification ?
-                        <div className={styles.card}///SIGN IN
+                        <div className={styles.card} ///SIGN IN
                         >
                             <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
                             <p style={{ marginBottom: '10px' }} className={styles.title}>Contact Verification</p>
@@ -113,8 +121,9 @@ export default class index extends React.Component {
                             </div>
                         </div>
                         :
-                        <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal" cardZIndex={2}>
+                        <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal" cardZIndex={2} containerStyle={{ marginRight: '5vw' }}>
                             <div className={styles.card}///SIGN IN
+                                style={{ marginRight: '0px' }}
                             >
                                 <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
                                 <p className={styles.title}>Sign In</p>
@@ -179,6 +188,7 @@ export default class index extends React.Component {
                             </div>
 
                             <div className={styles.card}//SIGN UP
+                                style={{ marginRight: '0px' }}
                             >
                                 <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
                                 <p className={styles.title}>Sign up</p>
