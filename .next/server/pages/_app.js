@@ -174,6 +174,7 @@ class _app_MyApp extends external_react_default.a.Component {
 
 }
 
+;
 /* harmony default export */ var _app = __webpack_exports__["default"] = (_app_MyApp);
 
 /***/ }),
