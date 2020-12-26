@@ -13,11 +13,9 @@ export default class index extends React.Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
     }
-
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
-
     updateWindowDimensions = () => {
         this.setState({ width: window.innerWidth, height: window.innerHeight });
     }

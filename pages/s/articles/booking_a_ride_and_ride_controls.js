@@ -14,7 +14,6 @@ export default class index extends React.Component {
         };
     };
     componentDidMount() {
-
     };
     render() {
         return (
