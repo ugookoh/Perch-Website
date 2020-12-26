@@ -6,11 +6,12 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build && next export",
-    "start": "cross-env NODE_ENV=production  NODE_ENV=production node server.js"
+    "start": "cross-env NODE_ENV=production PORT=8080 node server.js"
   },
   "dependencies": {
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
+    "child_process": "^1.0.2",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "firebase": "^8.0.2",
