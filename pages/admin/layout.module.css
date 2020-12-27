@@ -1,0 +1,363 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+}
+
+.textRow1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-right: 30px;
+}
+
+.dp {
+    width: 38px;
+    height: 38px;
+    border-radius: 38px;
+    border: 2px solid #959AAC;
+    margin-right: 5px;
+}
+
+.body {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: calc(100vh - 84px);
+    padding: 0px;
+}
+
+.couple {
+    display: flex;
+    flex-direction: row;
+    overflow-y: auto;
+}
+
+.couple::-webkit-scrollbar {
+    width: 0px;
+    /* Remove scrollbar space */
+    background: transparent;
+    /* Optional: just make scrollbar invisible */
+}
+
+.column, .column_d {
+    display: flex;
+    flex-direction: column;
+    width: 88px;
+    height: 100%;
+    background-color: #4EB848;
+}
+
+.column_d {
+    background-color: #1970A7;
+}
+
+.optionList {
+    height: 100%;
+    width: 210px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.content {
+    background-color: #EEEFF1;
+    display: flex;
+    height: 100%;
+    width: calc(100% - 298px);
+    flex-direction: column;
+    overflow-y: auto;
+    align-items: center;
+    position: relative;
+}
+
+.text {
+    font-family: 'Gilroy-SemiBold';
+    font-size: 18px;
+    margin: 0px;
+    height: 84px;
+    align-items: center;
+    display: flex;
+}
+
+.text_, .text_d {
+    font-family: 'Gilroy-SemiBold';
+    font-size: 18px;
+    margin: 0px;
+    height: 84px;
+    align-items: center;
+    display: flex;
+    color: #4EB848;
+}
+
+.text_d {
+    color: #1970A7;
+}
+
+.text_:hover {
+    cursor: default;
+}
+
+.link_, .link_d {
+    margin-left: 30px;
+}
+
+.link_:hover {
+    color: #4EB848;
+    cursor: pointer;
+}
+
+.link_d:hover {
+    color: #1970A7;
+    cursor: pointer;
+}
+
+.circle, .circle_d {
+    background-color: #4EB848;
+    width: 38px;
+    height: 38px;
+    border-radius: 38px;
+    margin-left: 35px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+.circle_d {
+    background-color: #1970A7;
+}
+
+.circle, .circle_d:hover {
+    cursor: pointer;
+}
+
+.circle_d:active {
+    opacity: 0.5;
+}
+
+.circle:active {
+    opacity: 0.5;
+}
+
+.logOut {
+    height: 25px;
+    width: 20px;
+}
+
+.header {
+    display: flex;
+    width: 100%;
+    height: 84px;
+    align-items: center;
+    flex-direction: row;
+    padding: 0px;
+    justify-content: space-between;
+    background-color: white;
+    overflow: visible;
+}
+
+.logo {
+    height: 63.68px;
+    width: 40.51px;
+    display: inline-block;
+    overflow: visible;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.logoBox, .logoBox_d {
+    width: 88px;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    background-color: #4EB848;
+    display: flex;
+}
+
+.logoBox_d {
+    background-color: #1970A7;
+}
+
+.optionTitle {
+    display: none;
+}
+
+.optionShadowBox {
+    display: flex;
+    flex-direction: row-reverse;
+    width: calc(100% - 88px);
+    height: 100%;
+    align-items: center;
+    background-color: white;
+    z-index: 1;
+    box-shadow: 2px 6px 13px -8px rgba(0, 0, 0, 0.69);
+    -webkit-box-shadow: 2px 6px 13px -8px rgba(0, 0, 0, 0.69);
+    -moz-box-shadow: 2px 6px 13px -8px rgba(0, 0, 0, 0.69);
+}
+
+.optionIcon, .optionIcon_Selected, .optionIcon_d, .optionIcon_Selected_d {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 76px;
+    background-color: #4EB848;
+}
+
+.optionIcon_d {
+    background-color: #1970A7;
+}
+
+.optionIcon_Selected {
+    background-color: #329B2C;
+}
+
+.optionIcon_Selected_d {
+    background-color: #105A89;
+}
+
+.optionDescriptionCont, .optionDescriptionCont_Selected {
+    width: 100%;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+}
+
+.optionDescriptionCont_Selected {
+    background-color: rgba(167, 170, 189, 0.15);
+}
+
+.optionIcon, .optionIcon_Selected, .optionDescriptionCont, .optionDescriptionCont_Selected, .optionIcon_d, .optionIcon_Selected_d:hover {
+    cursor: pointer;
+}
+
+.optionDescription {
+    margin-left: 10px;
+    font-family: 'Gilroy-Medium';
+}
+
+.db {
+    height: 24.26px;
+    width: 24.26px;
+}
+
+.th {
+    height: 20.79px;
+    width: 24.26px;
+}
+
+.pw {
+    height: 20.06px;
+    width: 24.26px;
+}
+
+.cu {
+    height: 27.6px;
+    width: 24.26px;
+}
+
+.ss {
+    height: 24.93px;
+    width: 24.26px;
+}
+
+.tt {
+    width: 24.258px;
+    height: 24.258px;
+}
+
+.vh {
+    width: 29.042px;
+    height: 22.546px;
+}
+
+.tx {
+    width: 24.593px;
+    height: 24.593px;
+}
+
+.pi {
+    width: 24.348px;
+    height: 16.232px;
+}
+
+.one {
+    width: 13px;
+    height: 38px
+}
+
+.two {
+    width: 17px;
+    height: 38px;
+}
+
+.three {
+    width: 18px;
+    height: 38px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .logo {
+        width: 32.27px;
+        height: 50.73px;
+    }
+    /*Tablets (portrait and landscape)*/
+    .text_, .text_d, .link_, .link_d {
+        display: none;
+    }
+    .circle, .circle_d {
+        margin-left: 10px;
+    }
+    .textRow1 {
+        margin-right: 40px;
+    }
+    .header {
+        justify-content: space-between;
+    }
+    .optionTitle {
+        font-family: 'Gilroy-SemiBold';
+        display: initial;
+        font-size: larger;
+        margin-left: 20px;
+    }
+    .optionShadowBox {
+        justify-content: space-between;
+        flex-direction: row;
+    }
+    .content {
+        width: calc(100% - 88px);
+    }
+    .optionList {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .column, .logoBox, .column_d, .logoBox_d {
+        width: 58px;
+    }
+    .optionShadowBox {
+        width: calc(100% - 58px);
+    }
+    .optionIcon, .optionIcon_Selected, .optionIcon_d, .optionIcon_Selected_d {
+        height: 60px;
+    }
+    .content {
+        width: calc(100% - 58px);
+    }
+    .logo {
+        width: 32.27px;
+        height: 50.73px;
+    }
+    .optionTitle {
+        margin-left: 10px;
+    }
+    .textRow1 {
+        margin-right: 20px;
+    }
+}

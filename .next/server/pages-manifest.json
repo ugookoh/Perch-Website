@@ -1,6 +1,8 @@
 {
   "/404": "pages/404.html",
   "/_app": "pages/_app.js",
+  "/admin/dash": "pages/admin/dash.html",
+  "/admin": "pages/admin.html",
   "/api/hello": "pages/api/hello.js",
   "/components/footer/footer": "pages/components/footer/footer.html",
   "/components/header/header": "pages/components/header/header.html",
