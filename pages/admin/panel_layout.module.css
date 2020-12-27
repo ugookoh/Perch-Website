@@ -1,0 +1,1084 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 95%;
+    margin-left: 2.5%;
+    background-color: white;
+    border-radius: 5px;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.cont {
+    width: 100%;
+    align-content: center;
+    overflow: visible;
+}
+
+.title {
+    width: 90%;
+    font-family: 'Gilroy-Semibold';
+    font-size: 110%;
+    margin: 0px;
+}
+
+.text, .text1 {
+    width: 90%;
+    font-size: 100%;
+    line-height: 140%;
+    margin: 0px;
+    margin-top: 10px;
+}
+
+.text1 {
+    width: initial;
+    margin: 0px;
+}
+
+.iC_Cont {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    align-items: center;
+    justify-content: flex-start;
+    margin-top: 12px;
+}
+
+.copy, .driverFAQCont, .driverVehicle_UPLOADCONT, .driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL, #driver_APP_TOP_RADIO_CONT, #driver_APP_TOP_RADIO_CONT_:hover {
+    cursor: pointer;
+}
+
+.copyBox {
+    border: 1px solid #FFFFFF;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row;
+    padding: 9px;
+    align-items: center;
+    justify-content: space-between;
+    height: 30px;
+}
+
+#iC_link {
+    color: white;
+    margin: 0px;
+    margin-right: 10px;
+}
+
+#ud1 {
+    display: flex;
+    flex-direction: row;
+    background-color: #4EB848;
+    margin-top: 20px;
+    justify-content: center;
+    width: 95%;
+}
+
+.ud1 {
+    width: 75%;
+}
+
+.giftBox {
+    width: 20%;
+    height: auto;
+    object-fit: fill;
+    max-height: 115px;
+    margin: 0px;
+}
+
+.downloadCont {
+    width: 100%;
+    max-width: 300px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.downloadApp {
+    height: 40px;
+    width: auto;
+    object-fit: fill;
+}
+
+.downloadApp:hover {
+    cursor: pointer;
+}
+
+.downloadApp:active, .driverFAQCont:active, .driverVehicle_UPLOADCONT:active, .driver_ADD_VEHICLE_IMGUPLOAD:active, .driver_ADD_VEHICLE_IMG_GL:active, #driver_APP_TOP_RADIO_CONT:active, #driver_APP_TOP_RADIO_CONT_:active {
+    opacity: 0.7;
+}
+
+.sharedLinksCont {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sharedLinks {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 15px;
+    position: relative;
+}
+
+.dp1 {
+    border: 1px solid #959AAC;
+    border-radius: 50px;
+    height: 30px;
+    width: 30px;
+    margin-right: 10px;
+    overflow: hidden;
+}
+
+.sharedLine {
+    height: 1px;
+    background-color: #959AAC;
+    width: 90%;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.addedKm {
+    color: #4EB848;
+    font-size: 80%;
+    font-family: 'Gilroy-Semibold';
+    margin: 0px;
+    position: absolute;
+    right: 0px;
+}
+
+.walletImage {
+    width: 80%;
+    height: auto;
+    object-fit: fill;
+    max-width: 150px;
+    margin-top: 20px;
+}
+
+.button1, .button2, .pickPaymentSelected {
+    background-color: #4EB848;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    max-width: 500px;
+    min-height: 50px;
+    width: 95%;
+    margin-top: 25px;
+}
+
+.button2, .pickPaymentSelected {
+    width: 130px;
+    height: 40px;
+    min-height: 40px;
+    margin: 0px;
+    background-color: #F5AC48;
+}
+
+.pickPaymentSelected {
+    width: 35%;
+}
+
+#buttonBottom {
+    width: 48%;
+    max-width: 600px;
+}
+
+.button1, .button2, #addCardPayment, .closeDeletePayment, .changePasswordButton, #resendCodeSettings:hover {
+    cursor: pointer;
+}
+
+#resendCodeSettings:hover {
+    text-decoration: underline;
+}
+
+.button1:active, .button2:active, #addCardPayment:active, .changePasswordButton:active, #resendCodeSettings:active, #tripPanelCalenderCont_AV:active {
+    opacity: 0.6;
+}
+
+.buttonText1 {
+    font-family: 'Gilroy-Semibold';
+    color: white;
+}
+
+.paymentCont {
+    width: 90%;
+    border: 0.5px solid rgba(149, 154, 172, 0.5);
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.paymentItem {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+}
+
+.paymentRow {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.paymentCardNumber {
+    font-family: 'Gilroy-Semibold';
+    margin: 0px;
+    margin-top: 2px;
+}
+
+.visaIcon {
+    height: 23px;
+    width: auto;
+    max-width: 40px;
+    object-fit: fill;
+    margin-right: 10px;
+}
+
+#addCardPayment {
+    margin: 0px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+}
+
+#paymentRowButton {
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 280px;
+}
+
+.closeDeletePayment {
+    width: 15%;
+    height: auto;
+    max-width: 20px;
+}
+
+.enterKilometerDiv {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.inputPaymentPanel {
+    border: 0.5px solid rgba(149, 154, 172, 0.5);
+    border-radius: 5px;
+    padding: 10px;
+    font-family: 'Gilroy-Regular';
+    width: 90%;
+    font-size: initial;
+    margin-top: 15px;
+}
+
+.inputPaymentPanel:focus {
+    outline: none;
+}
+
+.selectTopic {
+    font-family: 'Gilroy-Regular';
+    font-size: 90%;
+    border-radius: 5px;
+    border: 1px solid rgba(112, 112, 112, 0.19);
+    height: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    width: 90%;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url('/dropdownArrow.svg');
+    background-repeat: no-repeat;
+    background-position-x: 97%;
+    background-position-y: 50%;
+    margin-top: 20px;
+}
+
+.selectTopic:focus, .contactUsContent:focus {
+    outline: none;
+}
+
+.contactUsContent {
+    -webkit-appearance: none;
+    margin-top: 15px;
+    font-size: 90%;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid rgba(112, 112, 112, 0.19);
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    font-family: 'Gilroy-Regular';
+    resize: none;
+    width: 90%;
+    height: 180px;
+    padding-top: 15px;
+    margin-bottom: 10px;
+}
+
+.contactUsLC {
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    max-width: 1486px;
+    margin-top: 15px;
+    margin-left: 2.5%;
+}
+
+.contactUsLasttext {
+    font-size: 70%;
+    margin-top: 10px;
+    width: 90%;
+    color: #959AAC;
+    font-family: 'Gilroy-Semibold';
+    z-index: 1;
+    line-height: 160%;
+    max-width: 1486px;
+}
+
+#sendMessageContactUS {
+    min-height: 0px;
+    height: 40px;
+    margin: 0px;
+    width: 200px;
+}
+
+#tripPanelCont, #tripPanelCont_ {
+    background-color: white;
+    border-radius: 5px;
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 2.5%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#tripPanelCont_ {
+    position: relative;
+}
+
+.tripPanelTitle {
+    font-family: 110%;
+    font-family: 'Gilroy-Semibold';
+}
+
+.tripPanelCalender {
+    font-family: 'Gilroy-Medium';
+    font-size: 90%;
+    color: #4EB848;
+    margin: 0px;
+}
+
+.tripPanelTime {
+    font-family: 'Gilroy-Light';
+    font-size: 90%;
+    color: #ACB1C0;
+}
+
+.tripPanelNoOfTrips {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    height: 20px;
+    border-radius: 5px;
+}
+
+.tripPanelCash {
+    font-size: 120%;
+    font-family: 'Gilroy-Bold';
+    color: #4EB848;
+    margin: 0px;
+}
+
+.tripPanelDesc {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    height: 60px;
+    justify-content: space-between;
+    margin-left: 2.5%;
+    border-radius: 5px;
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+    align-items: center;
+}
+
+.tripPanelLoading {
+    margin-top: 20px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    height: 62%;
+    min-height: 280px;
+    justify-content: center;
+    margin-left: 2.5%;
+    border-radius: 5px;
+    align-items: center;
+}
+
+.tripPanelCalenderCont {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.noResultsWoman {
+    height: auto;
+    width: 80%;
+    max-width: 300px;
+    object-fit: fill;
+}
+
+.calendarDate {
+    font-family: 'Gilroy-Medium';
+    border-width: 0px;
+    font-size: 90%;
+    justify-content: center;
+    align-items: center;
+    color: transparent;
+}
+
+.calendarDate, #tripPanelCalenderCont_AV:hover {
+    cursor: pointer;
+}
+
+#driver_APP_CU1:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.calendarDate:focus {
+    outline: none;
+}
+
+.calendarDate::placeholder {
+    color: #4EB848;
+    opacity: 1;
+}
+
+#calendarDate::placeholder {
+    color: #1970A7;
+}
+
+.settingUserDetails {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.doggyProfilePicture {
+    width: 100%;
+    height: auto;
+    object-fit: fill;
+    margin: 0px;
+    display: inline;
+}
+
+.displayPicSettings {
+    border: 2px solid rgba(112, 112, 112, 0.19);
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.settingsCont {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+}
+
+.changePasswordButton {
+    margin: 0px;
+    font-family: 'Gilroy-Bold';
+    font-size: 120%;
+    color: #4EB848;
+    padding: 10px;
+    padding-left: 0px;
+}
+
+#deleteAccountButton_ {
+    width: 50%;
+}
+
+#inputSettingCont_ {
+    margin-top: 15px;
+    width: 100%;
+}
+
+#inputSettingCont__ {
+    margin-top: 35px;
+    width: 100%;
+    align-items: center;
+}
+
+#inputSettingCont_L {
+    width: 75%;
+    margin: 0px;
+}
+
+#inputSettingCont_R {
+    margin: 0px;
+    width: 23%;
+}
+
+.settingsVerifyOrNotIcon {
+    size: 16px;
+    margin-left: 4px;
+}
+
+.driverDashboardCont {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(112, 112, 112, 0.19);
+    border-radius: 5px;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.driverDashboard_TE {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.driverDashboard_BOX {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.driverDashboard_BOXTITLE {
+    font-family: 'Gilroy-Regular';
+    font-size: 90%;
+    margin: 0px;
+    margin-bottom: 7px;
+}
+
+.driverDashboard_BOXTEXT {
+    font-family: 'Gilroy-Bold';
+    font-size: 150%;
+    margin: 0px;
+}
+
+#driverDashboard_HALFDATE {
+    display: none;
+}
+
+.driverHistory_ICON {
+    height: 20px;
+    min-width: 20px;
+    width: auto;
+    object-fit: fill;
+}
+
+.driverFAQCont {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 13px;
+}
+
+.driverFAQ_PICDESC {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.driverFAQ_PIC {
+    height: 50px;
+    width: 70px;
+    min-width: 70px;
+    background-color: rgba(171, 176, 191, 0.05);
+    border-radius: 5px;
+    margin-right: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.driverFAQ_PIC_IMAGE {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.driverVehicle_ADDAVEHICLE {
+    color: white;
+    font-family: 'Gilroy-Medium';
+    font-size: 100%;
+    margin: 0px;
+}
+
+#tripPanelCalenderCont_AV {
+    background-color: #1970A7;
+}
+
+.driverVehicle_PIC_CONT {
+    height: 115px;
+    width: 230px;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: rgba(171, 176, 191, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.driverVehicle_PIC {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.driverVehicle_DESC {
+    font-family: 'Gilroy-Medium';
+    font-size: 90%;
+    line-height: 120%;
+    margin-left: 10px;
+    width: 300px;
+}
+
+#driverVehicle_VERIFYCONT {
+    height: 30px;
+    padding-right: 10px;
+    padding-left: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+}
+
+#driverVehicle_VERIFYCONTTEXT {
+    color: white;
+    font-family: 'Gilroy-Medium';
+    font-size: 80%;
+    margin: 0px;
+    margin-right: 5px;
+}
+
+#driverVehiclePLATENUMBER {
+    font-family: 'Gilroy-Semibold';
+    font-size: 95%;
+    color: #1970A7;
+    position: absolute;
+    right: 5px;
+    top: 0%;
+}
+
+.driver_ADD_VEHICLE_LOWER {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL {
+    width: 32%;
+    display: flex;
+    height: 165px;
+    border-radius: 5px;
+}
+
+.driver_ADD_VEHICLE_IMGUPLOAD {
+    background-color: #D2D7E8;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.driver_ADD_VEHICLE_IMG_GL {
+    background-color: #4EB848;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.driverVehicle_GUIDELINES_CAM {
+    width: auto;
+    height: 65%;
+    object-fit: fill;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.driverVehicle_GUIDELINES_CAM_TEXT {
+    font-family: 'Gilroy-Semibold';
+    font-size: 90%;
+    color: white;
+}
+
+.driver_ADD_VEHICLE_DOCSUPLOAD {
+    width: 32%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.driverVehicle_INPUT {
+    display: none;
+}
+
+.driverVehicle_UPLOADCONT {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0px;
+    width: 100%;
+    justify-content: space-between;
+    max-width: 270px;
+    background-color: #39A2E5;
+    border-radius: 4px;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+#driverVehicle_UPLOADCONT_ {
+    margin-top: 0px;
+}
+
+.driverVehicle_UPLOADTEXT {
+    margin: 0px;
+    color: white;
+}
+
+.driverVehicle_CAMERA {
+    color: black;
+    height: 50px;
+    width: auto;
+}
+
+.driverVehicle_CAMERATEXT {
+    font-family: 'Gilroy-Bold';
+    font-size: 90%;
+    text-align: center;
+    margin: 0px;
+    max-width: 90%;
+    margin-top: 10px;
+}
+
+.driver_APP_TOPCONT {
+    width: 90%;
+    border-radius: 5px;
+    background-color: #EBEBEB;
+    height: 55px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.driver_APP_TOP_TEXT, .driver_APP_TOP_TEXT_NUMB {
+    font-family: 'Gilroy-Semibold';
+    font-size: 105%;
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: center;
+    z-index: 1;
+}
+
+.driver_APP_TOP_TEXT_NUMB {
+    display: none;
+}
+
+.applicationDashArrow {
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+    left: 0px;
+}
+
+.driver_APP_RADIO {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#driver_APP_TOP_RADIO_CONT_ {
+    width: 90%;
+    margin-top: 10px;
+    justify-content: space-between;
+    border-radius: 5px;
+    border: 1px solid rgba(149, 154, 172, 0.5);
+    height: 50px;
+}
+
+.uploadDocumentIconCont {
+    border: 1px solid rgba(149, 154, 172, 0.5);
+    width: 90%;
+    border-radius: 5px;
+    height: 200px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.uploadDocumentPIC {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+}
+
+
+
+@media only screen and (max-width: 1170px) {
+    /*Tablets (portrait and landscape)*/
+    .settingUserDetails {
+        flex-direction: column;
+        margin-top: 30px;
+    }
+    .displayPicSettings {
+        margin-bottom: 20px;
+        width: 150px;
+        height: 150px;
+    }
+    .settingsCont {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    /*Tablets (portrait and landscape)*/
+}
+
+@media only screen and (max-width: 810px) {
+    #paymentRow_ {
+        flex-direction: column;
+        align-items: flex-start;
+        height: 80px;
+        margin-top: 20px;
+    }
+    .driverVehicle_DESC {
+        width: 200px;
+    }
+    .driverVehicle_GUIDELINES_CAM {
+        height: 40%;
+    }
+}
+
+@media only screen and (max-width:685px) {
+    .iC_Cont {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+    .copyBox {
+        margin-top: 5px;
+        width: 100%;
+    }
+    .driverVehicle_PIC_CONT {
+        width: 150px;
+    }
+}
+
+@media only screen and (max-width:650px) {
+    .driver_ADD_VEHICLE_LOWER {
+        flex-direction: column;
+        justify-content: initial;
+        margin-bottom: 20px;
+    }
+    .driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL {
+        height: 120px;
+    }
+    .driver_ADD_VEHICLE_IMGUPLOAD, .driver_ADD_VEHICLE_IMG_GL, .driver_ADD_VEHICLE_DOCSUPLOAD {
+        width: 100%;
+    }
+    .driver_ADD_VEHICLE_IMG_GL, .driver_ADD_VEHICLE_DOCSUPLOAD {
+        margin-top: 15px;
+    }
+    .driver_ADD_VEHICLE_DOCSUPLOAD {
+        height: initial;
+        justify-content: initial;
+        align-items: flex-start;
+    }
+    .driverVehicle_GUIDELINES_CAM {
+        width: auto;
+        height: 70%;
+        object-fit: fill;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .driverVehicle_GUIDELINES_CAM_TEXT {
+        font-family: 'Gilroy-Semibold';
+        font-size: 90%;
+        color: white;
+    }
+}
+
+@media only screen and (max-width:600px) {
+    .ud1 {
+        width: 90%;
+    }
+    .giftBox {
+        display: none;
+    }
+    #paymentRowButton {
+        width: 100%;
+    }
+    .button2 {
+        width: 48%;
+    }
+    .noResultsWoman {
+        margin-bottom: 20px;
+    }
+    #tripPanelLoading_ {
+        flex-direction: column;
+    }
+    #tripPanelLoadingText {
+        max-width: 90%;
+        text-align: center;
+    }
+    #inputSettingCont_L {
+        width: 65%;
+    }
+    #inputSettingCont_R {
+        width: 33%;
+    }
+    .driverVehicle_PIC_CONT {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    /* Phones (portrait and landscape)*/
+    .container {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+    .text, .text1, .buttonText1 {
+        font-size: 90%;
+        line-height: 140%;
+    }
+    #paymentCardNumber_, #inputPaymentPanel_ADD, #inputSettings, #deleteAccountButton, #inputSettingCont_L, #settingsVerifyOrNot, .driverVehicle_UPLOADTEXT {
+        font-size: 80%;
+    }
+    #sendMessageContactUS {
+        width: 100%;
+    }
+    #tripPanelAlignMiddle {
+        display: none;
+    }
+    .changePasswordButton {
+        font-size: 100%;
+    }
+    #deleteAccountButton_ {
+        width: 43%;
+    }
+    .displayPicSettings {
+        width: 100px;
+        height: 100px;
+    }
+    #inputSettingCont {
+        margin-top: 5px;
+    }
+    #inputSettingCont__ {
+        margin-top: 15px;
+    }
+    #settingsVerifyOrNot {
+        display: none;
+    }
+    #inputSettingCont_L {
+        width: 78%;
+    }
+    #inputSettingCont_R {
+        width: 20%;
+    }
+    .driverDashboard_TE {
+        justify-content: center;
+    }
+    #driverDashboard_HALFDATE {
+        display: initial;
+    }
+    #driverDashboard_FULLDATE {
+        display: none;
+    }
+    .driverVehicle_PIC_CONT {
+        height: 100px;
+        width: 90px;
+    }
+    #driverVehicle_VERIFYCONTTEXT {
+        display: none;
+        margin: 0px;
+    }
+    .driver_APP_TOP_TEXT {
+        display: none;
+    }
+    .driver_APP_TOP_TEXT_NUMB {
+        display: initial;
+    }
+}
+
+@media only screen and (max-width:370px) {
+    #iC_link {
+        font-size: 72%;
+    }
+    .downloadApp {
+        height: 32px;
+    }
+    #deleteAccountButton_ {
+        width: 50%;
+    }
+    .driverTH_HIDESUMMARY {
+        display: none;
+    }
+    .driverVehicle_DESC {
+        width: 150px;
+    }
+    #driverVehiclePLATENUMBER {
+        font-size: 85%;
+    }
+}
