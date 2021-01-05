@@ -10,50 +10,90 @@ export function signIn(email, password, type) {
                 .then(() => {
                     if (type == 'user') {
                         const userID = firebase.auth().currentUser.uid;
-                        firebase.database().ref(`users/${userID}/summarizedHistory`).once('value', snapshot => {
-                            if (snapshot.val().phoneVerified == true)
+                        firebase.database().ref(`users/${userID}`).once('value', snapshot => {
+                            if (snapshot.val().summarizedHistory.phoneVerified == true)
                                 Router.push('/s/db/udash').then(() => window.scrollTo(0, 0));
                             else
-                                this.setState({ displayVerification: true, loading: false });
-                        }).catch(error => { console.log(error.message) });
-
+                                this.setState({ displayVerification: true, loading: false, userDetails: snapshot.val(), error: false }, () => {
+                                    //send a verification phonenumber
+                                    sendVerification(userID, 'phoneNumber', 'storeAndSend', 'nocode', snapshot.val().phoneNumber, snapshot.val().email, snapshot.val().firstName,);
+                                    firebase.auth().signOut().catch(error => { console.log(error.message) })
+                                });
+                        }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false, }) });
                     }
                     else if (type == 'driver') {
                         const userID = firebase.auth().currentUser.uid;
-                        firebase.database().ref(`users/${userID}/summarizedHistory`).once('value', snapshot => {
-                            if (snapshot.val().phoneVerified == true && snapshot.val().emailVerified == true)
+                        firebase.database().ref(`users/${userID}`).once('value', snapshot => {
+                            if (snapshot.val().summarizedHistory.phoneVerified == true && snapshot.val().summarizedHistory.emailVerified == true)
                                 firebase.database().ref(`users/${userID}/driverVerified`).once('value', snap => {
                                     if (snap.val() == 'VERIFIED')
                                         Router.push('/s/db/ddash').then(() => window.scrollTo(0, 0));
                                     else
                                         Router.push('/s/db/d_app_dash').then(() => window.scrollTo(0, 0));
                                 }).catch(error => { console.log(error.message) })
-                            else
-                                this.setState({ displayVerification: true, loading: false });
+                            else {
+                                this.setState({
+                                    displayVerification: true,
+                                    loading: false, userDetails: snapshot.val(),
+                                    phoneVerified: snapshot.val().summarizedHistory.phoneVerified,
+                                    emailVerified: snapshot.val().summarizedHistory.emailVerified,
+                                    error: false,
+                                }, () => {
+                                    //send an email or phonenumber verification
+                                    if (!snapshot.val().summarizedHistory.phoneVerified)
+                                        sendVerification(userID, 'phoneNumber', 'storeAndSend', 'nocode', snapshot.val().phoneNumber, snapshot.val().email, snapshot.val().firstName,);
+                                    if (!snapshot.val().summarizedHistory.emailVerified)
+                                        sendVerification(userID, 'email', 'storeAndSend', 'nocode', snapshot.val().phoneNumber, snapshot.val().email, snapshot.val().firstName,);
+
+                                    firebase.auth().signOut().catch(error => { console.log(error.message) })
+                                });
+                            }
                         }).catch(error => { console.log(error.message) });
                     }
                 })
                 .catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
         }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
     })
-}
-
-export function signUp(firstName, lastName, email, phoneNumber, password) {
+};
+export function adminSignIn(email, password) {
+    this.setState({ error: false, errorMessage: '', loading: true }, () => {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+            firebase.auth().signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    const userID = firebase.auth().currentUser.uid;
+                    firebase.database().ref(`adminAuthorized/${userID}`)
+                        .once('value', snapshot => {
+                            if (snapshot.val())
+                                Router.push('/admin/dash').then(() => window.scrollTo(0, 0));
+                            else
+                                this.setState({ error: true, errorMessage: 'You do not have access to this portion of the site. Please contact us for help.', loading: false }, () => {
+                                    firebase.auth().signOut().catch(error => { console.log(error.message) });
+                                })
+                        })
+                        .catch(error => { console.log(error.message) })
+                })
+                .catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
+        }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
+    })
+};
+export function signUp(firstName, lastName, email, countryCode, phoneNumber, password, isDriver) {
 
     this.setState({ error: false, errorMessage: '', loading: true }, () => {
         firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(() => {
                 const userID = firebase.auth().currentUser.uid;
-                axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', { firstName: firstName, lastName: lastName, email: email, phoneNumber: phoneNumber, userID: userID })
-                    .then((result => {
-                        if (result.data == 'COMPLETE')
-                            this.setState({ displayVerification: true, loading: false });
-                    }))
+                axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', { firstName: firstName, lastName: lastName, email: email, phoneNumber: `+${countryCode}${phoneNumber}`, userID: userID, isDriver: isDriver })
+                    .then(() => {
+                        firebase.database().ref(`users/${userID}`).once('value', snapshot => {
+                            firebase.auth().signOut().catch(error => { console.log(error.message) })
+                            this.setState({ displayVerification: true, loading: false, error: false, userDetails: snapshot.val() });
+                        }).catch(error => { this.setState({ error: true, errorMessage: error.message }) })
+
+                    })
                     .catch(error => { this.setState({ errorMessage: error.message, loading: false }) });
             }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
     })
 };
-
 export function signOut(doNotReroute) {
     firebase.auth().signOut()
         .then(() => {
@@ -61,8 +101,48 @@ export function signOut(doNotReroute) {
                 Router.push('/');
         })
         .catch(error => { console.log(error.message) })
-}
-
+};
+export function sendVerification(userID, type, action, code, phoneNumber, email, name,) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationCode`,
+        {
+            userID: userID,
+            type: type,
+            action: action,
+            code: code,
+            phoneNumber: phoneNumber,
+            email: email,
+            name: name
+        })
+        .then((r) => {
+            const result = r.data;
+            if (action == 'check') {
+                if (result) {
+                    if (type == 'phoneNumber')
+                        this.setState({ phoneVerified: true, verificationPhoneLoader: false })
+                    else if (type == 'email')
+                        this.setState({ emailVerified: true, verificationEmailLoader: false })
+                }
+                else {
+                    if (type == 'phoneNumber')
+                        this.setState({ verificationPhoneLoader: false })
+                    else if (type == 'email')
+                        this.setState({ verificationEmailLoader: false })
+                    this.setState({
+                        error: true,
+                        errorMessage: 'The verification code was not correct. Please check again or click resend.',
+                    });
+                }
+            }
+        })
+    //.catch((error) => { this.setState({ error: true, errorMessage: error.message }) })
+};
+export function changeEmailOrPhoneNumber(type, userID, phoneNumber, email) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/changeEmailOrPhoneNumber`, { userID: userID, email: email, type: type, phoneNumber: phoneNumber })
+        .then((r) => {
+            this.setState({ userDetails: r.data, changeEmail_PhoneNumber: false, error: false, errorMessage: '', changeEmailLoader: false, changePhoneLoader: false, })
+        })
+        .catch(error => { this.setState({ error: true, errorMessage: error.message }) })
+};
 export function sendFeedback() {
     if (this.state.topic == 'unselected')
         this.setState({ errorMessage: 'A topic is needed. Please pick a topic to contact us about. If you do not have one, please pick "Other"' })
@@ -98,7 +178,6 @@ export function sendFeedback() {
         })
     }
 };
-
 export function changePassword(email_, oldPassword, newPassword) {
     this.setState({ loading: true }, () => {
 
@@ -116,8 +195,6 @@ export function changePassword(email_, oldPassword, newPassword) {
             .catch(error => this.setState({ errorMessage: error.message, loading: false, newPassword: '', confirmNewPassword: '' }));
     })
 };
-
-
 export function deleteAccount(email, password) {
     this.setState({ loading: true }, () => {
         firebase.auth().signInWithEmailAndPassword(email, password)
@@ -140,7 +217,38 @@ export function deleteAccount(email, password) {
             .catch(error => this.setState({ errorMessage: error.message, loading: false, password1: '' }));
     })
 };
+export function sendPasswordResetLink(email) {
+    firebase.auth().sendPasswordResetEmail(email)
+        .then(() => {
+            this.setState({ error: false, errorMessage: '', forgotPassword: false })
+        }).catch(error => { this.setState({ error: true, errorMessage: error.message }) })
+};
+export function sendEmail(name, email, type, subject) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationEmail`, { name: name, email: email, type: type, subject: subject })
+        .catch(error => { console.log(error.meesage) })
+};
 
+export function resetPassword(code, newPassword, email) {
+    this.setState({ errorMessage: '', loading: true }, () => {
+        firebase.auth().confirmPasswordReset(code, newPassword)
+            .then(() => {
+                firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+                    firebase.auth().signInWithEmailAndPassword(email, newPassword)
+                        .then(() => {
+                            const userID = firebase.auth().currentUser.uid;
+                            firebase.database().ref(`users/${userID}/firstName`)
+                                .once('value', snap => {
+                                    sendEmail(snap.val(), email, 'passwordHasBeenReset', 'Password has been reset');
+                                })
+                                .catch(error => { console.log(error.message) });
+                        })
+                        .catch(error => { console.log(error.message) });
+                }).catch(error => { console.log(error.message) });
+                Router.push('/');//send an email that password has been set 
+            })
+            .catch(() => { this.setState({ errorMessage: 'The link is no longer valid, please go to the login page and request a new password reset link', loading: false }) })
+    })
+};
 //MAKE A RANDOMID
 export function makeid(length) {
     var result = '';
@@ -202,6 +310,18 @@ export function distanceCalculator(lat1, lon1, lat2, lon2) {
     return d;
 };
 
+export function emailFormat(email, type) {
+    //@ is stored as -(hyphen)
+    //. is stored as _(underscore)
+    switch (type) {
+        case 'emailToString': {
+            return (email.replace('@', '-').replace('.', '_'));
+        } break;
+        case 'stringToEmail': {
+            return (email.replace('-', '@').replace('_', '.'));
+        } break;
+    }
+};
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 };

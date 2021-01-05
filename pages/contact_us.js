@@ -6,6 +6,7 @@ import Footer from './components/footer/footer';
 import Loader from 'react-loader-spinner';
 import firebase from 'firebase';
 import { sendFeedback } from '../functions/functions';
+import ShareIcons from '../functions/shareIcons';
 
 
 export default class index extends React.Component {
@@ -53,12 +54,7 @@ export default class index extends React.Component {
 
                     <div className={styles.c_} style={{ marginTop: '15px', marginBottom: '20px', justifyContent: 'space-between', alignItems: 'center', }}>
                         <p className={styles.t1} style={{ margin: '0px' }}>{`Contact Us`}</p>
-                        <div className={styles.shareIcon_C} style={{ margin: '0px' }}>
-                            <img src="/facebook_share.svg" alt="Perch Facebook" className={styles.shareIcon} />
-                            <img src="/google_share.svg" alt="Perch Google" className={styles.shareIcon} />
-                            <img src="/twitter_share.svg" alt="Perch Twitter" className={styles.shareIcon} />
-                            <img src="/instagram_share.svg" alt="Perch Instagram" className={styles.shareIcon} />
-                        </div>
+                        <ShareIcons />
                     </div>
 
                     <p className={styles.subTitle} >{`Hey there! Please feel free to send us any feedback or issues you might have with our service.`}</p>
@@ -72,7 +68,7 @@ export default class index extends React.Component {
                         >
                             <option value="unselected">(--Select a topic--)</option>
                             <option value="Give feedback about our services">Give feedback about our services</option>
-                            <option value="Help with driver application">Give feedback about our services</option>
+                            <option value="Help with driver application">Help with driver application</option>
                             <option value="Missing item">Missing item</option>
                             <option value="Change your name">Change your name</option>
                             <option value="Report a driver">Report a driver</option>

@@ -33,12 +33,15 @@
     width: 40.44px;
     margin-top: 20px;
 }
-.logo:hover{
+
+.logo:hover {
     cursor: pointer;
 }
-.logo:active{
+
+.logo:active {
     opacity: 0.7;
 }
+
 .title {
     font-family: 'Gilroy-Bold';
     margin: 0px;
@@ -100,6 +103,26 @@
 
 .pH_ {
     width: 70%;
+}
+
+.countryCodeBox {
+    width: 20%;
+    min-width: 70px;
+    border: 0px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-right: 1px solid rgba(149, 149, 149, 0.5);
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Gilroy-Regular';
+    font-size: initial;
+    padding-left: 4%;
+}
+
+.countryCodeBox:focus {
+    outline: none;
 }
 
 .env {
@@ -181,7 +204,6 @@
 }
 
 .cu {
-    display: inherit;
     font-family: 'Gilroy-SemiBold';
 }
 
@@ -190,16 +212,21 @@
     margin-bottom: 10px;
 }
 
-.ca, .ca_ {
+.ca {
     margin: 0px;
-    font-size: smaller;
+    font-size: 90%;
     color: rgba(149, 149, 149, 1);
     margin-top: 10px;
+    font-family: 'Gilroy-Light';
+    display: initial;
 }
 
 .ca_ {
     color: #4EB848;
     font-family: 'Gilroy-SemiBold';
+    margin: 0px;
+    font-size: smaller;
+    margin-top: 10px;
 }
 
 @media only screen and (max-width: 1024px) {
