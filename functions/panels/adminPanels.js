@@ -13,7 +13,6 @@ import { CgAdd } from 'react-icons/cg';
 import { GiClick } from 'react-icons/gi';
 import Loader from 'react-loader-spinner'
 import DatePicker from "react-datepicker";
-
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
 const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7'];

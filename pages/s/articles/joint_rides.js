@@ -4,6 +4,8 @@ import React from 'react';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Router from 'next/router';
+import ShareIcons from '../../../functions/shareIcons';
+
 
 export default class index extends React.Component {
     constructor() {
@@ -36,12 +38,7 @@ export default class index extends React.Component {
 
                     <div className={styles.c_} style={{ marginTop: '15px', marginBottom: '20px', justifyContent: 'space-between', alignItems: 'center', }}>
                         <p className={styles.t1} style={{ margin: '0px' }}>Joint rides</p>
-                        <div className={styles.shareIcon_C} style={{ margin: '0px' }}>
-                            <img src="/facebook_share.svg" alt="Perch Facebook" className={styles.shareIcon} />
-                            <img src="/google_share.svg" alt="Perch Google" className={styles.shareIcon} />
-                            <img src="/twitter_share.svg" alt="Perch Twitter" className={styles.shareIcon} />
-                            <img src="/instagram_share.svg" alt="Perch Instagram" className={styles.shareIcon} />
-                        </div>
+                        <ShareIcons />
                     </div>
 
                     <p className={styles.subTitle} >{`To get you to your destination, we have created an algorithm to provide you with different types of trips.`}</p>

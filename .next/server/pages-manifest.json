@@ -27,6 +27,7 @@
   "/s/db/d_app_dash": "pages/s/db/d_app_dash.html",
   "/s/db/ddash": "pages/s/db/ddash.html",
   "/s/db/udash": "pages/s/db/udash.html",
+  "/validation": "pages/validation.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js"
 }

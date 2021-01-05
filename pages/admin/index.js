@@ -9,6 +9,12 @@ import { CgKeyboard } from 'react-icons/cg';
 import ReactCardFlip from 'react-card-flip';
 import Truncate from 'react-truncate';
 import Router from 'next/router';
+import Loader from 'react-loader-spinner'
+import { adminSignIn, sendEmail } from '../../functions/functions';
+
+const [WHITE] = ['#FFFFFF'];
+
+
 export default class index extends React.Component {
     constructor() {
         super();
@@ -17,6 +23,12 @@ export default class index extends React.Component {
             error: false,
             errorMessage: 'Error message',
             isFlipped: false,
+
+            email: '',
+            password: '',
+            showPassword: false,
+
+            loading: false,
 
             displayVerification: false,//false at first then if it is not verified then you have to display it
         };
@@ -87,20 +99,52 @@ export default class index extends React.Component {
 
                                 <div className={styles.inputCont}>
                                     <FaEnvelope color={'#4EB848'} className={styles.env} />
-                                    <input type="text" placeholder="Email" className={styles.pH} />
+                                    <input
+                                        type="text"
+                                        placeholder="Email"
+                                        className={styles.pH}
+                                        value={this.state.email}
+                                        onChange={(event) => { this.setState({ email: event.target.value }) }}
+                                    />
                                 </div>
                                 <div className={styles.inputCont}>
                                     <BsFillLockFill color={'#4EB848'} className={styles.pad} />
-                                    <input type="text" placeholder="Password" className={styles.pH_} />
-                                    <BsEye color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} />
+                                    <input
+                                        type={this.state.showPassword ? "text" : "password"}
+                                        placeholder="Password"
+                                        className={styles.pH}
+                                        value={this.state.password}
+                                        onChange={(event) => { this.setState({ password: event.target.value }) }}
+                                    />
+                                    {
+                                        this.state.showPassword ?
+                                            <BsEyeSlash color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} /> :
+                                            <BsEye color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} />
+                                    }
                                 </div>
                                 {this.state.error ?
                                     <Truncate lines={1} ellipsis={'...'} className={styles.em}>
                                         {this.state.errorMessage}
                                     </Truncate> :
                                     <></>}
-                                <a className={styles.button1} style={{ marginTop: this.state.error ? '0px' : '25px' }} href='/db/udash'>
-                                    <p className={styles.buttonText1}>Log in</p>
+                                <a className={styles.button1} style={{ marginTop: this.state.error ? '0px' : '25px' }} onClick={() => {
+                                    if (!this.state.loading) {
+                                        if (this.state.email == '')
+                                            this.setState({ error: true, errorMessage: 'Please enter your email' });
+                                        else if (this.state.password == '')
+                                            this.setState({ error: true, errorMessage: 'Please enter your password' });
+                                        else
+                                            adminSignIn.call(this, this.state.email, this.state.password);
+                                    }
+                                }}>
+                                    {this.state.loading ?
+                                        <Loader
+                                            type="TailSpin"
+                                            color={WHITE}
+                                            height={'20px'}
+                                            width={'20px'} /> :
+                                        <p className={styles.buttonText1}>Log in</p>
+                                    }
                                 </a>
                                 <a className={styles.fp_}><p className={styles.fp}>Forgot password?</p></a>
                                 {/* <p className={styles.cu_}>Running into an issue? <a><p className={styles.cu}>Contact us</p></a></p>
