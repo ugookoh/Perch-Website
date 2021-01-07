@@ -79,19 +79,28 @@ export function adminSignIn(email, password) {
 export function signUp(firstName, lastName, email, countryCode, phoneNumber, password, isDriver) {
 
     this.setState({ error: false, errorMessage: '', loading: true }, () => {
-        firebase.auth().createUserWithEmailAndPassword(email, password)
-            .then(() => {
-                const userID = firebase.auth().currentUser.uid;
-                axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', { firstName: firstName, lastName: lastName, email: email, phoneNumber: `+${countryCode}${phoneNumber}`, userID: userID, isDriver: isDriver })
-                    .then(() => {
-                        firebase.database().ref(`users/${userID}`).once('value', snapshot => {
-                            firebase.auth().signOut().catch(error => { console.log(error.message) })
-                            this.setState({ displayVerification: true, loading: false, error: false, userDetails: snapshot.val() });
-                        }).catch(error => { this.setState({ error: true, errorMessage: error.message }) })
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/checkIfPhoneNumberIsFree`, { phoneNumber: `+${countryCode}${phoneNumber}` })
+            .then(r => {
+                if (r.data) {
+                    firebase.auth().createUserWithEmailAndPassword(email, password)
+                        .then(() => {
+                            const userID = firebase.auth().currentUser.uid;
+                            axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', { firstName: firstName, lastName: lastName, email: email, phoneNumber: `+${countryCode}${phoneNumber}`, userID: userID, isDriver: isDriver })
+                                .then(() => {
+                                    firebase.database().ref(`users/${userID}`).once('value', snapshot => {
+                                        firebase.auth().signOut().catch(error => { console.log(error.message) })
+                                        this.setState({ displayVerification: true, loading: false, error: false, userDetails: snapshot.val() });
+                                    }).catch(error => { this.setState({ error: true, errorMessage: error.message }) })
 
-                    })
-                    .catch(error => { this.setState({ errorMessage: error.message, loading: false }) });
-            }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
+                                })
+                                .catch(error => { this.setState({ errorMessage: error.message, loading: false }) });
+                        }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
+                }
+                else
+                    this.setState({ error: true, errorMessage: 'This phone number is currently registered with another account, contact us for help', loading: false })
+            })
+            .catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
+
     })
 };
 export function signOut(doNotReroute) {
@@ -141,7 +150,7 @@ export function changeEmailOrPhoneNumber(type, userID, phoneNumber, email) {
         .then((r) => {
             this.setState({ userDetails: r.data, changeEmail_PhoneNumber: false, error: false, errorMessage: '', changeEmailLoader: false, changePhoneLoader: false, })
         })
-        .catch(error => { this.setState({ error: true, errorMessage: error.message }) })
+        .catch(error => { this.setState({ error: true, errorMessage: `${error.message}, this field might already be in use by another user` }) })
 };
 export function sendFeedback() {
     if (this.state.topic == 'unselected')

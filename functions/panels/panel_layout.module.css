@@ -541,9 +541,13 @@
     margin: 0px;
 }
 
-#inputSettingCont_R {
+#inputSettingCont_R, #inputSettingCont_R_VERIFYNOW {
     margin: 0px;
     width: 23%;
+}
+
+#inputSettingCont_R_VERIFYNOW:hover {
+    cursor: pointer;
 }
 
 .settingsVerifyOrNotIcon {
@@ -1024,7 +1028,7 @@
     #inputSettingCont_L {
         width: 65%;
     }
-    #inputSettingCont_R {
+    #inputSettingCont_R, #inputSettingCont_R_VERIFYNOW {
         width: 33%;
     }
     .driverVehicle_PIC_CONT {
@@ -1073,7 +1077,7 @@
     #inputSettingCont_L {
         width: 78%;
     }
-    #inputSettingCont_R {
+    #inputSettingCont_R, #inputSettingCont_R_VERIFYNOW {
         width: 20%;
     }
     .driverDashboard_TE {

@@ -28,6 +28,10 @@
     align-items: center;
 }
 
+#card_ {
+    margin-right: 0px;
+}
+
 .logo {
     height: 60.85px;
     width: 40.44px;
@@ -111,6 +115,8 @@
     border: 0px;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
     border-right: 1px solid rgba(149, 149, 149, 0.5);
     height: 100%;
     display: flex;
@@ -119,6 +125,7 @@
     font-family: 'Gilroy-Regular';
     font-size: initial;
     padding-left: 4%;
+    -webkit-appearance: none;
 }
 
 .countryCodeBox:focus {
@@ -246,8 +253,12 @@
     .card {
         width: 100vw;
         height: 100vh;
+        margin: 0px;
         margin-right: 0px;
         min-width: 0px;
+    }
+    #card_ {
+        margin-right: -5vw;
     }
     /*.inputCont_ {
         flex-direction: column;
@@ -289,8 +300,12 @@
         width: 100vw;
         height: 100vh;
         border-radius: 0px;
+        margin: 0px;
         margin-right: 0px;
         min-width: 0px;
+    }
+    #card_ {
+        margin-right: -5vw;
     }
     .inputCont_ {
         margin-bottom: 15px;

@@ -14,7 +14,7 @@ import { GiClick } from 'react-icons/gi';
 import Loader from 'react-loader-spinner';
 import DatePicker from "react-datepicker";
 import firebase from 'firebase';
-import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght, makeid } from '../functions'
+import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght, makeid, sendVerification } from '../functions'
 import axios from 'axios'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -531,6 +531,7 @@ export class Settings extends React.Component {
 
         this.state = {
             toShow: 'default',//default, changePassword, verify, whyDeleteAccount,logInToDeleteAccount,
+            toVerify: '',
             url: null,
             userDetails: this.props.userDetails,
             newEmail: this.props.userDetails ? this.props.userDetails.email : '',
@@ -543,16 +544,61 @@ export class Settings extends React.Component {
             deleteAccountReason: '',
             email1: '',
             password1: '',
+            timer: 0,
+
+            emailVerified: false,
+            phoneVerified: true,
+
+            verifyText: '',
+
         };
     };
     componentDidMount() {
-        this.setImage(this.state.userDetails.photoRef)
+        this.setImage(this.state.userDetails.photoRef);
+
+        firebase.database().ref(`users/${this.state.userDetails.userID}/summarizedHistory`).on('value', snap => {
+            if (snap.val())
+                this.setState({ emailVerified: snap.val().emailVerified, phoneVerified: snap.val().phoneVerified });
+        })
     }
     setImage = (photoRef) => {
         firebase.storage().ref(`${photoRef}`).getDownloadURL()
             .then(result => {
                 this.setState({ url: result })
             }).catch(error => { console.log(error.message) });
+    };
+    sendVerificationCode = (type) => {
+        this.setState({ timer: 60 }, () => {
+            const time = setInterval(() => {
+                if (this.state.timer == 0)
+                    clearInterval(time);
+                else
+                    this.setState({ timer: this.state.timer - 1 })
+            }, 1000);
+        });
+        if (this.state.timer == 0)
+            switch (type) {
+                case 'email': {
+                    sendVerification(this.state.userDetails.userID,
+                        'email',
+                        'storeAndSend',
+                        '',
+                        '',
+                        this.state.newEmail,
+                        this.state.userDetails.firstName);
+                    this.setState({ toShow: 'verify', toVerify: 'email' });
+                } break;
+                case 'phoneNumber': {
+                    sendVerification(this.state.userDetails.userID,
+                        'phoneNumber',
+                        'storeAndSend',
+                        '',
+                        this.state.newPhoneNumber,
+                        '',
+                        this.state.userDetails.firstName);
+                    this.setState({ toShow: 'verify', toVerify: 'phone number' });
+                } break;
+            };
     };
     render() {
         let content = <></>;
@@ -592,12 +638,19 @@ export class Settings extends React.Component {
                             value={this.state.newEmail}
                             onChange={(event) => { this.setState({ newEmail: event.target.value }) }}
                             id={styles.inputSettingCont_L} />
-                        <div className={styles.pickPaymentSelected} style={{ backgroundColor: this.props.type == 'Driver' ? '#39A2E5' : '#5EEF56', }} id={styles.inputSettingCont_R}>
-                            <>
+                        {this.state.emailVerified && this.state.userDetails.email == this.state.newEmail ?
+                            <div className={styles.pickPaymentSelected} style={{ backgroundColor: this.props.type == 'Driver' ? '#39A2E5' : '#5EEF56', }} id={styles.inputSettingCont_R}>
                                 <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verified</p>
                                 <RiShieldCheckFill className={styles.settingsVerifyOrNotIcon} color={WHITE} />
-                            </>
-                        </div>
+                            </div> :
+                            <div className={styles.pickPaymentSelected}
+                                style={{ backgroundColor: '#FF4040' }}
+                                id={styles.inputSettingCont_R_VERIFYNOW}
+                                onClick={() => { this.sendVerificationCode('email') }}
+                            >
+                                <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verify Now</p>
+                                <GiClick className={styles.settingsVerifyOrNotIcon} color={WHITE} />
+                            </div>}
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
                         <input type="text"
@@ -606,12 +659,31 @@ export class Settings extends React.Component {
                             value={this.state.newPhoneNumber}
                             onChange={(event) => { this.setState({ newPhoneNumber: event.target.value }) }}
                             id={styles.inputSettingCont_L} />
-                        <div className={styles.pickPaymentSelected} style={{ backgroundColor: '#FF4040' }} id={styles.inputSettingCont_R}>
-                            <>
+                        {this.state.phoneVerified && this.state.userDetails.phoneNumber == this.state.newPhoneNumber ?
+                            <div className={styles.pickPaymentSelected} style={{ backgroundColor: this.props.type == 'Driver' ? '#39A2E5' : '#5EEF56', }} id={styles.inputSettingCont_R}>
+                                <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verified</p>
+                                <RiShieldCheckFill className={styles.settingsVerifyOrNotIcon} color={WHITE} />
+                            </div> :
+                            <div
+                                className={styles.pickPaymentSelected}
+                                style={{ backgroundColor: '#FF4040' }}
+                                id={styles.inputSettingCont_R_VERIFYNOW}
+                                onClick={() => {
+                                    axios.post(`https://us-central1-perch-01.cloudfunctions.net/checkIfPhoneNumberIsFree`, { phoneNumber: this.state.newPhoneNumber })
+                                        .then((r) => {
+                                            if (r.data) {
+                                                this.sendVerificationCode('phoneNumber')
+                                            }
+                                            else
+                                                this.setState({ error: true, errorMessage: 'Phone number already in use by another account' })
+                                        })
+                                        .catch(error => {
+                                            this.setState({ error: true, errorMessage: error.message })
+                                        })
+                                }}>
                                 <p className={styles.buttonText1} id={styles.settingsVerifyOrNot}>Verify Now</p>
                                 <GiClick className={styles.settingsVerifyOrNotIcon} color={WHITE} />
-                            </>
-                        </div>
+                            </div>}
                     </div>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont__} >
                         <p
@@ -710,29 +782,124 @@ export class Settings extends React.Component {
             } break;
             case 'verify': {
                 content = (<>
-                    <p className={styles.title} style={{ color: BLACK }}>{`Verify your phone number`}</p>
+                    <p className={styles.title} style={{ color: BLACK }}>{`Verify your ${this.state.toVerify}`}</p>
                     <p className={styles.text} style={{ color: BLACK }}>
-                        Enter the code sent to <span style={{ color: this.props.type == 'Driver' ? BLUE : GREEN }}>{`(123)-456-7890`}</span>
+                        Enter the code sent to <span style={{ color: this.props.type == 'Driver' ? BLUE : GREEN }}>{
+                            this.state.toVerify == 'email' ?
+                                this.state.newEmail :
+                                this.state.newPhoneNumber}</span>
                     </p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont_}>
-                        <input type="text" placeholder="Enter Code" className={styles.inputPaymentPanel} id={styles.inputSettingCont_L} style={{ width: '100%' }} />
+                        <input
+                            type="text"
+                            placeholder="Enter Code"
+                            className={styles.inputPaymentPanel}
+                            id={styles.inputSettingCont_L} style={{ width: '100%' }}
+                            value={this.state.verifyText}
+                            onChange={(v) => { this.setState({ verifyText: v.target.value }) }}
+                        />
                     </div>
-                    <p className={styles.text} style={{ color: BLACK, fontSize: '80%' }}>
-                        Didn't get a code yet?  <span id={styles.resendCodeSettings} style={{ color: BLUE_TEXT }}>Resend</span>
-                    </p>
+                    {this.state.timer == 0 ?
+                        <p className={styles.text} style={{ color: BLACK, fontSize: '80%' }}>
+                            Didn't get a code yet? <span
+                                id={styles.resendCodeSettings}
+                                onClick={() => { this.sendVerificationCode(this.state.toVerify == 'email' ? 'email' : 'phoneNumber') }}
+                                style={{ color: BLUE_TEXT }}>Resend</span>
+                        </p> :
+                        <p className={styles.text} style={{ color: BLACK, fontSize: '80%' }}>
+                            Resend in <span style={{ color: BLUE_TEXT }}>{` 0:${('0' + this.state.timer).slice(-2)}`}</span>
+                        </p>}
+                    <p className={styles.em}>{this.state.errorMessage}</p>
                     <div className={styles.enterKilometerDiv} id={styles.inputSettingCont__} >
                         <div className={styles.button1}
                             id={styles.deleteAccountButton_}
                             style={{ backgroundColor: RED, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
-                            onClick={() => { this.setState({ toShow: 'default' }) }}>
+                            onClick={() => { this.setState({ toShow: 'default', errorMessage: '' }) }}>
                             <p className={styles.buttonText1} id={styles.deleteAccountButton}>Cancel</p>
                         </div>
                         <div
                             className={styles.button1}
                             id={styles.deleteAccountButton_}
                             style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN, maxWidth: 'initial', height: '40px', minHeight: 'initial', margin: '0px', width: '49%' }}
+                            onClick={() => {
+                                const code = this.state.verifyText;
+                                if (code.length != 6) {
+                                    this.setState({ errorMessage: 'Verification code must be 6 characters long' })
+                                } else {
+                                    this.setState({ loading: true }, () => {
+                                        const type = this.state.toVerify == 'email' ? 'email' : 'phoneNumber';
+                                        switch (type) {
+                                            case 'email': {
+                                                axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationCode`,
+                                                    {
+                                                        userID: this.state.userDetails.userID,
+                                                        type: type,
+                                                        action: 'check',
+                                                        code: code,
+                                                        phoneNumber: '',
+                                                        email: this.state.newEmail,
+                                                        name: this.state.userDetails.firstName
+                                                    })
+                                                    .then((r) => {
+                                                        if (r.data) {
+                                                            axios.post(`https://us-central1-perch-01.cloudfunctions.net/changeEmailAndPhoneNumberAfterVerifying`, {
+                                                                userID: this.state.userDetails.userID,
+                                                                type: type,
+                                                                phoneNumber: '',
+                                                                email: this.state.newEmail,
+                                                            }).then(() => {
+                                                                let userDetails = this.state.userDetails;
+                                                                userDetails.email = this.state.newEmail;
+                                                                this.setState({ toShow: 'default', loading: false, userDetails: userDetails, errorMessage: '' })
+                                                            }).catch((error) => { this.setState({ errorMessage: error.message, loading: false }) })
+                                                        }
+                                                        else
+                                                            this.setState({ errorMessage: 'Validation code is not valid', loading: false })
+                                                    })
+                                                    .catch((error) => { this.setState({ errorMessage: error.message, loading: false }) })
+
+                                            } break;
+                                            case 'phoneNumber': {
+                                                axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationCode`,
+                                                    {
+                                                        userID: this.state.userDetails.userID,
+                                                        type: type,
+                                                        action: 'check',
+                                                        code: code,
+                                                        phoneNumber: this.state.newPhoneNumber,
+                                                        email: '',
+                                                        name: this.state.userDetails.firstName
+                                                    })
+                                                    .then((r) => {
+                                                        if (r.data) {
+                                                            axios.post(`https://us-central1-perch-01.cloudfunctions.net/changeEmailAndPhoneNumberAfterVerifying`, {
+                                                                userID: this.state.userDetails.userID,
+                                                                type: type,
+                                                                phoneNumber: '',
+                                                                email: this.state.newEmail,
+                                                            }).then(() => {
+                                                                let userDetails = this.state.userDetails;
+                                                                userDetails.phoneNumber = this.state.newPhoneNumber;
+                                                                this.setState({ toShow: 'default', loading: false, userDetails: userDetails, errorMessage: '' })
+                                                            }).catch((error) => { this.setState({ errorMessage: error.message, loading: false }) })
+                                                        }
+                                                        else
+                                                            this.setState({ errorMessage: 'Validation code is not valid', loading: false })
+                                                    })
+                                                    .catch((error) => { this.setState({ errorMessage: error.message, loading: false }) })
+                                            } break;
+                                        }
+                                    })
+                                }
+                            }}
                         >
-                            <p className={styles.buttonText1} id={styles.deleteAccountButton}>Verify</p>
+                            {this.state.loading ?
+                                <Loader
+                                    type="TailSpin"
+                                    color={WHITE}
+                                    height={'20px'}
+                                    width={'20px'} /> :
+                                <p className={styles.buttonText1} id={styles.deleteAccountButton}>Verify</p>}
                         </div>
                     </div>
                 </>);
