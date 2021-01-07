@@ -38,7 +38,7 @@ export default class index extends React.Component {
                             this.setState({ currentState: snapshot.val(), loggedIn: 'TRUE' });
                         }
                         else {
-                            firebase.database().ref(`users/${user.uid}`).update({ driverVerified: 'UNVERIFIED' }).catch(error => { console.log(error.message) })
+                            firebase.database().ref(`users/${user.uid}`).update({ driverVerified: 'PENDING' }).catch(error => { console.log(error.message) })
                             firebase.database().ref(`driverApplications/${user.uid}`).update({
                                 stage: 'one',
                             })

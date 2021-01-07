@@ -2,6 +2,7 @@
 import React from 'react';
 import styles from './layout.module.css';
 import Head from 'next/head';
+import axios from 'axios';
 import { Logo } from '../../../functions/images/vectors';
 import { FaEnvelope } from 'react-icons/fa';
 import { BsFillLockFill, BsEye, BsEyeSlash } from 'react-icons/bs';
@@ -359,7 +360,17 @@ export default class index extends React.Component {
                                         this.setState({ error: true, errorMessage: 'Phone number must be valid' })
                                     else
                                         this.setState({ changePhoneLoader: true }, () => {
-                                            changeEmailOrPhoneNumber.call(this, 'phoneNumber', this.state.userDetails.userID, `+${this.state.countryCode}${this.state.newPhoneNumber}`, '')
+                                            axios.post(`https://us-central1-perch-01.cloudfunctions.net/checkIfPhoneNumberIsFree`, { phoneNumber: `+${this.state.countryCode}${this.state.newPhoneNumber}` })
+                                                .then((r) => {
+                                                    if (r.data) {
+                                                        changeEmailOrPhoneNumber.call(this, 'phoneNumber', this.state.userDetails.userID, `+${this.state.countryCode}${this.state.newPhoneNumber}`, '');
+                                                    }
+                                                    else
+                                                        this.setState({ error: true, errorMessage: 'Phone number already in use' })
+                                                })
+                                                .catch(error => {
+                                                    this.setState({ error: true, errorMessage: error.message })
+                                                })
                                         });
                                 }}>
                                     {this.state.changePhoneLoader ?
@@ -489,7 +500,9 @@ export default class index extends React.Component {
                             :
                             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal" cardZIndex={2} containerStyle={{ marginRight: '5vw' }}>
                                 <div className={styles.card}///SIGN IN
-                                    style={{ marginRight: '0px' }}>
+                                    id={styles.card_}
+                                //style={{ marginRight: '0px' }}
+                                >
                                     <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
                                     {this.state.forgotPassword ?
                                         <>
@@ -603,7 +616,8 @@ export default class index extends React.Component {
                                 </div>
 
                                 <div className={styles.card}//SIGN UP
-                                    style={{ marginRight: '0px' }}
+                                    //style={{ marginRight: '0px' }}
+                                    id={styles.card_}
                                 >
                                     <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
                                     <p className={styles.title}>Sign up</p>
