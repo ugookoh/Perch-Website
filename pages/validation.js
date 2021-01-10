@@ -36,14 +36,16 @@ export default class index extends React.Component {
     componentDidMount() {
         if (this.props.mode == 'verifyEmail' && this.props.email) {
             const email = this.props.email;
-            firebase.database().ref(`emailList/${emailFormat(email, 'emailToString')}`)
-                .once('value', snapshot => {
-                    if (snapshot.val())
+            axios.post(`https://us-central1-perch-01.cloudfunctions.net/findUidByEmail`, { formattedEmail: emailFormat(email, 'emailToString') })
+                .then((r) => {
+                    if (r.data == 'DOESNOTEXIST')
+                        this.setState({ errorMessage: 'This user does not exist', validationFailed: true });
+                    else if (r.data)
                         axios.post(`https://us-central1-perch-01.cloudfunctions.net/verifyEmailAndPhoneNumber`, { type: 'email', userID: snapshot.val() })
                             .then(() => { this.setState({ validationCompleted: true, }) })
                             .catch(error => { this.setState({ errorMessage: error.message, validationFailed: true, }) })
                     else
-                        this.setState({ errorMessage: 'This user does not exist', validationFailed: true })
+                        this.setState({ errorMessage: 'Network error, please try again', validationFailed: true })
                 })
                 .catch(error => {
                     this.setState({ errorMessage: error.message, validationFailed: true })

@@ -22,6 +22,7 @@
     "react-card-flip": "^1.0.11",
     "react-datepicker": "^3.3.0",
     "react-dom": "17.0.1",
+    "react-email-editor": "^1.2.0",
     "react-icons": "^3.11.0",
     "react-loader-spinner": "^3.1.14",
     "react-truncate": "^2.4.0",

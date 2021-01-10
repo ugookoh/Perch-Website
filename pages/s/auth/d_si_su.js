@@ -390,7 +390,6 @@ export default class index extends React.Component {
                                         <option data-countryCode="ZW" value="263">Zimbabwe (+263)</option>
                                     </optgroup>
                                 </select>
-
                                 <input
                                     type="text"
                                     placeholder={this.state.userDetails.phoneNumber}
@@ -586,117 +585,117 @@ export default class index extends React.Component {
                                 id={styles.card_}
                             >
                                 <a className={styles.logo} href='/'><Logo color={'#4EB848'} /></a>
-                                {
-                                    this.state.forgotPassword ?
-                                        <>
-                                            <p className={styles.title}>Forgot Password</p>
+                                {this.state.forgotPassword ?
+                                    <>
+                                        <p className={styles.title}>Forgot Password</p>
 
-                                            <div className={styles.inputCont}>
-                                                <FaEnvelope color={'#4EB848'} className={styles.env} />
-                                                <input type="text"
-                                                    placeholder="Email"
-                                                    className={styles.pH}
-                                                    value={this.state.email}
-                                                    onChange={(event) => { this.setState({ email: event.target.value }) }}
-                                                />
-                                            </div>
+                                        <div className={styles.inputCont}>
+                                            <FaEnvelope color={'#4EB848'} className={styles.env} />
+                                            <input type="text"
+                                                placeholder="Email"
+                                                className={styles.pH}
+                                                value={this.state.email}
+                                                onChange={(event) => { this.setState({ email: event.target.value }) }}
+                                            />
+                                        </div>
 
-                                            {this.state.error ?
-                                                <Truncate lines={1} ellipsis={'...'} className={styles.em}>
-                                                    {this.state.errorMessage}
-                                                </Truncate> :
-                                                <></>}
-                                            <a
-                                                className={styles.button1}
-                                                style={{ marginTop: this.state.error ? '0px' : '25px' }}
-                                                onClick={() => {
-                                                    if (!this.state.loading) {
-                                                        if (this.state.email == '')
-                                                            this.setState({ error: true, errorMessage: 'Please enter your email' });
-                                                        else
-                                                            sendPasswordResetLink.call(this, this.state.email,);
-                                                    }
-                                                }} >
-                                                {this.state.loading ?
-                                                    <Loader
-                                                        type="TailSpin"
-                                                        color={WHITE}
-                                                        height={'20px'}
-                                                        width={'20px'} /> :
-                                                    <p className={styles.buttonText1}>Send password reset link</p>
+                                        {this.state.error ?
+                                            <Truncate lines={1} ellipsis={'...'} className={styles.em}>
+                                                {this.state.errorMessage}
+                                            </Truncate> :
+                                            <></>}
+                                        <a
+                                            className={styles.button1}
+                                            style={{ marginTop: this.state.error ? '0px' : '25px' }}
+                                            onClick={() => {
+                                                if (!this.state.loading) {
+                                                    if (this.state.email == '')
+                                                        this.setState({ error: true, errorMessage: 'Please enter your email' });
+                                                    else
+                                                        sendPasswordResetLink.call(this, this.state.email,);
                                                 }
-                                            </a>
-                                            <a className={styles.fp_} onClick={() => { this.setState({ forgotPassword: false, errorMessage: '', error: false }) }}><p className={styles.fp}>Go back</p></a>
-                                            <p className={styles.cu_}>Running into an issue? <a href='/contact_us'><span className={styles.cu}>Contact us</span></a></p>
-                                            <p className={styles.ca}>Don't have an account</p>
-                                            <a className={styles.caC}
-                                                onClick={() => {
-                                                    this.setState({ isFlipped: !this.state.isFlipped, error: false, errorMessage: '', }, () => {
-                                                        this.setState({ forgotPassword: false, })
-                                                    })
-                                                }}>
-                                                <p className={styles.ca_}>Create a new account</p>
-                                            </a></> :
-                                        <>
-                                            <p className={styles.title}>Sign In</p>
+                                            }} >
+                                            {this.state.loading ?
+                                                <Loader
+                                                    type="TailSpin"
+                                                    color={WHITE}
+                                                    height={'20px'}
+                                                    width={'20px'} /> :
+                                                <p className={styles.buttonText1}>Send password reset link</p>
+                                            }
+                                        </a>
+                                        <a className={styles.fp_} onClick={() => { this.setState({ forgotPassword: false, errorMessage: '', error: false }) }}><p className={styles.fp}>Go back</p></a>
+                                        <p className={styles.cu_}>Running into an issue? <a href='/contact_us'><span className={styles.cu}>Contact us</span></a></p>
+                                        <p className={styles.ca}>Don't have an account</p>
+                                        <a className={styles.caC}
+                                            onClick={() => {
+                                                this.setState({ isFlipped: !this.state.isFlipped, error: false, errorMessage: '', }, () => {
+                                                    this.setState({ forgotPassword: false, })
+                                                })
+                                            }}>
+                                            <p className={styles.ca_}>Create a new account</p>
+                                        </a></> :
+                                    <>
+                                        <p className={styles.title}>Sign In</p>
 
-                                            <div className={styles.inputCont}>
-                                                <FaEnvelope color={'#4EB848'} className={styles.env} />
-                                                <input type="text"
-                                                    placeholder="Email"
-                                                    className={styles.pH}
-                                                    value={this.state.email}
-                                                    onChange={(event) => { this.setState({ email: event.target.value }) }}
-                                                />
-                                            </div>
-                                            <div className={styles.inputCont}>
-                                                <BsFillLockFill color={'#4EB848'} className={styles.pad} />
-                                                <input
-                                                    type={this.state.showPassword ? "text" : "password"}
-                                                    placeholder="Password"
-                                                    className={styles.pH_}
-                                                    value={this.state.password}
-                                                    onChange={(event) => { this.setState({ password: event.target.value }) }} />
-                                                {
-                                                    this.state.showPassword ?
-                                                        <BsEyeSlash color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} /> :
-                                                        <BsEye color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} />
+                                        <div className={styles.inputCont}>
+                                            <FaEnvelope color={'#4EB848'} className={styles.env} />
+                                            <input type="text"
+                                                placeholder="Email"
+                                                className={styles.pH}
+                                                value={this.state.email}
+                                                onChange={(event) => { this.setState({ email: event.target.value }) }}
+                                            />
+                                        </div>
+                                        <div className={styles.inputCont}>
+                                            <BsFillLockFill color={'#4EB848'} className={styles.pad} />
+                                            <input
+                                                type={this.state.showPassword ? "text" : "password"}
+                                                placeholder="Password"
+                                                className={styles.pH_}
+                                                value={this.state.password}
+                                                onChange={(event) => { this.setState({ password: event.target.value }) }} />
+                                            {
+                                                this.state.showPassword ?
+                                                    <BsEyeSlash color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} /> :
+                                                    <BsEye color={'rgba(112, 112, 112, 0.9)'} className={styles.eye} onClick={() => { this.setState({ showPassword: !this.state.showPassword }) }} />
+                                            }
+                                        </div>
+                                        {this.state.error ?
+                                            <Truncate lines={1} ellipsis={'...'} className={styles.em}>
+                                                {this.state.errorMessage}
+                                            </Truncate> :
+                                            <></>}
+                                        <a
+                                            className={styles.button1}
+                                            style={{ marginTop: this.state.error ? '0px' : '25px' }}
+                                            onClick={() => {
+                                                if (!this.state.loading) {
+                                                    if (this.state.email == '')
+                                                        this.setState({ error: true, errorMessage: 'Please enter your email' });
+                                                    else if (this.state.password == '')
+                                                        this.setState({ error: true, errorMessage: 'Please enter your password' });
+                                                    else
+                                                        signIn.call(this, this.state.email, this.state.password, 'driver');
                                                 }
-                                            </div>
-                                            {this.state.error ?
-                                                <Truncate lines={1} ellipsis={'...'} className={styles.em}>
-                                                    {this.state.errorMessage}
-                                                </Truncate> :
-                                                <></>}
-                                            <a
-                                                className={styles.button1}
-                                                style={{ marginTop: this.state.error ? '0px' : '25px' }}
-                                                onClick={() => {
-                                                    if (!this.state.loading) {
-                                                        if (this.state.email == '')
-                                                            this.setState({ error: true, errorMessage: 'Please enter your email' });
-                                                        else if (this.state.password == '')
-                                                            this.setState({ error: true, errorMessage: 'Please enter your password' });
-                                                        else
-                                                            signIn.call(this, this.state.email, this.state.password, 'driver');
-                                                    }
-                                                }} >
-                                                {this.state.loading ?
-                                                    <Loader
-                                                        type="TailSpin"
-                                                        color={WHITE}
-                                                        height={'20px'}
-                                                        width={'20px'} /> :
-                                                    <p className={styles.buttonText1}>Log in</p>
-                                                }
-                                            </a>
-                                            <a className={styles.fp_}><p className={styles.fp} onClick={() => { this.setState({ forgotPassword: true, errorMessage: '', error: false }) }}>Forgot password?</p></a>
-                                            <p className={styles.cu_}>Running into an issue? <a href='/contact_us'><span className={styles.cu}>Contact us</span></a></p>
-                                            <p className={styles.ca}>Don't have an account</p>
-                                            <a className={styles.caC}
-                                                onClick={() => { this.setState({ isFlipped: !this.state.isFlipped, error: false }) }}>
-                                                <p className={styles.ca_}>Create a new account</p>
-                                            </a></>
+                                            }} >
+                                            {this.state.loading ?
+                                                <Loader
+                                                    type="TailSpin"
+                                                    color={WHITE}
+                                                    height={'20px'}
+                                                    width={'20px'} /> :
+                                                <p className={styles.buttonText1}>Log in</p>
+                                            }
+                                        </a>
+                                        <a className={styles.fp_}><p className={styles.fp} onClick={() => { this.setState({ forgotPassword: true, errorMessage: '', error: false }) }}>Forgot password?</p></a>
+                                        <p className={styles.cu_}>Running into an issue? <a href='/contact_us'><span className={styles.cu}>Contact us</span></a></p>
+                                        <p className={styles.ca}>Don't have an account</p>
+                                        <a className={styles.caC}
+                                            onClick={() => { this.setState({ isFlipped: !this.state.isFlipped, error: false }) }}>
+                                            <p className={styles.ca_}>Create a new account</p>
+                                        </a>
+                                    </>
                                 }
                             </div>
 

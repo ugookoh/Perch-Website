@@ -57,7 +57,7 @@ export function signIn(email, password, type) {
 };
 export function adminSignIn(email, password) {
     this.setState({ error: false, errorMessage: '', loading: true }, () => {
-        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(() => {
+        firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then(() => {
                     const userID = firebase.auth().currentUser.uid;
@@ -66,7 +66,7 @@ export function adminSignIn(email, password) {
                             if (snapshot.val())
                                 Router.push('/admin/dash').then(() => window.scrollTo(0, 0));
                             else
-                                this.setState({ error: true, errorMessage: 'You do not have access to this portion of the site. Please contact us for help.', loading: false }, () => {
+                                this.setState({ error: true, errorMessage: 'You do not have access to this portion of the site. Please contact us for help. Excess unauthorized logins might result in an IP block.', loading: false }, () => {
                                     firebase.auth().signOut().catch(error => { console.log(error.message) });
                                 })
                         })

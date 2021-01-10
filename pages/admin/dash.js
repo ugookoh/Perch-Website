@@ -4,8 +4,25 @@ import styles from './layout.module.css';
 import Head from 'next/head';
 import { ImExit } from "react-icons/im";
 import { Logo, DashboardIcons } from '../../functions/images/vectors';
+import { TiMessages } from 'react-icons/ti';
+import { HiOutlineMail } from 'react-icons/hi';
+import { BsConeStriped, BsListCheck } from 'react-icons/bs';
+import { GoCreditCard } from 'react-icons/go';
+import { BiCar } from 'react-icons/bi';
 import Router from 'next/router';
-import { UserDashBoard, PerchWallet, ContactUs, TripHistory, Settings } from '../../functions/panels/adminPanels';
+import {
+    AdminDashBoard,
+    SendAnEmail,
+    UnreadMessages,
+    CancelledTrips,
+    VehicleApplications,
+    DriverApplications,
+    Payments,
+    ListOfRiders,
+    ListOfDrivers,
+    Settings
+} from '../../functions/panels/panels';
+import { signOut } from '../../functions/functions';
 import firebase from 'firebase';
 import LoadingScreen from '../components/loadingScreen/loadingScreen';
 export default class index extends React.Component {
@@ -16,6 +33,8 @@ export default class index extends React.Component {
             optionCode: 'db',
             width: 0, height: 0,
             loggedIn: 'NULL',
+            userDetails: null,
+            url: null,
         }
     };
 
@@ -23,13 +42,32 @@ export default class index extends React.Component {
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensions);
         firebase.auth().onAuthStateChanged(user => {
-            if (user)
-                this.setState({ loggedIn: 'TRUE' });
+            if (user) {
+                firebase.database().ref(`users/${user.uid}`).once('value', (snapshot) => {
+                    this.setState({ userDetails: snapshot.val() });
+                    this.setImage(snapshot.val().photoRef);
+                }).catch(error => { console.log(error.message) });
+
+
+                firebase.database().ref(`adminAuthorized/${user.uid}`).once(`value`, snapshot => {
+                    if (snapshot.val())
+                        this.setState({ loggedIn: 'TRUE' });
+                    else
+                        this.setState({ loggedIn: 'FALSE' });
+                }).catch(error => {
+                    this.setState({ loggedIn: 'FALSE' });
+                })
+            }
             else
                 this.setState({ loggedIn: 'FALSE' });
         });
     }
-
+    setImage = (photoRef) => {
+        firebase.storage().ref(`${photoRef}`).getDownloadURL()
+            .then(result => {
+                this.setState({ url: result })
+            }).catch(error => { console.log(error.message) });
+    };
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateWindowDimensions);
     }
@@ -40,25 +78,40 @@ export default class index extends React.Component {
     navigate = (x) => {
         switch (x) {
             case 'db': {
-                this.setState({ optionCode: 'db' })
+                this.setState({ optionCode: 'db' });
             } break;
-            case 'th': {
-                this.setState({ optionCode: 'th' })
+            case 'um': {
+                this.setState({ optionCode: 'um' });
             } break;
-            case 'pw': {
-                this.setState({ optionCode: 'pw' })
+            case 'se': {
+                this.setState({ optionCode: 'se' });
             } break;
-            case 'cu': {
-                this.setState({ optionCode: 'cu' })
+            case 'ct': {
+                this.setState({ optionCode: 'ct' });
+            } break;
+            case 'va': {
+                this.setState({ optionCode: 'va' });
+            } break;
+            case 'da': {
+                this.setState({ optionCode: 'da' });
+            } break;
+            case 'pa': {
+                this.setState({ optionCode: 'pa' });
+            } break;
+            case 'lr': {
+                this.setState({ optionCode: 'lr' });
+            } break;
+            case 'ld': {
+                this.setState({ optionCode: 'ld' });
             } break;
             case 'ss': {
-                this.setState({ optionCode: 'ss' })
+                this.setState({ optionCode: 'ss' });
             } break;
         }
     }
     render() {
         if (this.state.loggedIn == 'FALSE')
-            Router.push('/s/auth/u_si_su');
+            Router.push('/admin');
         if (this.state.loggedIn != 'TRUE')
             return <LoadingScreen />;
 
@@ -69,23 +122,43 @@ export default class index extends React.Component {
         switch (this.state.optionCode) {
             case 'db': {
                 option = 'Dashboard';
-                content = <UserDashBoard />;
+                content = <AdminDashBoard userDetails={this.state.userDetails} />;
             } break;
-            case 'th': {
-                option = 'Trip History';
-                content = <TripHistory />;
+            case 'um': {
+                option = 'Unread Messages';
+                content = <UnreadMessages userDetails={this.state.userDetails} />;
             } break;
-            case 'pw': {
-                option = 'Perch Wallet';
-                content = <PerchWallet />;
+            case 'se': {
+                option = 'Send an Email';
+                content = <SendAnEmail userDetails={this.state.userDetails} />;
             } break;
-            case 'cu': {
-                option = 'Contact Us';
-                content = <ContactUs />;
+            case 'ct': {
+                option = 'Cancelled Trips';
+                content = <CancelledTrips userDetails={this.state.userDetails} />;
+            } break;
+            case 'va': {
+                option = 'Vehicle Applications';
+                content = <VehicleApplications userDetails={this.state.userDetails} />;
+            } break;
+            case 'da': {
+                option = 'Driver Applications';
+                content = <DriverApplications userDetails={this.state.userDetails} />;
+            } break;
+            case 'pa': {
+                option = 'Payments';
+                content = <Payments userDetails={this.state.userDetails} />;
+            } break;
+            case 'lr': {
+                option = 'List of Riders';
+                content = <ListOfRiders userDetails={this.state.userDetails} />;
+            } break;
+            case 'ld': {
+                option = 'List of Drivers';
+                content = <ListOfDrivers userDetails={this.state.userDetails} />;
             } break;
             case 'ss': {
                 option = 'Settings';
-                content = <Settings />
+                content = <Settings userDetails={this.state.userDetails} />
             } break;
         }
         return (
@@ -109,11 +182,19 @@ export default class index extends React.Component {
                     <div className={styles.optionShadowBox}>
                         <p className={styles.optionTitle}>{option}</p>
                         <div className={styles.textRow1}>
-                            <div className={styles.dp}></div>
-                            <p className={styles.text_}>{'Hello, Ugochukwu'}</p>
+                            {
+                                this.state.userDetails ?
+                                    <>
+                                        {this.state.url ?
+                                            <img src={this.state.url} className={styles.dp} style={{ objectFit: 'cover', borderWidth: '0px' }} /> :
+                                            <div className={styles.dp}></div>}
+                                        <p className={styles.text_}>{`Hello, ${this.state.userDetails.firstName}`}</p>
+                                    </> :
+                                    <></>
+                            }
                             <a className={styles.link_}><p className={styles.text}>How it works</p></a>
                             <a>
-                                <div className={styles.circle}>
+                                <div className={styles.circle} onClick={() => { signOut.call(this, true) }}>
                                     <ImExit color={'#FFFFFF'} className={styles.logOut} />
                                 </div>
                             </a>
@@ -133,27 +214,63 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('th') }}>
-                                <div className={this.state.optionCode == 'th' ? styles.optionIcon_Selected : styles.optionIcon}>
+                            <a onClick={() => { this.navigate('um') }}>
+                                <div className={this.state.optionCode == 'um' ? styles.optionIcon_Selected : styles.optionIcon}>
                                     <div className={styles.th}>
-                                        <DashboardIcons icon={'th'} />
+                                        <TiMessages color='#ffffff' size={'27.26px'} />
                                     </div>
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('pw') }}>
-                                <div className={this.state.optionCode == 'pw' ? styles.optionIcon_Selected : styles.optionIcon}>
+                            <a onClick={() => { this.navigate('se') }}>
+                                <div className={this.state.optionCode == 'se' ? styles.optionIcon_Selected : styles.optionIcon}>
                                     <div className={styles.pw}>
-                                        <DashboardIcons icon={'pw'} />
+                                        <HiOutlineMail color='#ffffff' size={'27.26px'} />
                                     </div>
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('cu') }}>
-                                <div className={this.state.optionCode == 'cu' ? styles.optionIcon_Selected : styles.optionIcon}>
+                            <a onClick={() => { this.navigate('ct') }}>
+                                <div className={this.state.optionCode == 'ct' ? styles.optionIcon_Selected : styles.optionIcon}>
                                     <div className={styles.cu}>
-                                        <DashboardIcons icon={'cu'} />
+                                        <BsConeStriped color='#ffffff' size={'27.26px'} />
                                     </div>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('va') }}>
+                                <div className={this.state.optionCode == 'va' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <div className={styles.db}>
+                                        <BiCar color='#ffffff' size={'27.26px'} />
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('da') }}>
+                                <div className={this.state.optionCode == 'da' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <div className={styles.th}>
+                                        <BsListCheck color='#ffffff' size={'27.26px'} />
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('pa') }}>
+                                <div className={this.state.optionCode == 'pa' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <div className={styles.pw}>
+                                        <GoCreditCard color='#ffffff' size={'27.26px'} />
+                                    </div>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('lr') }}>
+                                <div className={this.state.optionCode == 'lr' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>RI</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('ld') }}>
+                                <div className={this.state.optionCode == 'ss' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>DR</p>
                                 </div>
                             </a>
 
@@ -174,21 +291,51 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('th') }}>
-                                <div className={this.state.optionCode == 'th' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>Trip History</p>
+                            <a onClick={() => { this.navigate('um') }}>
+                                <div className={this.state.optionCode == 'um' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Unread Messages</p>
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('pw') }}>
-                                <div className={this.state.optionCode == 'pw' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>Perch Wallet</p>
+                            <a onClick={() => { this.navigate('se') }}>
+                                <div className={this.state.optionCode == 'se' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Send an Email</p>
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('cu') }}>
-                                <div className={this.state.optionCode == 'cu' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>Contact Us</p>
+                            <a onClick={() => { this.navigate('ct') }}>
+                                <div className={this.state.optionCode == 'ct' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Cancelled trips</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('va') }}>
+                                <div className={this.state.optionCode == 'va' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Vehicle Application</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('da') }}>
+                                <div className={this.state.optionCode == 'da' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Driver Application</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('pa') }}>
+                                <div className={this.state.optionCode == 'pa' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Payments</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('lr') }}>
+                                <div className={this.state.optionCode == 'lr' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>List of Riders</p>
+                                </div>
+                            </a>
+
+                            <a onClick={() => { this.navigate('ld') }}>
+                                <div className={this.state.optionCode == 'ld' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>List of Drivers</p>
                                 </div>
                             </a>
 
