@@ -18,6 +18,8 @@ import { sendFeedback, dateformat, changePassword, deleteAccount, polylineLenght
 import axios from 'axios'
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import "react-datepicker/dist/react-datepicker.css";
+import EmailEditor from 'react-email-editor';
+
 const [GREEN, WHITE, GREY, BLACK, RED, BLUE_TEXT, BLUE, PURPLE, YELLOW] = ['#4EB848', '#FFFFFF', '#959AAC', '#000000', '#FF0000', '#284ED6', '#1970A7', '#A031AF', '#F0E23D'];
 const M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
@@ -2391,7 +2393,940 @@ export class ApplicationStatus extends React.Component {
 
     }
 };
+export class AdminDashBoard extends React.Component {
+    constructor() {
+        super();
 
+        this.state = {
+            sharedLinks: true,
+        };
+    };
+    componentDidMount() {
+    };
+    render() {
+        let sharedLinks = [];
+        for (let i = 0; i < 5; i++) {
+            sharedLinks.push(
+                <div className={styles.sharedLinksCont}>
+                    <div className={styles.sharedLinks}>
+                        <div className={styles.dp1}>
+                            <img src="/doggyProfilePicture.svg" className={styles.doggyProfilePicture} />
+                        </div>
+                        <p className={styles.text1} style={{ color: BLACK }}>Edmond</p>
+                        <p className={styles.addedKm}>+ 5km</p>
+                    </div>
+                    {i !== 5 - 1 ?
+                        <div className={styles.sharedLine}></div>
+                        : <></>}
+                </div>
+            );
+        }
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    {this.props.title == 'OH' ?
+                        <div className={styles.enterKilometerDiv}>
+                            <p className={styles.title} style={{ color: BLACK, width: 'initial', }}>Overall history</p>
+                            <p className={styles.driverDashboard_BOXTITLE} style={{ margin: '0px', textAlign: 'center', marginLeft: '20px' }}><span id={styles.driverDashboard_HALFDATE}>{`Joined 09/2019`}</span><span id={styles.driverDashboard_FULLDATE}>{`Joined September 2019`}</span></p>
+                        </div> :
+                        <p className={styles.title} style={{ color: BLACK }}>Breakdown</p>}
+
+                    <div className={styles.driverDashboardCont}>
+                        <div className={styles.driverDashboard_TE}>
+                            <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Total number of users</p>
+                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: GREEN }}>1672</p>
+                            </div>
+                        </div>
+                        <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                        <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                            <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
+                                <p className={styles.driverDashboard_BOXTEXT} >7</p>
+                            </div>
+
+                            <div className={styles.driverDashboard_BOX}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Unread feedback</p>
+                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: RED }}>328</p>
+                            </div>
+
+                            <div className={styles.driverDashboard_BOX}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
+                                <p className={styles.driverDashboard_BOXTEXT} >17</p>
+                            </div>
+
+                            <div className={styles.driverDashboard_BOX}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
+                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: RED }}>3</p>
+                            </div>
+
+                            <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
+                                <p className={styles.driverDashboard_BOXTITLE}>Number of deleted accounts</p>
+                                <p className={styles.driverDashboard_BOXTEXT} style={{}}>132</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: GREEN, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: WHITE }}>New driver applications</p>
+                    <p className={styles.text} style={{ color: WHITE }}>
+                        You have 16 new driver applications left
+                    </p>
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: GREEN, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: WHITE }}>Unaswered messages</p>
+                    <p className={styles.text} style={{ color: WHITE }}>
+                        You have 16 unaswered messages
+                    </p>
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', }}>
+                    <p className={styles.title} style={{ color: BLACK }}>
+                        Riders who signed up with your share link
+                    </p>
+                    <p className={styles.text} style={{ color: GREY }}>
+                        {
+                            this.state.sharedLinks ?
+                                'These are people you need to add funds for as they shared  their account' :
+                                'When you new people use share links, you\'d see it here'
+                        }
+                    </p>
+
+                    {this.state.sharedLinks ? sharedLinks : <></>}
+
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px', marginBottom: '150px' }}>
+                    <p className={styles.title} style={{ color: BLACK }}>
+                        Uncontacted new users
+                    </p>
+                    <p className={styles.text} style={{ color: GREY }}>
+                        {
+                            this.state.sharedLinks ?
+                                'These are people you need to contact' :
+                                'When you have new uncontacted users, they\'ll show up here'
+                        }
+                    </p>
+
+                    {this.state.sharedLinks ? sharedLinks : <></>}
+
+                </div>
+            </div>
+        )
+
+    }
+};
+export class UnreadMessages extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            idSearch: '',
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9,],
+            userDetails: this.props.userDetails,
+            showMessage: false,
+            response: '',
+            readOrUnread: 'unRead',
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => {
+                        this.setState({
+                            // messageObj: this.state.result[keys[k]], 
+                            showMessage: true
+                        })
+                    }}>
+                        <p style={{ fontSize: '95%' }}>{'this.state.result[keys[k]].subject'}</p>
+
+                        <div className={styles.previousMessageDate}>
+                            <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>
+                                {
+                                    //dateformat(this.state.result[keys[k]].date)
+                                    '11/20/2020'
+                                }</p>
+                            <BsDot size={'55px'} color={
+                                //this.state.result[keys[k]].status == 'PROCESSED' 
+                                true ?
+                                    GREEN : RED} />
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+        return (
+            <div className={styles.cont}>
+                {this.state.showMessage ?
+                    <>
+                        <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                            <p className={styles.title} style={{ color: BLACK, marginBottom: '30px' }}>{'this.state.messageObj.subject'}</p>
+
+
+                            <div className={styles.previousMessageC} style={{ alignItems: 'flex-start' }}>
+                                <div className={styles.previousMessageCol} style={{ backgroundColor: 'rgba(145, 134, 134, 0.5)' }}>
+                                    <p style={{ fontSize: '95%', color: BLACK, lineHeight: '150%', paddingRight: '10px', paddingLeft: '10px' }}>
+                                        {'this.state.messageObj.body'}
+                                    </p>
+                                </div>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>{
+                                    //dateformat(this.state.messageObj.responseDate)
+                                    '11/20/2020'}</p>
+                            </div>
+                            {//if theres a response display the response or else display the textedit
+                                false ?
+                                    <div className={styles.previousMessageC} style={{ alignItems: 'flex-end' }}>
+                                        <div className={styles.previousMessageCol} style={{ backgroundColor: GREEN }}>
+                                            <p style={{ fontSize: '95%', color: WHITE, lineHeight: '150%', paddingRight: '10px', paddingLeft: '10px' }}>
+                                                {'this.state.messageObj.response'}
+                                            </p>
+                                        </div>
+                                        <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>{
+                                            //dateformat(this.state.messageObj.date)
+                                            '11/11/2020'}</p>
+                                    </div> :
+                                    <>
+                                        <div className={styles.sharedLine}></div>
+                                        <textarea
+                                            type="text"
+                                            placeholder="Enter your response here"
+                                            className={styles.contactUsContent}
+                                            //style={{ width: '100%' }}
+                                            value={this.state.response}
+                                            onChange={event => { this.setState({ response: event.target.value }) }}
+                                        />
+                                    </>
+                            }
+
+                        </div>
+
+                        <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginBottom: '150px', marginLeft: '2.5%', width: '95%' }}>
+                            <div className={styles.button2} style={{ backgroundColor: RED }} id={styles.buttonBottom} onClick={() => { this.setState({ showMessage: false }) }}>
+                                <p className={styles.buttonText1}>Cancel</p>
+                            </div>
+                            <div className={styles.button2} style={{ backgroundColor: GREEN }} id={styles.buttonBottom}>
+                                <p className={styles.buttonText1}>Send response</p>
+                            </div>
+                        </div>
+
+                    </> :
+                    <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                        <p className={styles.title} style={{ color: BLACK }}>Unread messages</p>
+                        <div style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <input
+                                type="text"
+                                placeholder="Search by email / userID"
+                                className={styles.searchInput}
+                                //style={{ width: '150px', margin: '0px', fontSize: '90%', border: '1px solid rgba(149, 154, 172, 0.5)' }}
+                                value={this.state.idSearch}
+                                onChange={event => {
+                                    this.setState({ idSearch: event.target.value });
+                                }}
+                            />
+                            <div className={styles.readOrUnreadCont} onClick={() => { this.setState({ readOrUnread: this.state.readOrUnread == 'unRead' ? 'read' : 'unRead' }) }}>
+                                <p className={styles.readOrUnreadText}>{this.state.readOrUnread == 'unRead' ? 'Un-Read' : 'Read'}</p>
+                            </div>
+                        </div>
+                        {results}
+                    </div>}
+            </div>
+        );
+    };
+};
+export class SendAnEmail extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    exportHtml = () => {
+        this.emailEditor.current.editor.exportHtml((data) => {
+            const { design, html } = data;
+            console.log('exportHtml', html);
+        });
+    };
+    onLoad = () => {
+        // you can load your template here;
+        // const templateJson = {};
+        // emailEditorRef.current.editor.loadDesign(templateJson);
+    };
+    render() {
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: BLACK, marginBottom: '30px' }}>Send an Email</p>
+                    <EmailEditor
+                        ref={(ref) => this.emailEditor = ref}
+                        style={{ width: '80%' }}
+                        onLoad={this.onLoad}
+                    />
+                </div>
+            </div>
+        );
+    };
+};
+export class CancelledTrips extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            idRiderSearch: '',
+            idDriverSearch: '',
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9,],
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => { }}>
+                        <p style={{ fontSize: '95%' }}>{'Martin Maddrazo'}</p>
+
+                        <div style={{
+                            display: 'flex', width: '27px', height: '27px', borderRadius: '40px', backgroundColor: GREEN,
+                            //"#1970A7",
+                            justifyContent: 'center', alignItems: 'center'
+                        }}>
+                            <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>{`R`}</p>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'row', width: '150px', justifyContent: 'space-between' }}>
+                            <div className={styles.previousMessageDate}>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>
+                                    {
+                                        //dateformat(this.state.result[keys[k]].date)
+                                        '11/20/2020'
+                                    }</p>
+
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: GREEN, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>167</p>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: BLACK }}>Cancelled Trips</p>
+                    <div style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '20px' }}>
+                        <input
+                            type="text"
+                            placeholder="Search riders by email / userID"
+                            className={styles.searchInput}
+                            style={{ width: '48%' }}
+                            value={this.state.idRiderSearch}
+                            onChange={event => {
+                                this.setState({ idRiderSearch: event.target.value });
+                            }}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Search drivers by email / userID"
+                            className={styles.searchInput}
+                            style={{ width: '48%' }}
+                            value={this.state.idRiderSearch}
+                            onChange={event => {
+                                this.setState({ idRiderSearch: event.target.value });
+                            }}
+                        />
+                    </div>
+
+                    {results}
+
+                </div>
+
+            </div>
+        );
+    };
+};
+export class VehicleApplications extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showDocs: false,
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9,],
+            docList: [
+                "Car Details JSON",
+                "Vehicle insurance",
+                "Vehicle registration",
+                "Vehicle inspection",
+            ],
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        let requirements = [];
+        for (let i = 0; i < this.state.docList.length; i++)
+            requirements.push(
+                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_} onClick={() => { }}>
+                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>{this.state.docList[i]}</p>
+                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: GREEN }}>
+                        <AiOutlineCheck color={WHITE} size={'15px'} />
+                    </div>
+                </div>
+            );
+
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => { this.setState({ showDocs: true }) }}>
+                        <p style={{ fontSize: '95%' }}>{'Thomas Muller'}</p>
+
+                        <div className={styles.previousMessageDate}>
+                            <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>
+                                {
+                                    //dateformat(this.state.result[keys[k]].date)
+                                    '11/20/2020'
+                                }</p>
+
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: BLACK, marginBottom: '20px' }}>Vehicle Applications</p>
+                    {this.state.showDocs ?
+                        requirements : results}
+                </div>
+                {this.state.showDocs ?
+                    <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginBottom: '150px', marginLeft: '2.5%', width: '95%' }}>
+                        <div className={styles.button2} style={{ backgroundColor: RED }} id={styles.buttonBottom} onClick={() => { this.setState({ showDocs: false }) }}>
+                            <p className={styles.buttonText1}>Cancel</p>
+                        </div>
+
+                        <div className={styles.button2} style={{ backgroundColor: GREEN }} id={styles.buttonBottom} onClick={() => { }}>
+                            <p className={styles.buttonText1}>Approve Vehicle</p>
+                        </div>
+
+                    </div> : <></>}
+
+            </div>
+        );
+    };
+};
+export class DriverApplications extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            showDocs: false,
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9,],
+            docList: [
+                "Driver's licence",
+                "Proof of work eligibility",
+                "EPS background check",
+                "Vehicle insurance",
+                "Vehicle registration",
+                "Vehicle inspection",
+            ],
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        let requirements = [];
+        for (let i = 0; i < this.state.docList.length; i++)
+            requirements.push(
+                <div className={styles.driverFAQ_PICDESC} id={styles.driver_APP_TOP_RADIO_CONT_} onClick={() => { }}>
+                    <p className={styles.text} style={{ color: GREY, width: 'initial', margin: '0px', marginLeft: '10px' }}>{this.state.docList[i]}</p>
+                    <div className={styles.driver_APP_RADIO} style={{ backgroundColor: GREEN }}>
+                        <AiOutlineCheck color={WHITE} size={'15px'} />
+                    </div>
+                </div>
+            );
+
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => { this.setState({ showDocs: true }) }}>
+                        <p style={{ fontSize: '95%' }}>{'Martin Maddrazo'}</p>
+
+                        <div style={{ display: 'flex', flexDirection: 'row', width: '150px', justifyContent: 'space-between' }}>
+                            <div className={styles.previousMessageDate}>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>
+                                    {
+                                        //dateformat(this.state.result[keys[k]].date)
+                                        '11/20/2020'
+                                    }</p>
+
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: GREEN, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>S3</p>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: BLACK, marginBottom: '20px' }}>Driver Applications</p>
+                    {this.state.showDocs ?
+                        requirements : results}
+                </div>
+                {this.state.showDocs ?
+                    <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginBottom: '150px', marginLeft: '2.5%', width: '95%' }}>
+                        <div className={styles.button2} style={{ backgroundColor: RED }} id={styles.buttonBottom} onClick={() => { this.setState({ showDocs: false }) }}>
+                            <p className={styles.buttonText1}>Cancel</p>
+                        </div>
+
+                        <div className={styles.button2} style={{ backgroundColor: GREEN }} id={styles.buttonBottom} onClick={() => { }}>
+                            <p className={styles.buttonText1}>Move to next stage</p>
+                        </div>
+
+                    </div> : <></>}
+
+            </div>
+        );
+    };
+};
+export class Payments extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: BLACK }}>Payments</p>
+
+                </div>
+
+            </div>
+        );
+    };
+};
+export class ListOfRiders extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            idSearch: '',
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9,],
+            showSummary: false
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => { this.setState({ showSummary: true }) }}>
+                        <p style={{ fontSize: '95%' }}>{'Martin Maddrazo'}</p>
+                        <div style={{ display: 'flex', flexDirection: 'row', width: '260px', justifyContent: 'space-between' }}>
+                            <div className={styles.previousMessageDate}>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>
+                                    {
+                                        //dateformat(this.state.result[keys[k]].date)
+                                        'Joined at 11/20/2020'
+                                    }</p>
+
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: GREEN, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '-8px' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>167</p>
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: YELLOW, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>167</p>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    {
+                        this.state.showSummary ?
+                            <>
+                                <p className={styles.title} style={{ color: BLACK }}>{`Micheal Myers Summary`}</p>
+
+
+                                <div className={styles.driverDashboardCont}>
+                                    <div className={styles.driverDashboard_TE}>
+                                        <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Total earnings</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: GREEN }}>$ 1345.90</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                                    <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >7</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Average rating</p>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <p className={styles.driverDashboard_BOXTEXT} >4.6</p>
+                                                <AiFillStar size={'15px'} style={{ marginLeft: '5px' }} />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: RED }}>3</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >17</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Passengers carried</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >237</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className={styles.driverDashboardCont}>
+                                    <div className={styles.driverDashboard_TE}>
+                                        <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Email Address</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: GREEN, fontSize: '130%', fontFamily: 'Gilroy-Bold' }}>{'test@test.com'}</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                                    <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Phone number</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ fontSize: '130%', fontFamily: 'Gilroy-Bold' }}>+123456789</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </>
+                            : <>
+                                <p className={styles.title} style={{ color: BLACK }}>List of Riders</p>
+                                <div style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '20px' }}>
+                                    <input
+                                        type="text"
+                                        placeholder="Search by email / userID"
+                                        className={styles.searchInput}
+                                        style={{ width: '48%' }}
+                                        value={this.state.idSearch}
+                                        onChange={event => {
+                                            this.setState({ idSearch: event.target.value });
+                                        }}
+                                    />
+                                </div>
+
+                                {results}
+                            </>
+                    }
+
+                </div>
+                {
+                    this.state.showSummary ?
+                        <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginBottom: '150px', marginLeft: '2.5%', width: '95%' }}>
+                            <div className={styles.button2} style={{ backgroundColor: GREEN }} id={styles.buttonBottom} onClick={() => { this.setState({ showSummary: false }) }}>
+                                <p className={styles.buttonText1}>Cancel</p>
+                            </div>
+
+                        </div> : <></>
+                }
+            </div>
+        );
+    };
+};
+export class ListOfDrivers extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            result: [1, 2, 3, 4, 5, 6, 7, 8, 9,],
+            idSearch: '',
+            showSummary: false
+        };
+    }
+    componentDidMount() {
+        this.loadResult();
+    }
+    loadResult = () => {
+        if (this.state.userDetails) {
+
+        }
+    };
+    render() {
+        if (!this.state.userDetails && this.props.userDetails)
+            this.setState({ userDetails: this.props.userDetails }, () => { this.loadResult(); });
+
+        let results = [];
+        // if (this.state.result) {
+        const keys = Object.keys(this.state.result).sort((a, b) => b - a);
+        for (let k = 0; k < keys.length; k++)
+            results.push(
+                <>
+                    <div className={styles.previousMessageSum} onClick={() => { this.setState({ showSummary: true }) }}>
+                        <p style={{ fontSize: '95%' }}>{'Martin Maddrazo'}</p>
+                        <div style={{ display: 'flex', flexDirection: 'row', width: '260px', justifyContent: 'space-between' }}>
+                            <div className={styles.previousMessageDate}>
+                                <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', }}>
+                                    {
+                                        //dateformat(this.state.result[keys[k]].date)
+                                        'Joined at 11/20/2020'
+                                    }</p>
+
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: GREEN, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginRight: '-8px' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>167</p>
+                            </div>
+                            <div style={{ width: '50px', height: '30px', backgroundColor: RED, borderRadius: '5px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                <p className={styles.readOrUnreadText} style={{ color: '#ffffff', fontFamily: 'Gilroy-ExtraBold' }}>167</p>
+                            </div>
+                        </div>
+                    </div>
+                    {
+                        k == keys.length - 1 ?
+                            <></> :
+                            <div className={styles.sharedLine} style={{ marginTop: '5px' }}></div>
+                    }
+                </>
+            )
+        //}
+
+        return (
+            <div className={styles.cont}>
+                <div className={styles.container} style={{ backgroundColor: WHITE, marginTop: '20px' }}>
+                    {
+                        this.state.showSummary ?
+                            <>
+                                <p className={styles.title} style={{ color: BLACK }}>{`Micheal Myers Summary`}</p>
+
+
+                                <div className={styles.driverDashboardCont}>
+                                    <div className={styles.driverDashboard_TE}>
+                                        <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Total earnings</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: GREEN }}>$ 1345.90</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                                    <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >7</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Average rating</p>
+                                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                <p className={styles.driverDashboard_BOXTEXT} >4.6</p>
+                                                <AiFillStar size={'15px'} style={{ marginLeft: '5px' }} />
+                                            </div>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: RED }}>3</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >17</p>
+                                        </div>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Passengers carried</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} >237</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div className={styles.driverDashboardCont}>
+                                    <div className={styles.driverDashboard_TE}>
+                                        <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Email Address</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: GREEN, fontSize: '130%', fontFamily: 'Gilroy-Bold' }}>{'test@test.com'}</p>
+                                        </div>
+                                    </div>
+                                    <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                                    <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                                        <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                                            <p className={styles.driverDashboard_BOXTITLE}>Phone number</p>
+                                            <p className={styles.driverDashboard_BOXTEXT} style={{ fontSize: '130%', fontFamily: 'Gilroy-Bold' }}>+123456789</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </>
+                            : <>
+                                <p className={styles.title} style={{ color: BLACK }}>List of Drivers</p>
+                                <div style={{ width: '90%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '20px' }}>
+                                    <input
+                                        type="text"
+                                        placeholder="Search by email / userID"
+                                        className={styles.searchInput}
+                                        style={{ width: '48%' }}
+                                        value={this.state.idSearch}
+                                        onChange={event => {
+                                            this.setState({ idSearch: event.target.value });
+                                        }}
+                                    />
+                                </div>
+
+                                {results}
+                            </>
+                    }
+
+                </div>
+                {
+                    this.state.showSummary ?
+                        <div className={styles.enterKilometerDiv} style={{ marginTop: '20px', marginBottom: '150px', marginLeft: '2.5%', width: '95%' }}>
+                            <div className={styles.button2} style={{ backgroundColor: GREEN }} id={styles.buttonBottom} onClick={() => { this.setState({ showSummary: false }) }}>
+                                <p className={styles.buttonText1}>Cancel</p>
+                            </div>
+
+                        </div> : <></>
+                }
+            </div>
+        );
+    };
+};
 function timeAndDate(time, month, year) {
     let slash1 = 0, slash2 = 0, slash3 = 0;
     for (let k = 0; k < time.length; k++) {
