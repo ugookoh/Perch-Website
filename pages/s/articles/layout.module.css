@@ -173,6 +173,15 @@
     margin-bottom: 20px;
     max-width: 1024px;
 }
+.globe{
+    width: 80%;
+    height: auto;
+    object-fit: fill;
+    z-index: 1;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    max-width: 404px;
+}
 
 .helpDesk {
     width: 40%;
@@ -315,6 +324,10 @@
 .faqChoice:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.faqChoice_:hover {
+    cursor: default;
 }
 
 .manChecklist {

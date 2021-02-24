@@ -383,7 +383,7 @@ export class ContactUs extends React.Component {
     }
     loadResult = () => {
         if (this.state.userDetails) {
-            const ref = this.state.userDetails.driverID ? `driverFeedback/${this.state.userDetails.driverID}` : `userFeedback/${this.state.userDetails.userID}`;
+            const ref = this.props.type == 'Driver' ? `driverFeedback/${this.state.userDetails.driverID}` : `userFeedback/${this.state.userDetails.userID}`;
             firebase.database().ref(ref).once('value', snapshot => {
                 this.setState({ result: snapshot.val() ? snapshot.val() : null });
             }).catch(error => { console.log(error.message) });
@@ -404,7 +404,7 @@ export class ContactUs extends React.Component {
 
                             <div className={styles.previousMessageDate}>
                                 <p style={{ fontFamily: 'Gilroy-Semibold', fontSize: '75%', marginRight: '-10px', paddingLeft: '10px' }}>{dateformat(this.state.result[keys[k]].date)}</p>
-                                <BsDot size={'55px'} color={this.state.result[keys[k]].status == 'PROCESSED' ? this.state.userDetails.driverID ? BLUE : GREEN : RED} />
+                                <BsDot size={'55px'} color={this.state.result[keys[k]].status == 'PROCESSED' ? this.props.type == 'Driver' ? BLUE : GREEN : RED} />
                             </div>
                         </div>
                         {
@@ -425,7 +425,7 @@ export class ContactUs extends React.Component {
                             <p className={styles.title} style={{ color: BLACK, marginBottom: '30px' }}>{this.state.messageObj.subject}</p>
 
                             <div className={styles.previousMessageC} style={{ alignItems: 'flex-end' }}>
-                                <div className={styles.previousMessageCol} style={{ backgroundColor: this.state.userDetails.driverID ? BLUE : GREEN }}>
+                                <div className={styles.previousMessageCol} style={{ backgroundColor: this.props.type == 'Driver' ? BLUE : GREEN }}>
                                     <p style={{ fontSize: '95%', color: WHITE, lineHeight: '150%', paddingRight: '10px', paddingLeft: '10px' }}>
                                         {this.state.messageObj.body}
                                     </p>
@@ -479,7 +479,7 @@ export class ContactUs extends React.Component {
                                 <option value="Missing item">Missing item</option>
                                 <option value="Change your name">Change your name</option>
                                 {
-                                    this.state.userDetails.driverID ?
+                                    this.props.type == 'Driver' ?
                                         <option value="Report a rider">Report a rider</option>
                                         : <>
                                             <option value="Report a driver">Report a driver</option>

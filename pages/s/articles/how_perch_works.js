@@ -215,7 +215,7 @@ export default class index extends React.Component {
                                     it makes it a very affordable option to commute.
                                     Commute cost is independent of traffic and surge pricing making it constant at every given point in time.
                                     Riders can now pay using a constant rate per kilometre travelled so travel amount is upfront and easily affordable.<br /><br />
-                                    <a href='/s/articles/why_should_you_join_perch'><span style={{ fontFamily: 'Gilroy-Semibold' }} className={styles.faqChoice}>Read more on payment on this page</span></a>
+                                    <a href='/s/articles/how_prices_are_estimated'><span style={{ fontFamily: 'Gilroy-Semibold' }} className={styles.faqChoice}>Read more on payment on this page</span></a>
                                 </p>
                             </div>
                         </div>
