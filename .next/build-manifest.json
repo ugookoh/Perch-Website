@@ -24,10 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin/dash": [
+    "/s/articles/available_locations": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/admin/dash.js"
+      "static/chunks/pages/s/articles/available_locations.js"
+    ],
+    "/s/articles/help_and_frequently_asked_questions": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/s/articles/help_and_frequently_asked_questions.js"
     ]
   },
   "ampFirstPages": []

@@ -55,11 +55,16 @@ export default class index extends React.Component {
                         • <a className={styles.faqChoice} href='/s/articles/scheduling_driver_trips'>Scheduling a driver trip</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/procedures_for_taking_a_picture'>Procedures for taking a picture of your vehicle</a><br /><br />
 
+                        <span style={{ fontFamily: 'Gilroy-Semibold', }}>Payment and Disputes</span><br />
+                        • <a className={styles.faqChoice} href='/s/articles/how_prices_are_estimated'>How prices are estimated</a><br />
+                        • <a className={styles.faqChoice} href='/s/articles/refunds_and_disputes'>Refunds and disputes</a><br /><br />
+
                         <span style={{ fontFamily: 'Gilroy-Semibold', }}>Other topics</span><br />
                         • <a className={styles.faqChoice} href='/s/articles/how_perch_works'>How Perch works</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/why_should_you_join_perch'>Why should you use Perch?</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/why_should_you_be_a_perch_driver'>Why should you become a Perch driver?</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/guidelines_for_drivers_and_riders'>Guidelines for the Perch community</a><br />
+                        • <a className={styles.faqChoice} href='/s/articles/available_locations'>Locations where Perch operates</a><br />
                     </p>
                     <div className={styles.lowerFAQImageCont}>
                         <img src={'/helpDesk.svg'} alt={'Perch Carpool'} className={styles.helpDesk} />
