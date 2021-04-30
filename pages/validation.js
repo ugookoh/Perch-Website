@@ -41,7 +41,7 @@ export default class index extends React.Component {
                     if (r.data == 'DOESNOTEXIST')
                         this.setState({ errorMessage: 'This user does not exist', validationFailed: true });
                     else if (r.data)
-                        axios.post(`https://us-central1-perch-01.cloudfunctions.net/verifyEmailAndPhoneNumber`, { type: 'email', userID: snapshot.val() })
+                        axios.post(`https://us-central1-perch-01.cloudfunctions.net/verifyEmailAndPhoneNumber`, { type: 'email', userID: r.data })
                             .then(() => { this.setState({ validationCompleted: true, }) })
                             .catch(error => { this.setState({ errorMessage: error.message, validationFailed: true, }) })
                     else
