@@ -1923,7 +1923,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_3___default.a.Component {
           validationFailed: true
         });else if (r.data) axios__WEBPACK_IMPORTED_MODULE_11___default.a.post(`https://us-central1-perch-01.cloudfunctions.net/verifyEmailAndPhoneNumber`, {
           type: 'email',
-          userID: snapshot.val()
+          userID: r.data
         }).then(() => {
           this.setState({
             validationCompleted: true
