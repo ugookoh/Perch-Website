@@ -269,7 +269,7 @@ export default class index extends React.Component {
                             </a>
 
                             <a onClick={() => { this.navigate('ld') }}>
-                                <div className={this.state.optionCode == 'ss' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                <div className={this.state.optionCode == 'ld' ? styles.optionIcon_Selected : styles.optionIcon}>
                                     <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>DR</p>
                                 </div>
                             </a>

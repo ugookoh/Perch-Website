@@ -138,7 +138,7 @@ export default class index extends React.Component {
                         <div className={styles.sFill} id={styles.panelBottom}>
                             <div className={styles.panel}>
                                 <p className={styles.panelTitle}>
-                                    Get results, fast.
+                                    Get a trip plan based on your needs.
                                 </p>
                                 <p className={styles.panelText}>
                                     In order to ensure you get the most convenient,
