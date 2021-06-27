@@ -173,7 +173,17 @@
     margin-bottom: 20px;
     max-width: 1024px;
 }
-.globe{
+
+.profilePicture {
+    width: 300px;
+    height: auto;
+    object-fit: fill;
+    z-index: 1;
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.globe {
     width: 80%;
     height: auto;
     object-fit: fill;
@@ -587,6 +597,9 @@
     .panel {
         width: 90%;
         margin-top: 0px;
+    }
+    .profilePicture {
+        width: 200px;
     }
 }
 

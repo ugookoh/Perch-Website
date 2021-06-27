@@ -174,12 +174,13 @@ export function sendFeedback() {
             }
             else
                 firebase.database().ref(`userFeedbackEmail`).update({
-                    [makeid(5)]: {
+                    [new Date().getTime() + makeid(5)]: {
                         body: this.state.message,
                         subject: this.state.topic,
                         status: 'UNPROCESSED',
                         date: getDate(),
                         email: this.state.userEmail,
+                        nonUser: true,
                     }
                 }).then(() => {
                     this.setState({ topic: 'unselected', message: '', loading: false })
@@ -212,18 +213,13 @@ export function deleteAccount(email, password) {
                 const userID = user.uid;
                 user.delete()
                     .then(() => {
-                        firebase.database().ref(`users/${userID}`).remove().catch(error => { console.log(error.message) });
-                        firebase.database().ref(`deletedAccountReasons`).update({
-                            [userID]: {
-                                reason: this.state.deleteAccountReason,
-                                reviewed: false,
-                                userDetails: this.state.userDetails,
-                            },
-                        }).catch(error => { console.log(error.message) })
-                    })
-                    .catch(error => this.setState({ errorMessage: error.message, loading: false, password1: '' }));
-            })
-            .catch(error => this.setState({ errorMessage: error.message, loading: false, password1: '' }));
+                        axios.post(`https://us-central1-perch-01.cloudfunctions.net/deleteUser`, {
+                            userID: userID,
+                            deleteAccountReason: this.state.deleteAccountReason,
+                            userDetails: this.state.userDetails,
+                        }).catch(error => { alert(error.message) })
+                    }).catch(error => this.setState({ errorMessage: error.message, loading: false, password1: '' }));
+            }).catch(error => this.setState({ errorMessage: error.message, loading: false, password1: '' }));
     })
 };
 export function sendPasswordResetLink(email) {
@@ -236,7 +232,6 @@ export function sendEmail(name, email, type, subject) {
     axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationEmail`, { name: name, email: email, type: type, subject: subject })
         .catch(error => { console.log(error.meesage) })
 };
-
 export function resetPassword(code, newPassword, email) {
     this.setState({ errorMessage: '', loading: true }, () => {
         firebase.auth().confirmPasswordReset(code, newPassword)
@@ -258,6 +253,35 @@ export function resetPassword(code, newPassword, email) {
             .catch(() => { this.setState({ errorMessage: 'The link is no longer valid, please go to the login page and request a new password reset link', loading: false }) })
     })
 };
+export function validateVehicle(userID, timestamp, dateFormat) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/validateVehicle`, { userID: userID, timestamp: timestamp, dateFormat: dateFormat })
+        .catch(error => { alert(error.meesage) })
+};
+export function replyFeedback(response, riderOrDriver, senderID, timestamp) {
+    const ref = riderOrDriver == 'Rider' ? `userFeedback/${senderID}/${timestamp}` : `driverFeedback/${senderID}/${timestamp}`
+    firebase.database().ref(ref).update({
+        response: response,
+        status: 'PROCESSED',
+        responseDate: getDate(),
+    })
+        .then(() => {
+            this.setState({
+                responseDate: new Date().getTime(),
+                showResponse: true,
+            })
+        })
+        .catch(error => {
+            alert(error.message)
+        })
+};
+export function validateDriver(userID, timestamp, dateFormat) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/validateDriver`, { userID: userID, timestamp: timestamp, dateFormat: dateFormat })
+        .then(() => {
+            this.loadResult();
+            this.setState({ showDocs: false, vehicle: {}, verified: [] });
+        })
+        .catch(error => { alert(error.meesage) })
+};
 //MAKE A RANDOMID
 export function makeid(length) {
     var result = '';
@@ -266,9 +290,35 @@ export function makeid(length) {
     for (var i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-    return `${new Date().getTime()}${result}`;
+    return result;
 };
+export function driverAppplicationAdvance() {
+    const { selected } = this.state;
 
+    switch (selected.stage) {
+        case 'three': {
+            firebase.database().ref(`driverApplications/${selected.userID}`)
+                .update({
+                    progress: JSON.stringify(["done", "done", "done", "ongoing", "undone"]),
+                    stage: "four",
+                })
+                .then(() => {
+                    //MAKE ARRANGEMENTS TO SEND DRIVER AN OFFER LETTER
+                    this.setState({ showDocs: false }, () => { this.loadResult() })
+                })
+                .catch(error => { alert(error.message) })
+        } break;
+        case 'four': {//THE INDEPENNDENT CONTRACTOR DOCUMENT HAS BEEN SIGNED AND WE ARE GOOD TO GO
+            firebase.database().ref(`driverApplications/${selected.userID}`)
+                .update({
+                    progress: JSON.stringify(["done", "done", "done", "done", "done"]),
+                    stage: "five",
+                })
+                .then(() => { this.setState({ showDocs: false }, () => { this.loadResult() }) })
+                .catch(error => { alert(error.message) })
+        } break;
+    };
+}
 export function getDate() {
     const DAY = new Date().getDate();
     const MONTH = new Date().getMonth();
@@ -279,7 +329,6 @@ export function getDate() {
 
     return (`${YEAR}-${MONTH}-${DAY}-${HOUR}-${MIN}-${SECOND}`);
 };
-
 export function dateformat(time) {
     let slash1 = 0, slash2 = 0, slash3 = 0;
     for (let k = 0; k < time.length; k++) {
@@ -296,7 +345,6 @@ export function dateformat(time) {
 
     return `${d}/${Number(m) + 1}/${y}`;
 };
-
 export function polylineLenght(data) {
     let distance = 0;
     for (let k = 0; k < data.length - 1; k++)
@@ -304,7 +352,22 @@ export function polylineLenght(data) {
 
     return (distance)
 };
+export function timeAndDate(time, month, year) {
+    let slash1 = 0, slash2 = 0, slash3 = 0;
+    for (let k = 0; k < time.length; k++) {
+        if (time.charAt(k) == '-')
+            slash1 == 0 ? slash1 = k : slash2 == 0 ? slash2 = k : slash3 = k;
+    }
 
+    const HOUR = Number(time.substring(slash1 + 1, slash2)) == 0 ? 12 : Number(time.substring(slash1 + 1, slash2)) > 12 ? Number(time.substring(slash1 + 1, slash2)) - 12 : Number(time.substring(slash1 + 1, slash2));
+    const MIN = Number(time.substring(slash2 + 1, slash3)) < 10 ? `0` + time.substring(slash2 + 1, slash3) : Number(time.substring(slash2 + 1, slash3));
+    const MERIDIAN = Number(time.substring(slash1 + 1, slash2)) < 12 ? 'AM' : 'PM';
+    const DAY = time.substring(0, slash1);
+    const MONTH = M.indexOf(month) + 1;
+    const formattedDate = `${DAY}/${MONTH}/${year}, ${HOUR}:${MIN} ${MERIDIAN}`;
+
+    return (formattedDate);
+};
 export function distanceCalculator(lat1, lon1, lat2, lon2) {
     let R = 6371 * 1000; // Radius of the earth in m
     let dLat = deg2rad(lat2 - lat1);  // deg2rad below
@@ -318,7 +381,6 @@ export function distanceCalculator(lat1, lon1, lat2, lon2) {
     let d = R * c; // Distance in m
     return d;
 };
-
 export function emailFormat(email, type) {
     //@ is stored as -(hyphen)
     //. is stored as _(underscore)
@@ -334,3 +396,30 @@ export function emailFormat(email, type) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 };
+export function dateOfQuery(timestamp) {
+    function formatAMPM(date) {
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var ampm = hours >= 12 ? 'pm' : 'am';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // the hour '0' should be '12'
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        var strTime = hours + ':' + minutes + ' ' + ampm;
+        return strTime;
+    };
+
+    return `${formatAMPM(new Date(timestamp)).toUpperCase()} ${('0' + new Date(timestamp).getDate()).slice(-2)}/${('0' + (new Date(timestamp).getMonth() + 1)).slice(-2)}/${new Date(timestamp).getFullYear()}`
+};
+export const M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+export const colors = {
+    GREEN: "#4EB848",
+    WHITE: "#FFFFFF",
+    GREY: "#959AAC",
+    BLACK: "#000000",
+    RED: "#FF0000",
+    BLUE_TEXT: "#284ED6",
+    BLUE: "#1970A7",
+    PURPLE: "#A031AF",
+    YELLOW: "#F0E23D",
+};
+

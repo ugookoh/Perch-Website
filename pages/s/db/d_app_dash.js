@@ -8,7 +8,9 @@ import Router from 'next/router';
 import { VehicleConfirmation, UploadDocuments, ApplicationStatus } from '../../../functions/panels/panels';
 import firebase from 'firebase';
 import LoadingScreen from '../../components/loadingScreen/loadingScreen';
-import { signOut } from '../../../functions/functions';
+import { signOut, makeid } from '../../../functions/functions';
+import axios from 'axios';
+
 
 export default class index extends React.Component {
     constructor() {
@@ -30,23 +32,61 @@ export default class index extends React.Component {
         window.addEventListener('resize', this.updateWindowDimensions);
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
-                this.setState({ userID: user.uid }, () => {
-                    firebase.database().ref(`users/${user.uid}/firstName`).once('value', snapshot => { this.setState({ firstName: snapshot.val() }) }).catch(error => { console.log(error.message) });
-                    firebase.database().ref(`users/${user.uid}/photoRef`).once('value', snapshot => { this.setImage(snapshot.val()) }).catch(error => { console.log(error.message) });
-                    firebase.database().ref(`driverApplications/${user.uid}`).once('value', snapshot => {
-                        if (snapshot.val()) {
-                            this.setState({ currentState: snapshot.val(), loggedIn: 'TRUE' });
-                        }
-                        else {
-                            firebase.database().ref(`users/${user.uid}`).update({ driverVerified: 'PENDING' }).catch(error => { console.log(error.message) })
-                            firebase.database().ref(`driverApplications/${user.uid}`).update({
-                                stage: 'one',
-                            })
-                                .then(() => { this.setState({ loggedIn: 'TRUE' }); })
-                                .catch(error => { console.log(error.message) })
-                        }
-                    }).catch(error => { console.log(error.message) })
-                });
+                firebase.database().ref(`users/${user.uid}/driverVerified`).once('value', snap => {
+                    if (snap.val() == 'VERIFIED')
+                        Router.push('/s/db/ddash').then(() => window.scrollTo(0, 0));
+                    else
+                        this.setState({ userID: user.uid }, () => {
+                            firebase.database().ref(`users/${user.uid}/firstName`).once('value', snapshot => { this.setState({ firstName: snapshot.val() }) }).catch(error => { console.log(error.message) });
+                            firebase.database().ref(`users/${user.uid}/photoRef`).once('value', snapshot => { this.setImage(snapshot.val()) }).catch(error => { console.log(error.message) });
+
+                            firebase.database().ref(`driverApplications/${user.uid}`).once('value', snapshot => {
+                                if (snapshot.val()) {
+                                    if (snapshot.val().stage == 'four' || snapshot.val().stage == 'five')
+                                        this.setState({ currentState: { ...snapshot.val(), stage: 'three' }, loggedIn: 'TRUE' });
+                                    else
+                                        this.setState({ currentState: snapshot.val(), loggedIn: 'TRUE' });
+                                }
+                                else {
+                                    axios.post('https://us-central1-perch-01.cloudfunctions.net/updateUserDetails', {
+                                        userID: user.uid,
+                                        fieldsToUpdate: { driverVerified: 'PENDING' },
+                                    }).catch(error => { alert(error.message) })
+
+                                    firebase.database().ref(`users/${user.uid}`).once('value', names => {
+                                        const { firstName, lastName } = names.val();
+                                        const name = `${firstName} ${lastName}`;
+                                        const timestamp = new Date().getTime();
+                                        const DAY = new Date(timestamp).getDate();
+                                        const MONTH = new Date(timestamp).getMonth();
+                                        const YEAR = new Date(timestamp).getFullYear();
+                                        const HOUR = new Date(timestamp).getHours();
+                                        const MIN = new Date(timestamp).getMinutes();
+                                        const SECOND = new Date(timestamp).getSeconds();
+
+                                        firebase.database().ref(`driverApplications/${user.uid}`).update({
+                                            stage: 'one',
+                                            timestamp: timestamp,
+                                            name: name,
+                                            vehicleRandomID: makeid(6),
+                                            dateFormat: `${YEAR}-${MONTH}-${DAY}-${HOUR}-${MIN}-${SECOND}`,
+                                            verified: JSON.stringify([
+                                                false,//driversLicenseVerified
+                                                false,//proofOfWorkEligibilityVerified
+                                                false,//epsBackgroundCheckVerified
+                                                false,//insuranceVerified
+                                                false,//registrationVerified
+                                                false,//inspectionVerified
+                                            ]),
+                                            offerLetterSigned: false,
+                                        })
+                                            .then(() => { this.setState({ loggedIn: 'TRUE' }); })
+                                            .catch(error => { console.log(error.message) })
+                                    }).catch(error => { console.log(error.message) })
+                                }
+                            }).catch(error => { console.log(error.message) })
+                        });
+                })
             }
             else
                 this.setState({ loggedIn: 'FALSE' });

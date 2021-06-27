@@ -27,8 +27,12 @@ export default class index extends React.Component {
         firebase.auth().onAuthStateChanged(user => {
             if (user)
                 firebase.database().ref(`users/${user.uid}`).once('value', (snapshot) => {
-                    this.setImage(snapshot.val().photoRef);
-                    this.setState({ loggedIn: snapshot.val() ? 'TRUE' : 'FALSE', userDetails: snapshot.val() });
+                    if (snapshot.val().driverVerified == 'VERIFIED') {
+                        this.setImage(snapshot.val().photoRef);
+                        this.setState({ loggedIn: snapshot.val() ? 'TRUE' : 'FALSE', userDetails: snapshot.val() });
+                    }
+                    else
+                        Router.push('/s/db/d_app_dash').then(() => window.scrollTo(0, 0));
                 }).catch(error => { console.log(error.message) });
             else
                 this.setState({ loggedIn: 'FALSE' });
