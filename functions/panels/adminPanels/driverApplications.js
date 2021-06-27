@@ -118,7 +118,7 @@ export default class DriverApplications extends React.Component {
     };
 
     loadSelectedResult = (userID) => {
-        firebase.database().ref(``).once('value', snapshot => {
+        firebase.database().ref(`driverApplications/${userID}`).once('value', snapshot => {
             const { stage, timestamp, name, vehicleRandomID, dateFormat, offerLetterSigned } = snapshot.val();
             const verified = JSON.parse(snapshot.val().verified)
             if (stage == 'three') {
@@ -350,7 +350,11 @@ export default class DriverApplications extends React.Component {
                                         alert('Driver has not yet signed offer letter, please send them a reminder if it has been a while')
                                 }
                             }}>
-                            <p className={styles.buttonText1}>Move to next stage</p>
+                            <p className={styles.buttonText1}>{
+                                this.state.selected.stage == 'three' ?
+                                    'Send offer letter' :
+                                    'Validate Driver'
+                            }</p>
                         </div>
 
                     </div> : <></>}

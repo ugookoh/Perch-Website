@@ -230,7 +230,7 @@ export function sendPasswordResetLink(email) {
 };
 export function sendEmail(name, email, type, subject) {
     axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendVerificationEmail`, { name: name, email: email, type: type, subject: subject })
-        .catch(error => { console.log(error.meesage) })
+        .catch(error => { console.log(error.message) })
 };
 export function resetPassword(code, newPassword, email) {
     this.setState({ errorMessage: '', loading: true }, () => {
@@ -255,7 +255,7 @@ export function resetPassword(code, newPassword, email) {
 };
 export function validateVehicle(userID, timestamp, dateFormat) {
     axios.post(`https://us-central1-perch-01.cloudfunctions.net/validateVehicle`, { userID: userID, timestamp: timestamp, dateFormat: dateFormat })
-        .catch(error => { alert(error.meesage) })
+        .catch(error => { alert(error.message) })
 };
 export function replyFeedback(response, riderOrDriver, senderID, timestamp) {
     const ref = riderOrDriver == 'Rider' ? `userFeedback/${senderID}/${timestamp}` : `driverFeedback/${senderID}/${timestamp}`
@@ -280,7 +280,7 @@ export function validateDriver(userID, timestamp, dateFormat) {
             this.loadResult();
             this.setState({ showDocs: false, vehicle: {}, verified: [] });
         })
-        .catch(error => { alert(error.meesage) })
+        .catch(error => { alert(error.message) })
 };
 //MAKE A RANDOMID
 export function makeid(length) {

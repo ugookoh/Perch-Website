@@ -24,15 +24,15 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/admin/dash": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/admin/dash.js"
-    ],
     "/s/db/d_app_dash": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
       "static/chunks/pages/s/db/d_app_dash.js"
+    ],
+    "/s/db/ddash": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/s/db/ddash.js"
     ]
   },
   "ampFirstPages": []
