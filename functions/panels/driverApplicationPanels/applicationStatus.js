@@ -46,14 +46,14 @@ export default class ApplicationStatus extends React.Component {
     };
     uploadOfferLetter = () => {
         this.setState({ loading1: true }, () => {
-            firebase.storage().ref(`driverVehicleDocs/${this.state.userID}/driverDetails/signedOfferLetter.pdf`)
+            firebase.storage().ref(`driverVehicleDocs/${this.state.userID}/driverDetails/signedOfferLetter`)
                 .put(this.state.signedOfferLetter)
                 .then(() => {
                     firebase.database().ref(`completedDriverApplications${this.state.userID}`).update({
                         stage: snapshot.after.val(),
                         offerLetterSigned: true,
                     }).catch(error => { console.log(error.message) });
-                    
+
                     firebase.database().ref(`driverApplications/${this.state.userID}`).update({
                         offerLetterSigned: true,
                         progress: JSON.stringify(["done", "done", "done", "done", "ongoing"]),

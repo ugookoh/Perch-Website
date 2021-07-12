@@ -7,6 +7,7 @@ import TripHistory from './userPanels/tripHistory';
 
 //DRIVER PANELS
 import DriverDashBoard from './driverPanels/driverDashBoard';
+import DriverDocuments from './driverPanels/driverDocuments';
 import DriverTripHistory from './driverPanels/driverTripHistory';
 import DriverVehicles from './driverPanels/driverVehicles';
 import HelpAndFAQ from './driverPanels/helpAndFAQ';
@@ -20,7 +21,6 @@ import UploadDocuments from './driverApplicationPanels/uploadDocuments';
 import AdminDashBoard from './adminPanels/adminDashBoard';
 import CancelledTrips from './adminPanels/cancelledTrips';
 import DriverApplications from './adminPanels/driverApplications';
-import ListOfDrivers from './adminPanels/listOfDrivers';
 import ListOfRiders from './adminPanels/listOfRiders';
 import Payments from './adminPanels/payments';
 import SendAnEmail from './adminPanels/sendAnEmail';
@@ -38,6 +38,7 @@ export {
 
     //DRIVER PANELS
     DriverDashBoard,
+    DriverDocuments,
     DriverVehicles,
     DriverTripHistory,
     HelpAndFAQ,
@@ -56,5 +57,4 @@ export {
     DriverApplications,
     Payments,
     ListOfRiders,
-    ListOfDrivers,
 };

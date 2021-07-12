@@ -144,10 +144,14 @@ export default class UnreadMessages extends React.Component {
                                 style={{ backgroundColor: colors.GREEN }}
                                 id={styles.buttonBottom}
                                 onClick={() => {
-                                    if (!this.state.showResponse)
-                                        replyFeedback.call(this, this.state.response, this.state.riderOrDriver, this.state.toShow.senderID, this.state.toShow.timestamp);
-                                    else
-                                        alert('Response already sent')
+                                    if (this.state.response.length < 10)
+                                        alert('Please enter a response')
+                                    else {
+                                        if (!this.state.showResponse)
+                                            replyFeedback.call(this, this.state.response, this.state.riderOrDriver, this.state.toShow.senderID, this.state.toShow.timestamp);
+                                        else
+                                            alert('Response already sent')
+                                    }
                                 }}>
                                 <p className={styles.buttonText1}>Send response</p>
                             </div>

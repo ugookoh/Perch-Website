@@ -1,30 +1,29 @@
 //admin dashboard
-import React, { Component } from 'react';
-import styles from './layout.module.css';
+import firebase from 'firebase';
 import Head from 'next/head';
-import { ImExit } from "react-icons/im";
-import { Logo, DashboardIcons } from '../../functions/images/vectors';
-import { TiMessages } from 'react-icons/ti';
-import { HiOutlineMail } from 'react-icons/hi';
+import Router from 'next/router';
+import React from 'react';
+import { BiCar } from 'react-icons/bi';
 import { BsConeStriped, BsListCheck } from 'react-icons/bs';
 import { GoCreditCard } from 'react-icons/go';
-import { BiCar } from 'react-icons/bi';
-import Router from 'next/router';
+import { HiOutlineMail } from 'react-icons/hi';
+import { ImExit } from "react-icons/im";
+import { TiMessages } from 'react-icons/ti';
+import { signOut } from '../../functions/functions';
+import { DashboardIcons, Logo } from '../../functions/images/vectors';
 import {
     AdminDashBoard,
-    SendAnEmail,
-    UnreadMessages,
     CancelledTrips,
-    VehicleApplications,
     DriverApplications,
-    Payments,
     ListOfRiders,
-    ListOfDrivers,
-    Settings
+    Payments,
+    SendAnEmail,
+    Settings,
+    UnreadMessages,
+    VehicleApplications
 } from '../../functions/panels/panels';
-import { signOut } from '../../functions/functions';
-import firebase from 'firebase';
 import LoadingScreen from '../components/loadingScreen/loadingScreen';
+import styles from './layout.module.css';
 export default class index extends React.Component {
     constructor() {
         super();
@@ -101,9 +100,6 @@ export default class index extends React.Component {
             case 'lr': {
                 this.setState({ optionCode: 'lr' });
             } break;
-            case 'ld': {
-                this.setState({ optionCode: 'ld' });
-            } break;
             case 'ss': {
                 this.setState({ optionCode: 'ss' });
             } break;
@@ -149,12 +145,8 @@ export default class index extends React.Component {
                 content = <Payments userDetails={this.state.userDetails} />;
             } break;
             case 'lr': {
-                option = 'List of Riders';
+                option = 'List of Users';
                 content = <ListOfRiders userDetails={this.state.userDetails} />;
-            } break;
-            case 'ld': {
-                option = 'List of Drivers';
-                content = <ListOfDrivers userDetails={this.state.userDetails} />;
             } break;
             case 'ss': {
                 option = 'Settings';
@@ -264,13 +256,7 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('lr') }}>
                                 <div className={this.state.optionCode == 'lr' ? styles.optionIcon_Selected : styles.optionIcon}>
-                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>RI</p>
-                                </div>
-                            </a>
-
-                            <a onClick={() => { this.navigate('ld') }}>
-                                <div className={this.state.optionCode == 'ld' ? styles.optionIcon_Selected : styles.optionIcon}>
-                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>DR</p>
+                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>LU</p>
                                 </div>
                             </a>
 
@@ -329,13 +315,7 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('lr') }}>
                                 <div className={this.state.optionCode == 'lr' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>List of Riders</p>
-                                </div>
-                            </a>
-
-                            <a onClick={() => { this.navigate('ld') }}>
-                                <div className={this.state.optionCode == 'ld' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>List of Drivers</p>
+                                    <p className={styles.optionDescription}>List of Users</p>
                                 </div>
                             </a>
 
