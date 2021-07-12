@@ -4,6 +4,10 @@ import { AiOutlineClose, AiOutlineRight } from 'react-icons/ai';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { colors } from '../../functions';
 import styles from '../panel_layout.module.css';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_RjADdW2vGwFAgOOk7ws1juNB002JV727O8');
 
 
 export default class PerchWallet extends React.Component {

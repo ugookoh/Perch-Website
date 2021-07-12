@@ -5,7 +5,7 @@ import Head from 'next/head';
 import { ImExit } from "react-icons/im";
 import { Logo, DashboardIcons } from '../../../functions/images/vectors';
 import Router from 'next/router';
-import { DriverDashBoard, DriverTripHistory, DriverVehicles, HelpAndFAQ, ContactUs, Settings } from '../../../functions/panels/panels';
+import { DriverDashBoard, DriverTripHistory, DriverDocuments, DriverVehicles, HelpAndFAQ, ContactUs, Settings } from '../../../functions/panels/panels';
 import firebase from 'firebase';
 import LoadingScreen from '../../components/loadingScreen/loadingScreen';
 import { signOut } from '../../../functions/functions';
@@ -65,8 +65,8 @@ export default class index extends React.Component {
             case 'vh': {
                 this.setState({ optionCode: 'vh' })
             } break;
-            case 'tx': {
-                this.setState({ optionCode: 'tx' })
+            case 'md': {
+                this.setState({ optionCode: 'md' })
             } break;
             case 'pi': {
                 this.setState({ optionCode: 'pi' })
@@ -105,7 +105,10 @@ export default class index extends React.Component {
                 option = 'My Vehicles';
                 content = <DriverVehicles userDetails={this.state.userDetails} />;
             } break;
-            case 'tx': { option = 'Tax Information' } break;
+            case 'md': {
+                option = 'My Documents';
+                content = <DriverDocuments userDetails={this.state.userDetails} />;
+            } break;
             case 'pi': { option = 'Payout Information' } break;
             case 'cu': {
                 option = 'Contact Us';
@@ -190,10 +193,10 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('tx') }}>
-                                <div className={this.state.optionCode == 'tx' ? styles.optionIcon_Selected_d : styles.optionIcon_d}>
-                                    <div className={styles.tx}>
-                                        <DashboardIcons icon={'tx'} />
+                            <a onClick={() => { this.navigate('md') }}>
+                                <div className={this.state.optionCode == 'md' ? styles.optionIcon_Selected_d : styles.optionIcon_d}>
+                                    <div className={styles.md}>
+                                        <DashboardIcons icon={'md'} />
                                     </div>
                                 </div>
                             </a>
@@ -251,9 +254,9 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
-                            <a onClick={() => { this.navigate('tx') }}>
-                                <div className={this.state.optionCode == 'tx' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
-                                    <p className={styles.optionDescription}>Tax Information</p>
+                            <a onClick={() => { this.navigate('md') }}>
+                                <div className={this.state.optionCode == 'md' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>My Documents</p>
                                 </div>
                             </a>
 

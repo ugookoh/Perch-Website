@@ -180,6 +180,13 @@ export function DashboardIcons(props) {
                 </g>
             </svg>
         );
+    else if (props.icon == 'md') {
+        return (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56.009 64.01">
+                <path id="Icon_open-document" data-name="Icon open-document" d="M0,0V64.01H56.009V32.005H24V0ZM32.005,0V24h24ZM8,16h8v8H8Zm0,16h8v8H8Zm0,16H40.006v8H8Z" fill="#fff" />
+            </svg>
+        )
+    }
     else if (props.icon == 'one')
         return (
             <svg viewBox="0 0 13 38">

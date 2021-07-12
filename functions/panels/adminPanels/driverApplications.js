@@ -112,7 +112,7 @@ export default class DriverApplications extends React.Component {
     };
 
     loadOfferLeffer = (userID) => {
-        firebase.storage().ref(`driverVehicleDocs/${userID}/driverDetails/signedOfferLetter.pdf`).getDownloadURL()
+        firebase.storage().ref(`driverVehicleDocs/${userID}/driverDetails/signedOfferLetter`).getDownloadURL()
             .then(result => { this.setState({ offerLetter: result }); })
             .catch(error => { console.log(error.message); });
     };

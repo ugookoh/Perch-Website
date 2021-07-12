@@ -167,21 +167,22 @@ export function sendFeedback() {
                         subject: this.state.topic,
                         status: 'UNPROCESSED',
                         date: getDate(),
+                        timestamp: new Date().getTime(),
                     }
                 }).then(() => {
                     this.setState({ topic: 'unselected', message: '', loading: false }, () => { this.loadResult() })
                 }).catch(error => { console.log(error.message) });
             }
             else
-                firebase.database().ref(`userFeedbackEmail`).update({
-                    [new Date().getTime() + makeid(5)]: {
-                        body: this.state.message,
-                        subject: this.state.topic,
-                        status: 'UNPROCESSED',
-                        date: getDate(),
-                        email: this.state.userEmail,
-                        nonUser: true,
-                    }
+                axios.post(`https://us-central1-perch-01.cloudfunctions.net/guestSendFeedback`, {
+                    body: this.state.message,
+                    subject: this.state.topic,
+                    status: 'UNPROCESSED',
+                    date: getDate(),
+                    email: this.state.userEmail,
+                    timestamp: new Date().getTime(),
+                    nonUser: true,
+                    case: 'send',
                 }).then(() => {
                     this.setState({ topic: 'unselected', message: '', loading: false })
                 }).catch(error => { console.log(error.message) });
@@ -258,22 +259,43 @@ export function validateVehicle(userID, timestamp, dateFormat) {
         .catch(error => { alert(error.message) })
 };
 export function replyFeedback(response, riderOrDriver, senderID, timestamp) {
-    const ref = riderOrDriver == 'Rider' ? `userFeedback/${senderID}/${timestamp}` : `driverFeedback/${senderID}/${timestamp}`
+    const ref = riderOrDriver == 'Rider' ? `userFeedback/${senderID}/${timestamp}` : `driverFeedback/${senderID}/${timestamp}`;
+    const nonUser = this.state.toShow.nonUser;
+    if (nonUser)
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/guestSendFeedback`, {
+            email: this.state.toShow.email,
+            subject: `Re:[${this.state.toShow.subject}]`,
+            response: response,
+            case: 'reply',
+        }).catch(error => {
+            alert(error.message)
+        })
+
     firebase.database().ref(ref).update({
         response: response,
         status: 'PROCESSED',
         responseDate: getDate(),
+    }).then(() => {
+        this.setState({
+            responseDate: new Date().getTime(),
+            showResponse: true,
+        })
+    }).catch(error => {
+        alert(error.message)
     })
-        .then(() => {
-            this.setState({
-                responseDate: new Date().getTime(),
-                showResponse: true,
-            })
-        })
-        .catch(error => {
-            alert(error.message)
-        })
 };
+export function sendUserEmail(email, subject, text) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/sendEmail`, {
+        email: email,
+        subject: subject,
+        text: text,
+    }).then(() => {
+        this.setState({ email: '', subject: '', text: '', loading: false })
+    }).catch(error => {
+        alert(error.message);
+        this.setState({ loading: false });
+    })
+}
 export function validateDriver(userID, timestamp, dateFormat) {
     axios.post(`https://us-central1-perch-01.cloudfunctions.net/validateDriver`, { userID: userID, timestamp: timestamp, dateFormat: dateFormat })
         .then(() => {
