@@ -2,7 +2,6 @@ import firebase from 'firebase';
 import Router from 'next/router';
 import axios from 'axios';
 
-
 export function signIn(email, password, type) {
     this.setState({ error: false, errorMessage: '', loading: true }, () => {
         firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
@@ -444,4 +443,59 @@ export const colors = {
     PURPLE: "#A031AF",
     YELLOW: "#F0E23D",
 };
+export function isNumber(n) {
+    return !isNaN(parseFloat(n)) && !isNaN(n - 0);
+};
+export function deleteCard(userID, last4, selected) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/deleteStripeCard`, { userID: userID, last4: last4, selected: selected })
+        .catch(error => { console.log(error.message) });
+};
+export function storeCard(userID, cardObject, setLoading, setErrorMessage, cancel) {
+    let c = cardObject;
+    c.card.cardId = cardObject.card.id;
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/storeStripeCard`, { userID: userID, cardObject: c })
+        .then(() => {
+            cancel();
+        })
+        .catch(error => {
+            setLoading(false)
+            setErrorMessage(error.message);
+        });
+};
+export function buyKilometers(toSend) {
+    this.setState({ paymentLoading: true }, () => {
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/buyPerchKilometers`, { ...toSend, status: 'initial' })
+            .then(result => {
+                const { status, client_secret, id } = result.data;
+                toSend.paymentIntentId = id;
+                toSend.status = 'confirm_payment';
 
+                if (status == 'succeeded') {
+                    this.setState({ paymentCompleted: true })
+                }
+                else if (status == 'requires_action') {
+                    stripe.authenticatePaymentIntent({
+                        clientSecret: client_secret
+                    }).then(data => {
+                        if (data.status == 'requires_confirmation') {
+                            axios.post(`https://us-central1-perch-01.cloudfunctions.net/buyPerchKilometers`, { ...toSend, paymentIntentId: id, status: 'confirm_payment' })
+                                .then((result_) => {
+                                    const status_ = result_.data.status;
+                                    if (status_ == 'succeeded') {
+                                        this.setState({ paymentCompleted: true })
+                                    }
+                                })
+                                .catch(error => {
+                                    this.setState({ paymentError: true, paymentErrorMessage: error.message });
+                                })
+                        }
+                    }).catch(error => {
+                        this.setState({ paymentError: true, paymentErrorMessage: error.message });
+                    })
+                }
+            })
+            .catch(error => {
+                this.setState({ paymentError: true, paymentErrorMessage: error.message });
+            });
+    });
+};
