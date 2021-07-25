@@ -76,8 +76,6 @@ export default class index extends React.Component {
         if (this.state.loggedIn != 'TRUE')
             return <LoadingScreen />;
 
-
-
         let option = '';
         let content = <></>;
         switch (this.state.optionCode) {
