@@ -19,6 +19,7 @@ export default class index extends React.Component {
             width: 0, height: 0,
             loggedIn: 'NULL',
             url: null,
+            userDetails: null,
         }
     };
     componentDidMount() {
@@ -82,7 +83,7 @@ export default class index extends React.Component {
     render() {
         if (this.state.loggedIn == 'FALSE')
             Router.push('/s/auth/d_si_su').then(() => window.scrollTo(0, 0));
-        if (this.state.loggedIn != 'TRUE')
+        if (this.state.loggedIn != 'TRUE' || !this.state.userDetails)
             return <LoadingScreen driverLogo={true} />;
 
 

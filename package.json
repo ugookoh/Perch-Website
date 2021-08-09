@@ -9,14 +9,17 @@
     "start": "cross-env NODE_ENV=production PORT=8080 node server.js"
   },
   "dependencies": {
+    "@mapbox/polyline": "^1.1.1",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.15.1",
+    "@turf/turf": "^6.5.0",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
     "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "firebase": "^8.0.2",
+    "google-map-react": "^2.1.10",
     "next": "9.5.5",
     "next-fonts": "^1.4.0",
     "react": "17.0.1",

@@ -10,6 +10,28 @@
     padding-bottom: 20px;
 }
 
+.mapBox {
+    width: 90%;
+    height: 400px;
+    position: relative;
+}
+
+.mapBoxCenter {
+    width: 40px;
+    height: 40px;
+    border-radius: 40px;
+    background-color: #ffffff;
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.37);
+    box-shadow: 5px 5px 15px 5px rgba(0, 0, 0, 0.37);
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
 .cont {
     width: 100%;
     align-content: center;
@@ -21,6 +43,14 @@
     font-family: "Gilroy-Semibold";
     font-size: 110%;
     margin: 0px;
+}
+
+.breakdownSpreadApart {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .text,
@@ -115,6 +145,7 @@
 #driver_APP_TOP_RADIO_CONT_,
 .uploadDocumentIconCont,
 .searchButton,
+.mapBoxCenter,
 .readOrUnreadCont:hover {
     cursor: pointer;
 }
@@ -186,8 +217,15 @@
 #driver_APP_TOP_RADIO_CONT_:active,
 .previousMessageSum:active,
 .uploadDocumentIconCont:active,
-.readOrUnreadCont:active {
+.readOrUnreadCont:active,
+.mapBoxCenter:active {
     opacity: 0.7;
+}
+
+.mapIcon {
+    height: 20px;
+    width: auto;
+    object-fit: fill;
 }
 
 .sharedLinksCont {
@@ -1169,6 +1207,31 @@
     font-family: "Gilroy-Regular";
     font-size: initial;
     color: #4eb848;
+}
+
+.breakdownParter {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin-top: 30px;
+}
+
+.breakdownTitle {
+    font-family: "Gilroy-SemiBold";
+    font-size: 100%;
+    margin: 0;
+    
+}
+
+.breakdownCash {
+    font-family: "Gilroy-Bold";
+    font-size: 150%;
+    margin: 0;
+    margin-top: 20px;
 }
 
 @media only screen and (max-width: 1170px) {

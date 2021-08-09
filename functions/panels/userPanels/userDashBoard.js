@@ -4,31 +4,66 @@ import { MdContentCopy } from 'react-icons/md';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import styles from '../panel_layout.module.css';
 import { colors } from '../../functions';
-
+import firebase from 'firebase';
 
 export default class UserDashBoard extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
+            userDetails: this.props.userDetails,
             sharedLinks: true,
+            peopleWhoUsedReferralCodes: null,
         };
     };
     componentDidMount() {
+        firebase.database().ref(`peopleWhoUsedReferralCodes/${this.state.userDetails.userID}`).once('value', snapshot => {
+
+            if (snapshot.val()) {
+                let snap_ = { ...snapshot.val() };
+                let p = [];
+                function downLoadUrl(key) {
+                    return new Promise(resolve => {
+                        firebase.storage().ref(snap_[key].avatar).getDownloadURL()
+                            .then(result => {
+                                snap_[key].avatar = result;
+                                resolve(null)
+                            })
+                            .catch(error => { console.log(error.message); });
+                    })
+                };
+                for (let key in snap_) {
+                    p.push(downLoadUrl(key));
+                };
+                Promise.all(p)
+                    .then(() => {
+                        this.setState({ peopleWhoUsedReferralCodes: snap_ });
+                    }).catch(error => { console.log(error.message) })
+            }
+            else
+                this.setState({ peopleWhoUsedReferralCodes: null });
+        });
+    };
+    copyToClipboard = () => {
+        navigator.clipboard.writeText(`Sign up with my Perch referral code "${this.state.userDetails?.shareCode}" at https://perchrides.com/s/auth/u_si_su?mode=signUp&referralCode=${this.state.userDetails?.shareCode}`)
     };
     render() {
         let sharedLinks = [];
-        for (let i = 0; i < 5; i++) {
+        const peopleWhoUsedReferralCodes = this.state.peopleWhoUsedReferralCodes || {};
+        const keys = Object.keys(peopleWhoUsedReferralCodes);
+
+        for (let i = 0; i < keys.length; i++) {
+            const obj = peopleWhoUsedReferralCodes[keys[i]];
             sharedLinks.push(
                 <div className={styles.sharedLinksCont}>
                     <div className={styles.sharedLinks}>
                         <div className={styles.dp1}>
-                            <img src="/doggyProfilePicture.svg" className={styles.doggyProfilePicture} />
+                            <img src={obj.avatar} className={styles.doggyProfilePicture} />
                         </div>
-                        <p className={styles.text1} style={{ color: colors.BLACK }}>Edmond</p>
-                        <p className={styles.addedKm}>+ 5km</p>
+                        <p className={styles.text1} style={{ color: colors.BLACK }}>{obj.name}</p>
+                        <p className={styles.addedKm}>{`+ ${obj.addedKms}kms`}</p>
                     </div>
-                    {i !== 5 - 1 ?
+                    {i !== keys.length - 1 ?
                         <div className={styles.sharedLine}></div>
                         : <></>}
                 </div>
@@ -41,14 +76,14 @@ export default class UserDashBoard extends React.Component {
                         <p className={styles.title} style={{ color: colors.WHITE }}>Promos</p>
                         <p className={styles.text} style={{ color: colors.WHITE }}>
                             Want free rides? Share your invite code with friends and family, and when they book their first ride, you get free kilometers!
-                    </p>
+                        </p>
                         <div className={styles.iC_Cont}>
                             <p className={styles.text} style={{ color: colors.WHITE, fontFamily: 'Gilroy-Semibold', margin: '0px', marginRight: '15px', width: 'initial' }}>
                                 Invite Code
                             </p>
                             <div className={styles.copyBox}>
-                                <p className={styles.text} id={styles.iC_link} >{'https://www.perch.com/john123'}</p>
-                                <MdContentCopy className={styles.copy} color={colors.WHITE} />
+                                <p className={styles.text} id={styles.iC_link} >{this.state.userDetails?.shareCode}</p>
+                                <MdContentCopy className={styles.copy} color={colors.WHITE} onClick={this.copyToClipboard} />
                             </div>
                         </div>
                     </div>
@@ -74,14 +109,12 @@ export default class UserDashBoard extends React.Component {
                     </p>
                     <p className={styles.text} style={{ color: colors.GREY }}>
                         {
-                            this.state.sharedLinks ?
+                            this.state.peopleWhoUsedReferralCodes ?
                                 'Here are a list of the users who used your invite links along with the kilometers you got credited.' :
                                 'When you share your code with friends and they use it to book their first ride, you would see their name here along with the kilometers you got from sharing it. Right now, no one has used your code to book a ride.'
                         }
                     </p>
-
-                    {this.state.sharedLinks ? sharedLinks : <></>}
-
+                    {sharedLinks.length !== 0 && sharedLinks}
                 </div>
             </div>
         )
