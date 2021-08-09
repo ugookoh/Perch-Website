@@ -16,13 +16,23 @@ import { signIn, signUp, signOut, sendPasswordResetLink, sendVerification, chang
 const [WHITE] = ['#FFFFFF'];
 
 export default class index extends React.Component {
-    constructor() {
-        super();
+
+    static async getInitialProps({ query }) {
+        const { mode, referralCode } = query;
+
+        return {
+            mode: mode,
+            referralCode: referralCode,
+        }
+    }
+
+    constructor(props) {
+        super(props);
 
         this.state = {
             error: false,
             errorMessage: '',
-            isFlipped: false,
+            isFlipped: this?.props?.mode == 'signUp' ? true : false,
 
             displayVerification: false,//false at first then if it is not verified then you have to display it
             changeEmail_PhoneNumber: false,
@@ -45,7 +55,7 @@ export default class index extends React.Component {
             phoneVerificationCode: '',
             phoneVerified: false,
             verificationPhoneLoader: false,
-
+            referralCode: this.props.referralCode || '',
             newPhoneNumber: '',
 
             phoneNumberTimer: 0,
@@ -920,6 +930,15 @@ export default class index extends React.Component {
                                             }
                                         </div>
                                     </div>
+                                    <div className={styles.inputCont}>
+                                        <input
+                                            type="text"
+                                            placeholder="Referral code ( Optional )"
+                                            className={styles.pH_}
+                                            value={this.state.referralCode}
+                                            onChange={(event) => { this.setState({ referralCode: event.target.value }) }}
+                                        />
+                                    </div>
                                     {this.state.error ?
                                         <Truncate lines={1} ellipsis={'...'} className={styles.em}>
                                             {this.state.errorMessage}
@@ -950,6 +969,7 @@ export default class index extends React.Component {
                                                         this.state.phoneNumber,
                                                         this.state.password1,
                                                         false,
+                                                        this.state.referralCode,
                                                     );
                                             }
 

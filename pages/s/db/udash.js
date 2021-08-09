@@ -73,7 +73,7 @@ export default class index extends React.Component {
     render() {
         if (this.state.loggedIn == 'FALSE')
             Router.push('/s/auth/u_si_su').then(() => window.scrollTo(0, 0));
-        if (this.state.loggedIn != 'TRUE')
+        if (this.state.loggedIn != 'TRUE' || !this.state.userDetails)
             return <LoadingScreen />;
 
         let option = '';

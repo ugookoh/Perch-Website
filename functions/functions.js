@@ -75,7 +75,7 @@ export function adminSignIn(email, password) {
         }).catch(error => { this.setState({ error: true, errorMessage: error.message, loading: false }) });
     })
 };
-export function signUp(firstName, lastName, email, countryCode, phoneNumber, password, isDriver) {
+export function signUp(firstName, lastName, email, countryCode, phoneNumber, password, isDriver, referralCode) {
 
     this.setState({ error: false, errorMessage: '', loading: true }, () => {
         axios.post(`https://us-central1-perch-01.cloudfunctions.net/checkIfPhoneNumberIsFree`, { phoneNumber: `+${countryCode}${phoneNumber}` })
@@ -84,7 +84,15 @@ export function signUp(firstName, lastName, email, countryCode, phoneNumber, pas
                     firebase.auth().createUserWithEmailAndPassword(email, password)
                         .then(() => {
                             const userID = firebase.auth().currentUser.uid;
-                            axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', { firstName: firstName, lastName: lastName, email: email, phoneNumber: `+${countryCode}${phoneNumber}`, userID: userID, isDriver: isDriver })
+                            axios.post('https://us-central1-perch-01.cloudfunctions.net/createUserDetails', {
+                                firstName: firstName,
+                                lastName: lastName,
+                                email: email,
+                                phoneNumber: `+${countryCode}${phoneNumber}`,
+                                userID: userID,
+                                isDriver: isDriver,
+                                referralCode: referralCode,
+                            })
                                 .then(() => {
                                     firebase.database().ref(`users/${userID}`).once('value', snapshot => {
                                         firebase.auth().signOut().catch(error => { console.log(error.message) })
@@ -417,18 +425,17 @@ export function emailFormat(email, type) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 };
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+};
 export function dateOfQuery(timestamp) {
-    function formatAMPM(date) {
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        var strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
-    };
-
     return `${formatAMPM(new Date(timestamp)).toUpperCase()} ${('0' + new Date(timestamp).getDate()).slice(-2)}/${('0' + (new Date(timestamp).getMonth() + 1)).slice(-2)}/${new Date(timestamp).getFullYear()}`
 };
 export const M = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -499,3 +506,30 @@ export function buyKilometers(toSend) {
             });
     });
 };
+export function formatDateAllValues(d) {
+    return d.getFullYear().toString() + "/" + ((d.getMonth() + 1).toString().length == 2 ? (d.getMonth() + 1).toString() : "0" + (d.getMonth() + 1).toString()) + "/" + (d.getDate().toString().length == 2 ? d.getDate().toString() : "0" + d.getDate().toString()) + " - " + formatAMPM(d).toUpperCase();
+};
+export function millisToMinutesAndSeconds(millis) {
+    var minutes = Math.floor(millis / 60000);
+    var seconds = ((millis % 60000) / 1000).toFixed(0);
+    return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+};
+export function cancelledTripResolver(toSend) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/cancelledTripResolver`, toSend)
+        .then(() => {
+            let newResult = this.state.result;
+            delete newResult[toSend.cancelled_UNRESOLVED_KEY];
+            this.setState({
+                currentData: null,
+                refundRiderAmount: '',
+                refundRiderPerchKms: '',
+                payFirstDriver: '',
+                paySecondDriver: '',
+                payThirdDriver: '',
+                adminCut: '',
+                result: newResult,
+                loading: false,
+            })
+        }).catch(error => { alert(error.message); })
+
+}

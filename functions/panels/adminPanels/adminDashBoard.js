@@ -16,11 +16,15 @@ export default class AdminDashBoard extends React.Component {
             unansweredMessages: 0,
             unansweredDriverMessages: 0,
             numberOVehicleAdditionRequest: 0,
+            numberOfCancelledTrips: 0,
         };
     };
     componentDidMount() {
         firebase.database().ref(`analytics/numberOfUserFeedbackMessages`).on('value', snapshot => {
             this.setState({ unansweredMessages: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfCancelledTrips`).on('value', snapshot => {
+            this.setState({ numberOfCancelledTrips: snapshot.val() })
         });
         firebase.database().ref(`analytics/numberOfDriverFeedbackMessages`).on('value', snapshot => {
             this.setState({ unansweredDriverMessages: snapshot.val() })
@@ -124,6 +128,13 @@ export default class AdminDashBoard extends React.Component {
                     <p className={styles.title} style={{ color: colors.WHITE }}>Unanswered driver messages</p>
                     <p className={styles.text} style={{ color: colors.WHITE }}>
                         You have {this.state.unansweredDriverMessages} unaswered driver messages
+                    </p>
+                </div>
+
+                <div className={styles.container} style={{ backgroundColor: colors.GREEN, marginTop: '20px' }}>
+                    <p className={styles.title} style={{ color: colors.WHITE }}>Cancelled trips</p>
+                    <p className={styles.text} style={{ color: colors.WHITE }}>
+                        You have {this.state.numberOfCancelledTrips} unresolved cancelled trips
                     </p>
                 </div>
 

@@ -246,7 +246,7 @@ export default class PerchWallet extends React.Component {
                                 <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
                                     <p className={styles.title} style={{ color: colors.BLACK }}>Kilometers</p>
                                     <p className={styles.text} style={{ color: colors.GREY }}>
-                                        You can make kilometer purchases from this panel. Also remeber that sharing your code with friends who book their first ride automatically gives you free kilometers.
+                                        You can make kilometer purchases from this panel. Also remember that sharing your code with friends who book their first ride automatically gives you free kilometers.
                                     </p>
                                     <img src="/walletImage.svg" alt="Purchase Perch Kilometers" className={styles.walletImage} />
                                     <p className={styles.title} style={{ width: 'initial', marginTop: '20px' }}>{`${this.state.quantity.toFixed(1)} kilometers`}</p>
