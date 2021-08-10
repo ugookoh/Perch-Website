@@ -23,6 +23,7 @@ import CancelledTrips from './adminPanels/cancelledTrips';
 import DriverApplications from './adminPanels/driverApplications';
 import ListOfRiders from './adminPanels/listOfRiders';
 import Payments from './adminPanels/payments';
+import PendingProcesses from './adminPanels/pendingProcesses';
 import SendAnEmail from './adminPanels/sendAnEmail';
 import UnreadMessages from './adminPanels/unreadMessages';
 import VehicleApplications from './adminPanels/vehicleApplications';
@@ -56,5 +57,6 @@ export {
     VehicleApplications,
     DriverApplications,
     Payments,
+    PendingProcesses,
     ListOfRiders,
 };

@@ -17,6 +17,7 @@ import {
     DriverApplications,
     ListOfRiders,
     Payments,
+    PendingProcesses,
     SendAnEmail,
     Settings,
     UnreadMessages,
@@ -79,6 +80,9 @@ export default class index extends React.Component {
             case 'db': {
                 this.setState({ optionCode: 'db' });
             } break;
+            case 'pp': {
+                this.setState({ optionCode: 'pp' });
+            } break;
             case 'um': {
                 this.setState({ optionCode: 'um' });
             } break;
@@ -119,6 +123,10 @@ export default class index extends React.Component {
             case 'db': {
                 option = 'Dashboard';
                 content = <AdminDashBoard userDetails={this.state.userDetails} />;
+            } break;
+            case 'pp': {
+                option = 'Pending Processes';
+                content = <PendingProcesses userDetails={this.state.userDetails} />;
             } break;
             case 'um': {
                 option = 'Unread Messages';
@@ -206,6 +214,12 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
+                            <a onClick={() => { this.navigate('pp') }}>
+                                <div className={this.state.optionCode == 'pp' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>PP</p>
+                                </div>
+                            </a>
+
                             <a onClick={() => { this.navigate('um') }}>
                                 <div className={this.state.optionCode == 'um' ? styles.optionIcon_Selected : styles.optionIcon}>
                                     <div className={styles.th}>
@@ -213,6 +227,7 @@ export default class index extends React.Component {
                                     </div>
                                 </div>
                             </a>
+
 
                             <a onClick={() => { this.navigate('se') }}>
                                 <div className={this.state.optionCode == 'se' ? styles.optionIcon_Selected : styles.optionIcon}>
@@ -277,6 +292,12 @@ export default class index extends React.Component {
                                 </div>
                             </a>
 
+                            <a onClick={() => { this.navigate('pp') }}>
+                                <div className={this.state.optionCode == 'pp' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
+                                    <p className={styles.optionDescription}>Pending Processes</p>
+                                </div>
+                            </a>
+                            
                             <a onClick={() => { this.navigate('um') }}>
                                 <div className={this.state.optionCode == 'um' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
                                     <p className={styles.optionDescription}>Unread Messages</p>
