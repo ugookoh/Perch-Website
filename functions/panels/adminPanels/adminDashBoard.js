@@ -37,23 +37,6 @@ export default class AdminDashBoard extends React.Component {
         });
     };
     render() {
-        let sharedLinks = [];
-        for (let i = 0; i < 5; i++) {
-            sharedLinks.push(
-                <div className={styles.sharedLinksCont} key={i}>
-                    <div className={styles.sharedLinks}>
-                        <div className={styles.dp1}>
-                            <img src="/doggyProfilePicture.svg" className={styles.doggyProfilePicture} />
-                        </div>
-                        <p className={styles.text1} style={{ color: colors.BLACK }}>Edmond</p>
-                        <p className={styles.addedKm}>+ 5km</p>
-                    </div>
-                    {i !== 5 - 1 ?
-                        <div className={styles.sharedLine}></div>
-                        : <></>}
-                </div>
-            );
-        }
         return (
             <div className={styles.cont}>
                 <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
@@ -137,37 +120,7 @@ export default class AdminDashBoard extends React.Component {
                         You have {this.state.numberOfCancelledTrips} unresolved cancelled trips
                     </p>
                 </div>
-
-                <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px', }}>
-                    <p className={styles.title} style={{ color: colors.BLACK }}>
-                        Riders who signed up with your share link
-                    </p>
-                    <p className={styles.text} style={{ color: colors.GREY }}>
-                        {
-                            this.state.sharedLinks ?
-                                'These are people you need to add funds for as they shared  their account' :
-                                'When you new people use share links, you\'d see it here'
-                        }
-                    </p>
-
-                    {this.state.sharedLinks ? sharedLinks : <></>}
-
-                </div>
-
-                <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px', marginBottom: '150px' }}>
-                    <p className={styles.title} style={{ color: colors.BLACK }}>
-                        Uncontacted new users
-                    </p>
-                    <p className={styles.text} style={{ color: colors.GREY }}>
-                        {
-                            this.state.sharedLinks ?
-                                'These are people you need to contact' :
-                                'When you have new uncontacted users, they\'ll show up here'
-                        }
-                    </p>
-
-                    {this.state.sharedLinks ? sharedLinks : <></>}
-
+                <div  style={{ backgroundColor: colors.WHITE, marginTop: '20px', marginBottom: '150px' }}>
                 </div>
             </div>
         )

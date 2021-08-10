@@ -67,6 +67,20 @@
     margin: 0px;
 }
 
+.mainText {
+    font-family: "Gilroy-SemiBold";
+    color: #959aac;
+    margin: 0px;
+    margin-top: 10px;
+}
+
+.regularText {
+    font-family: "Gilroy-Regular";
+    color: #959aac;
+    margin: 0px;
+    margin-top: 10px;
+}
+
 .offerLetterDIV_CONTAINER {
     width: 90%;
     border-radius: 5px;
@@ -655,6 +669,42 @@
     align-items: center;
 }
 
+.widthSeperator {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 0px
+}
+
+.containerForPendingList {
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    background-color: rgba(149, 154, 172, 0.3);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.listOfProcessesTitle {
+    margin: 0;
+    font-family: "Gilroy-Semibold";
+}
+
+.listOfProcessesDetails {
+    margin: 0;
+    font-family: "Gilroy-Light";
+    margin-top: 5px;
+}
+
+.listOfProcessesTime {
+    margin: 0;
+    font-family: "Gilroy-Bold";
+    font-size: 80%;
+    margin-top: 5px;
+}
+
 .noResultsWoman {
     height: auto;
     width: 80%;
@@ -1224,7 +1274,6 @@
     font-family: "Gilroy-SemiBold";
     font-size: 100%;
     margin: 0;
-    
 }
 
 .breakdownCash {

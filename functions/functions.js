@@ -449,6 +449,7 @@ export const colors = {
     BLUE: "#1970A7",
     PURPLE: "#A031AF",
     YELLOW: "#F0E23D",
+    GOLD: "#FFAA00",
 };
 export function isNumber(n) {
     return !isNaN(parseFloat(n)) && !isNaN(n - 0);
@@ -532,4 +533,56 @@ export function cancelledTripResolver(toSend) {
             })
         }).catch(error => { alert(error.message); })
 
-}
+};
+export function pendingProcessesFunction(toSend) {
+    this.setState({ loading: true, errorMessage: '' }, () => {
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/pendingProcesses`, toSend)
+
+            .then((data) => {
+                let newV = toSend.isNewProcess ? [] : this.state.listOfProcesses;
+                const time = new Date().getTime()
+                newV.push({
+                    title: toSend.title,
+                    details: toSend.details,
+                    timeCreated: time,
+                });
+                this.setState({
+                    addProcess: false,
+                    isNewProcess: false,
+                    viewList: true,
+                    pushId: data.data,
+                    title: '',
+                    details: '',
+                    loading: false,
+                    listOfProcesses: newV,
+                }, () => {
+                    if (toSend.isNewProcess)
+                        this.setState({ timeCreated: time })
+                })
+            }).catch(error => { alert(error.message); })
+    });
+};
+export function pendingProcessesFunctionDelete(pushId) {
+    this.setState({ loading1: true, }, () => {
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/pendingProcessesDelete`, { pushId: pushId })
+            .then(() => {
+                let newV = { ...this.state.result };
+                delete newV[pushId];
+                this.setState({
+                    result: newV,
+                    loading1: false,
+                    addProcess: false,
+                    isNewProcess: false,
+                    viewList: false,
+                    pushId: '',
+                    userID: '',
+                    type: '',
+                    listOfProcesses: [],
+                    mainTopic: '',
+                    title: '',
+                    details: '',
+                    errorMessage: '',
+                })
+            }).catch(error => { alert(error.message); })
+    });
+};
