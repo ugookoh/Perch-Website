@@ -1,11 +1,10 @@
 import Head from 'next/head';
-import styles from './layout.module.css';
 import React from 'react';
-import Header from '../../components/header/header';
-import Footer from '../../components/footer/footer';
-import Router from 'next/router';
+import { colors } from '../../../functions/functions';
 import ShareIcons from '../../../functions/shareIcons';
-
+import Footer from '../../components/footer/footer';
+import Header from '../../components/header/header';
+import styles from './layout.module.css';
 
 export default class index extends React.Component {
     constructor() {
@@ -33,7 +32,7 @@ export default class index extends React.Component {
                     <html lang="en"></html>
                 </Head>
                 <Header loggedIn={this.state.loggedIn} />
-                <img src="/articlesPageBack1.svg" alt="Perch Carpool" className={styles.mainPageBack1} />
+                <img src="/articlesPageBack1.svg" alt="articlesPageBack1" className={styles.mainPageBack1} />
                 <div className={styles.body}>
 
                     <div className={styles.c_} style={{ marginTop: '15px', marginBottom: '20px', justifyContent: 'space-between', alignItems: 'center', }}>
@@ -41,39 +40,27 @@ export default class index extends React.Component {
                         <ShareIcons />
                     </div>
 
-                    <p className={styles.subTitle}>{`We understand that sometimes things don't go as planned and we are here to help.`}</p>
-
-                    <div className={styles.c_} style={{}}>
-                        <div >
-                            <p className={styles.t}>{`How to request refunds and resolve disputes`}</p>
-                            <p className={styles.text}>{`Perch is commited to fostering a fair community for everyone using our app. To enforce this, we take a look at every trip cancellation and issue compensation / refunds accordingly. To file a complaint or let us know about something, please mail us via the "Contact Us" tab of your Perch app or the website`}</p>
-                            <a className={styles.button1} href='/s/db/udash'>
-                                <p className={styles.buttonText1}>{'Contact Us'}</p>
-                            </a>
-                        </div>
-                        <img src="/refund.svg" alt="Perch Carpool" className={styles.map1Trip} />
-                    </div>
-
-                    <div className={styles.c} style={{ marginTop: '100px' }}>
-                        <img src="/cancelTripPhone.svg" alt="Perch Carpool" className={styles.girlsJumpingGivingGifts} style={{ maxWidth: '375px' }} />
-
-                        <div>
-                            <p className={styles.t}>{`Cancellation and Refunds explained`}</p>
-                            <p className={styles.text}>
-                                <span style={{ fontFamily: 'Gilroy-SemiBold' }}>Cancellation conditions for immediate rides</span><br />
-                                - You cancel more than 2 mins after booking your ride or your driver cancels after waiting for more than 3 minutes.<br />
-                                - You cancelled a ride that has already started.<br />
-                                - You might not get a refund if you cancel after going halfway through the trip or causing a dispute in the vehicle which lead to the trip being cancelled.<br />
-                                - You cancelled a ride that has already started.<br /><br />
-
-                                <span style={{ fontFamily: 'Gilroy-SemiBold' }}>Cancellation conditions for scheduled rides</span><br />
-                                - You are not charged for cancelling a scheduled ride as long as you cancel it at least 10 minutes before the ride starts.<br /><br />
-
-                                <span style={{ fontFamily: 'Gilroy-SemiBold' }}>Pending refunds and payments</span><br />
-                                - Although we usually message you about your refund and what is going to happen, the refund can take anywhere from 1-4 business days to return to your original method of payment.<br />
-                            </p>
-                        </div>
-                    </div>
+                    <p className={styles.subTitle}>{`We love trips to be as smooth as possible, here are some conditions we have in place to ensure that.`}</p>
+                    <p className={styles.textBox}>
+                        <span style={{ fontFamily: 'Gilroy-Bold', textDecoration: 'underline' }}>Cancellation policies</span><br />
+                        Both drivers and riders can cancel trips at any time but there are conditions for cancellations so as to save and respect everyone’s time.
+                        <br /><br />
+                        <span style={{ fontFamily: 'Gilroy-Bold', textDecoration: 'underline' }}>For Riders</span><br />
+                        • Cancellations at most 20 minutes after a scheduled trip has been booked would be refunded as long as the trip has not started<br />
+                        • Cancellations at most 5 minutes after a regular trip has been booked would be partially  or fully refunded depending on where the driver is<br />
+                        • Cancellations after entering the vehicle or starting the ride would not be refunded unless the driver was disrespectful or violated in some sort of way.<br />
+                        • Cancellations and potentially a ban might happen for disrespect and violation from any party. We respect ourselves here.<br />
+                        * Driver cancellations would be partially refunded if they had to wait to pick you up or fully refunded if they had to do cancel for whatever reason.<br />
+                        <br /><br />
+                        <span style={{ fontFamily: 'Gilroy-Bold', textDecoration: 'underline' }}>Refunds</span><br />
+                        Any trip that gets cancelled is automatically reviewed by us and we then decide what conditions were met or violated. After this, we issue refunds if applicable. To discuss a trip with us, please use the <a href='/contact_us' target="_blank" className={styles.faqChoice} style={{ fontFamily: 'Gilroy-Semibold' }}>Contact Us</a> form.
+                    </p>
+                    <img
+                        style={{ marginTop: 20 }}
+                        src={`/handShakeGreen.svg`}
+                        alt={'handShakeGreen'}
+                        className={styles.handShakeGreen}
+                    />
 
 
 
