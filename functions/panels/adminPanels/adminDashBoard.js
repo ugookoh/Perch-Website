@@ -37,6 +37,17 @@ export default class AdminDashBoard extends React.Component {
         });
     };
     render() {
+        const unixTime = new Date().getTime();
+  const weekInMilliSecs = 604800 * 1000;
+  const sundayBuffer = 345600 * 1000;
+  const weekNumber = Math.floor(unixTime / weekInMilliSecs);
+  const dateOfWeekBeginning = weekNumber * weekInMilliSecs - sundayBuffer;
+  const dateOfWeekEnding = (weekNumber + 1) * weekInMilliSecs - sundayBuffer - 1;
+  const _5MinsAfterWeekBeginning = dateOfWeekBeginning + 5 * 60000;
+
+  console.log("weekNumber", weekNumber);
+  console.log("dateOfWeekBeginning", dateOfWeekBeginning);
+  console.log("_5MinsAfterWeekBeginning", _5MinsAfterWeekBeginning);
         return (
             <div className={styles.cont}>
                 <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
@@ -120,7 +131,7 @@ export default class AdminDashBoard extends React.Component {
                         You have {this.state.numberOfCancelledTrips} unresolved cancelled trips
                     </p>
                 </div>
-                <div  style={{ backgroundColor: colors.WHITE, marginTop: '20px', marginBottom: '150px' }}>
+                <div style={{ backgroundColor: colors.WHITE, marginTop: '20px', marginBottom: '150px' }}>
                 </div>
             </div>
         )

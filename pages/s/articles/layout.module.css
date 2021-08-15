@@ -23,7 +23,8 @@
     top: 60px;
 }
 
-.subTitle, .contactUsLasttext {
+.subTitle,
+.contactUsLasttext {
     width: 90%;
     color: #959AAC;
     font-family: 'Gilroy-SemiBold';
@@ -41,7 +42,8 @@
     top: 220vh;
 }
 
-.c, .c_ {
+.c,
+.c_ {
     width: 90%;
     display: flex;
     flex-direction: row;
@@ -50,14 +52,58 @@
     max-width: 1486px;
 }
 
-.map1Trip, .noCommitmentNoSchedule {
+.sep {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.ratesCont {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rateText1 {
+    margin: 0px;
+    font-family: "Gilroy-Regular";
+    font-size: 110%;
+    color: #959AAC;
+    text-align: center;
+}
+
+.rateText2 {
+    margin: 0px;
+    font-family: "Gilroy-Bold";
+    font-size: 470%;
+    color: #959AAC;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.rateText3 {
+    margin: 0px;
+    font-family: "Gilroy-Light";
+    font-size: 110%;
+    color: #959AAC;
+    margin-top: -10px;
+    text-align: center;
+}
+
+.map1Trip,
+.noCommitmentNoSchedule {
     width: 493.2px;
     height: auto;
     object-fit: cover;
     margin-left: 5%;
 }
 
-.girlsJumpingGivingGifts, .exchangeMoney {
+.girlsJumpingGivingGifts,
+.exchangeMoney {
     width: 555.48px;
     height: auto;
     object-fit: fill;
@@ -84,7 +130,8 @@
     width: 405.48px;
 }
 
-.glassSavings, .manOnBlueCar {
+.glassSavings,
+.manOnBlueCar {
     width: 411px;
     height: auto;
     object-fit: fill;
@@ -150,7 +197,8 @@
     max-width: 1486px;
 }
 
-.text, .textBox {
+.text,
+.textBox {
     font-family: 'Gilroy-Regular';
     color: #959AAC;
     line-height: 190%;
@@ -204,7 +252,8 @@
     flex-direction: column;
 }
 
-.button1, .button2 {
+.button1,
+.button2 {
     background-color: #4EB848;
     width: 80%;
     height: 50px;
@@ -222,15 +271,18 @@
     min-height: initial;
 }
 
-.button1:hover, .button2:hover {
+.button1:hover,
+.button2:hover {
     cursor: pointer;
 }
 
-.button1:active, .button2:active {
+.button1:active,
+.button2:active {
     opacity: 0.6;
 }
 
-.buttonText1, .buttonText2 {
+.buttonText1,
+.buttonText2 {
     font-family: 'Gilroy-SemiBold';
     color: white;
     font-size: larger;
@@ -283,7 +335,9 @@
     background-position-y: 50%;
 }
 
-.selectTopic:focus, .contactUsEmail:focus, .contactUsContent:focus {
+.selectTopic:focus,
+.contactUsEmail:focus,
+.contactUsContent:focus {
     outline: none;
 }
 
@@ -293,7 +347,8 @@
     font-size: 110%;
 }
 
-.contactUsEmail, .contactUsContent {
+.contactUsEmail,
+.contactUsContent {
     -webkit-appearance: none;
     margin-top: 15px;
     font-size: 90%;
@@ -341,6 +396,30 @@
 }
 
 .manChecklist {
+    width: 502.06px;
+    height: auto;
+    object-fit: fill;
+}
+
+.referralCodeImage {
+    width: 502.06px;
+    height: auto;
+    object-fit: fill;
+}
+
+.handShakeGreen {
+    width: 352.06px;
+    height: auto;
+    object-fit: fill;
+}
+
+.perchWalletPanel {
+    width: 302.06px;
+    height: auto;
+    object-fit: fill;
+}
+
+.sharingGiftReferral {
     width: 502.06px;
     height: auto;
     object-fit: fill;
@@ -405,7 +484,8 @@
     width: 550px;
 }
 
-.sFill, .sFill_ {
+.sFill,
+.sFill_ {
     display: flex;
     flex-direction: row;
     height: 100%;
@@ -461,7 +541,12 @@
         flex-direction: column;
         align-items: center;
     }
-    .map1Trip, .girlsJumpingGivingGifts, .exchangeMoney, .glassSavings, .manOnBlueCar, .noCommitmentNoSchedule {
+    .map1Trip,
+    .girlsJumpingGivingGifts,
+    .exchangeMoney,
+    .glassSavings,
+    .manOnBlueCar,
+    .noCommitmentNoSchedule {
         margin-right: 0px;
         height: auto;
         width: 80%;
@@ -481,7 +566,9 @@
         align-self: initial;
         max-width: 400px;
     }
-    .t1, .t, .subTitle {
+    .t1,
+    .t,
+    .subTitle {
         text-align: center;
     }
     .t1 {
@@ -489,7 +576,8 @@
         font-size: 150%;
         padding-bottom: 15px;
     }
-    .t1, .t {
+    .t1,
+    .t {
         margin-bottom: 0px;
     }
     .subTitle {
@@ -498,7 +586,8 @@
     .t {
         font-size: 120%;
     }
-    .text, .textBox {
+    .text,
+    .textBox {
         line-height: 180%;
         font-size: 100%;
     }
@@ -557,6 +646,25 @@
         object-fit: fill;
         max-width: 400px;
     }
+    .referralCodeImage,
+    .handShakeGreen {
+        width: 50%;
+        height: auto;
+        object-fit: fill;
+        max-width: 400px;
+    }
+    .perchWalletPanel {
+        width: 50%;
+        height: auto;
+        object-fit: fill;
+        max-width: 300px;
+    }
+    .sharingGiftReferral {
+        width: 90%;
+        height: auto;
+        object-fit: fill;
+        max-width: 400px;
+    }
     .inv {
         display: none;
     }
@@ -575,15 +683,18 @@
     #leftPanel {
         flex-direction: row;
     }
-    .sFill, .sFill_ {
+    .sFill,
+    .sFill_ {
         padding: 0px;
         justify-content: center;
         margin-left: 5%;
     }
-    #panelBottom, .sFill_ {
+    #panelBottom,
+    .sFill_ {
         padding-bottom: 70px;
     }
-    .hpwImage, #tripDetailsPanel {
+    .hpwImage,
+    #tripDetailsPanel {
         margin-bottom: 40px;
         max-width: 450px;
         width: 80%;
@@ -604,6 +715,21 @@
 }
 
 @media only screen and (max-width:750px) {
+    .sep {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    .rateText2 {
+        font-size: 270%;
+    }
+    .rateText3 {
+        margin-top: -5px;
+    }
+    #ratesCont_ {
+        margin-top: 20px;
+    }
     .screenshot {
         width: 90%;
         height: auto;
@@ -618,7 +744,12 @@
 
 @media only screen and (max-width: 480px) {
     /* Phones (portrait and landscape)*/
-    .map1Trip, .girlsJumpingGivingGifts, .exchangeMoney, .glassSavings, .manOnBlueCar, .noCommitmentNoSchedule {
+    .map1Trip,
+    .girlsJumpingGivingGifts,
+    .exchangeMoney,
+    .glassSavings,
+    .manOnBlueCar,
+    .noCommitmentNoSchedule {
         margin-right: 0px;
         height: auto;
         width: 80vw;
@@ -628,7 +759,8 @@
         line-height: 130%;
         padding-bottom: 5px;
     }
-    .text, .textBox {
+    .text,
+    .textBox {
         line-height: 190%;
     }
     .glassSavings {
@@ -648,6 +780,16 @@
     }
     .manChecklist {
         width: 85%;
+    }
+    .referralCodeImage,
+    .handShakeGreen {
+        width: 85%;
+    }
+    .perchWalletPanel {
+        width: 85%;
+    }
+    .sharingGiftReferral {
+        width: 90%;
     }
     .dash {
         left: 4px;
@@ -672,7 +814,8 @@
         font-size: 90%;
         line-height: 140%;
     }
-    #panelBottom, .sFill_ {
+    #panelBottom,
+    .sFill_ {
         padding-bottom: 170px;
     }
 }

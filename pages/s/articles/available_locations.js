@@ -3,7 +3,7 @@ import styles from './layout.module.css';
 import React from 'react';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
-import Router from 'next/router';
+import firebase from 'firebase';
 import ShareIcons from '../../../functions/shareIcons';
 
 
@@ -13,12 +13,25 @@ export default class index extends React.Component {
 
         this.state = {
             loggedIn: false,
+            cities: [],
         };
     };
     componentDidMount() {
-
+        firebase.database().ref(`cities`).once('value', snap => {
+            let p = [];
+            const keys = Object.keys(snap.val() ? snap.val() : {}).sort();
+            for (let i = 0; i < keys.length; i++)
+                p.push(keys[i]);
+            this.setState({ cities: p });
+        })
     };
     render() {
+        let cities = [];
+        for (let i = 0; i < this.state.cities.length; i++)
+            cities.push(
+                <>
+                    • <span className={styles.faqChoice_}>{this.state.cities[i]}</span><br />
+                </>);
         return (
             <div className={styles.container}>
                 <Head>
@@ -45,8 +58,7 @@ export default class index extends React.Component {
                     <img src={'/globe.svg'} alt={'Perch Carpool'} className={styles.globe} />
                     <p className={styles.textBox} style={{ lineHeight: '190%' }}>
                         <span className={styles.faqChoice_} style={{ fontFamily: 'Gilroy-Semibold', }}>Canada</span><br />
-                        • <span className={styles.faqChoice_}>Regina</span><br />
-                        • <span className={styles.faqChoice_}>Saskatoon</span><br />
+                        {cities}
                     </p>
 
 

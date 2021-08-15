@@ -55,7 +55,8 @@ export default class index extends React.Component {
                         • <a className={styles.faqChoice} href='/s/articles/scheduling_driver_trips'>Scheduling a driver trip</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/procedures_for_taking_a_picture'>Procedures for taking a picture of your vehicle</a><br /><br />
 
-                        <span style={{ fontFamily: 'Gilroy-Semibold', }}>Payment and Disputes</span><br />
+                        <span style={{ fontFamily: 'Gilroy-Semibold', }}>Promos, Payment and Disputes</span><br />
+                        • <a className={styles.faqChoice} href='/s/articles/promos_and_freebies'>Promotions and Freebies</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/how_prices_are_estimated'>How prices are estimated</a><br />
                         • <a className={styles.faqChoice} href='/s/articles/refunds_and_disputes'>Refunds and disputes</a><br /><br />
 
