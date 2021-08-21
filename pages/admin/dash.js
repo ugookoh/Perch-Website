@@ -9,7 +9,7 @@ import { GoCreditCard } from 'react-icons/go';
 import { HiOutlineMail } from 'react-icons/hi';
 import { ImExit } from "react-icons/im";
 import { TiMessages } from 'react-icons/ti';
-import { signOut } from '../../functions/functions';
+import { colors, signOut } from '../../functions/functions';
 import { DashboardIcons, Logo } from '../../functions/images/vectors';
 import {
     AdminDashBoard,
@@ -35,6 +35,13 @@ export default class index extends React.Component {
             loggedIn: 'NULL',
             userDetails: null,
             url: null,
+
+            numberOfDriverApplications: 0,
+            unansweredMessages: 0,
+            unansweredDriverMessages: 0,
+            numberOfVehicleAdditionRequest: 0,
+            numberOfCancelledTrips: 0,
+            numberOfPendingProcesses: 0,
         }
     };
 
@@ -60,6 +67,24 @@ export default class index extends React.Component {
             }
             else
                 this.setState({ loggedIn: 'FALSE' });
+        });
+        firebase.database().ref(`analytics/numberOfUserFeedbackMessages`).on('value', snapshot => {
+            this.setState({ unansweredMessages: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfCancelledTrips`).on('value', snapshot => {
+            this.setState({ numberOfCancelledTrips: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfDriverFeedbackMessages`).on('value', snapshot => {
+            this.setState({ unansweredDriverMessages: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfVehicleAdditionRequest`).on('value', snapshot => {
+            this.setState({ numberOfVehicleAdditionRequest: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfDriverApplications`).on('value', snapshot => {
+            this.setState({ numberOfDriverApplications: snapshot.val() })
+        });
+        firebase.database().ref(`analytics/numberOfPendingProcesses`).on('value', snapshot => {
+            this.setState({ numberOfPendingProcesses: snapshot.val() })
         });
     }
     setImage = (photoRef) => {
@@ -216,12 +241,24 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('pp') }}>
                                 <div className={this.state.optionCode == 'pp' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    {this.state.numberOfPendingProcesses &&
+                                        <div className={styles.badgeIcon}>
+                                            <p className={styles.badgeText}>{this.state.numberOfPendingProcesses}</p>
+                                        </div>}
                                     <p style={{ fontFamily: 'Gilroy-ExtraBold', color: '#FFFFFF', fontSize: '120%', margin: '0px' }}>PP</p>
                                 </div>
                             </a>
 
                             <a onClick={() => { this.navigate('um') }}>
                                 <div className={this.state.optionCode == 'um' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    {this.state.unansweredMessages &&
+                                        <div className={styles.badgeIcon}>
+                                            <p className={styles.badgeText}>{this.state.unansweredMessages}</p>
+                                        </div>}
+                                    {this.state.unansweredDriverMessages &&
+                                        <div className={styles.badgeIcon_}>
+                                            <p className={styles.badgeText} style={{ color: colors.BLUE }}>{this.state.unansweredDriverMessages}</p>
+                                        </div>}
                                     <div className={styles.th}>
                                         <TiMessages color='#ffffff' size={'27.26px'} />
                                     </div>
@@ -239,6 +276,10 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('ct') }}>
                                 <div className={this.state.optionCode == 'ct' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    {this.state.numberOfCancelledTrips &&
+                                        <div className={styles.badgeIcon}>
+                                            <p className={styles.badgeText}>{this.state.numberOfCancelledTrips}</p>
+                                        </div>}
                                     <div className={styles.cu}>
                                         <BsConeStriped color='#ffffff' size={'27.26px'} />
                                     </div>
@@ -247,6 +288,10 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('va') }}>
                                 <div className={this.state.optionCode == 'va' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    {this.state.numberOfVehicleAdditionRequest &&
+                                        <div className={styles.badgeIcon}>
+                                            <p className={styles.badgeText}>{this.state.numberOfVehicleAdditionRequest}</p>
+                                        </div>}
                                     <div className={styles.db}>
                                         <BiCar color='#ffffff' size={'27.26px'} />
                                     </div>
@@ -255,6 +300,10 @@ export default class index extends React.Component {
 
                             <a onClick={() => { this.navigate('da') }}>
                                 <div className={this.state.optionCode == 'da' ? styles.optionIcon_Selected : styles.optionIcon}>
+                                    {this.state.numberOfDriverApplications &&
+                                        <div className={styles.badgeIcon}>
+                                            <p className={styles.badgeText}>{this.state.numberOfDriverApplications}</p>
+                                        </div>}
                                     <div className={styles.th}>
                                         <BsListCheck color='#ffffff' size={'27.26px'} />
                                     </div>
@@ -297,7 +346,7 @@ export default class index extends React.Component {
                                     <p className={styles.optionDescription}>Pending Processes</p>
                                 </div>
                             </a>
-                            
+
                             <a onClick={() => { this.navigate('um') }}>
                                 <div className={this.state.optionCode == 'um' ? styles.optionDescriptionCont_Selected : styles.optionDescriptionCont}>
                                     <p className={styles.optionDescription}>Unread Messages</p>

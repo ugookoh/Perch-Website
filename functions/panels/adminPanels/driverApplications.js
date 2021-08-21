@@ -7,8 +7,9 @@ import styles from '../panel_layout.module.css';
 import {
     dateOfQuery,
     colors,
-    driverAppplicationAdvance,
+    driverApplicationAdvance,
     validateDriver,
+    isNumber,
 } from '../../functions';
 
 export default class DriverApplications extends React.Component {
@@ -42,6 +43,8 @@ export default class DriverApplications extends React.Component {
             inspectionVerified: false,
             registrationVerified: false,
             insuranceVerified: false,
+
+            maxSeatNumber: '',
 
             verified: [],
             //driversLicenseVerified
@@ -295,6 +298,18 @@ export default class DriverApplications extends React.Component {
                                     style={{ maxWidth: '250px', marginTop: '20px' }}
                                 />
                                 {requirements}
+                                <input
+                                    type="text"
+                                    placeholder="Enter maximum seat number"
+                                    className={styles.contactUsEmail}
+                                    style={{ marginTop: '10px' }}
+                                    value={this.state.maxSeatNumber}
+                                    onChange={event => {
+                                        if (isNumber(event.target.value))
+                                            if (Number(event.target.value) <= 5)
+                                                this.setState({ maxSeatNumber: event.target.value })
+                                    }}
+                                />
                                 <img
                                     src={this.state.docVehicleImage}
                                     className={styles.driverVehicleIMAGE} />
@@ -337,8 +352,20 @@ export default class DriverApplications extends React.Component {
                                 if (this.state.selected.stage == 'three') {
                                     if (this.state.verified.indexOf(false) != -1)
                                         alert('You need to verify all the provided documents');
+                                    else if (this.state.maxSeatNumber.length == 0)
+                                        alert('Please set maximum seat number');
                                     else {
-                                        driverAppplicationAdvance.call(this);
+                                        firebase
+                                            .database()
+                                            .ref(`driverApplications/${this.state.selected.userID}/dateFormat`)
+                                            .once('value', dateFormat => {
+                                                const dateFormat_ = dateFormat.val();
+                                                const currentUserID = this.state.selected.userID;
+                                                driverApplicationAdvance.call(this,
+                                                    currentUserID,
+                                                    dateFormat_,
+                                                    this.state.maxSeatNumber);
+                                            })
                                     }
                                 }
                                 else if (this.state.selected.stage == 'four') {

@@ -4,42 +4,42 @@ import { AiFillStar } from 'react-icons/ai';
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import { colors } from '../../functions';
 import styles from '../panel_layout.module.css';
-
+import firebase from 'firebase';
 
 
 export default class DriverDashBoard extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            sharedLinks: true,
+            userDetails: this.props.userDetails,
+            allTimeAnalytics: {},
+            weeklyAnalytics: {},
         };
     };
     componentDidMount() {
+        const { userID } = this.props.userDetails;
+        firebase.database().ref(`analytics/allTimeAnalytics/driver/${userID}`).once('value', snapshot => {
+            this.setState({ allTimeAnalytics: snapshot.val() });
+        });
+        firebase.database().ref(`currentWeek/value`).once('value', week => {
+            firebase.database().ref(`analytics/weeklyAnalytics/${week.val()}/driver/${userID}`).once('value', snapshot => {
+                this.setState({ weeklyAnalytics: snapshot.val() })
+            });
+        });
     };
     render() {
-        let sharedLinks = [];
-        for (let i = 0; i < 5; i++) {
-            sharedLinks.push(
-                <div className={styles.sharedLinksCont}>
-                    <div className={styles.sharedLinks}>
-                        <div className={styles.dp1}>
-                            <img src="/doggyProfilePicture.svg" className={styles.doggyProfilePicture} />
-                        </div>
-                        <p className={styles.text1} style={{ color: colors.BLACK }}>Edmond</p>
-                        <p className={styles.addedKm}>+ 5km</p>
-                    </div>
-                    {i !== 5 - 1 ?
-                        <div className={styles.sharedLine}></div>
-                        : <></>}
-                </div>
-            );
-        }
         return (
             <div className={styles.cont}>
 
-                <DriverDashBoardSummary title='WH' />
-                <DriverDashBoardSummary title='OH' />
+                <DriverDashBoardSummary title='WH'
+                    data={this.state.weeklyAnalytics}
+                />
+                <DriverDashBoardSummary title='OH'
+                    data={this.state.allTimeAnalytics}
+                    driverRating={this.state.userDetails.driverSummarizedHistory.carpool.rating}
+                    driverJoinedText={this.state.userDetails.driverJoinedText}
+                />
                 <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px', marginBottom: "150px" }}>
                     <p className={styles.title} style={{ color: colors.BLACK }}>Platform links</p>
                     <p className={styles.text} style={{ color: colors.GREY }}>
@@ -58,24 +58,29 @@ export default class DriverDashBoard extends React.Component {
     }
 };
 class DriverDashBoardSummary extends React.Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     };
+    rendervalid(x) {
+        if (x) return x;
+        else return 0;
+    }
     render() {
+        const { data, driverRating, driverJoinedText } = this.props;
         return (
             <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
                 {this.props.title == 'OH' ?
                     <div className={styles.enterKilometerDiv}>
                         <p className={styles.title} style={{ color: colors.BLACK, width: 'initial', }}>Overall history</p>
-                        <p className={styles.driverDashboard_BOXTITLE} style={{ margin: '0px', textAlign: 'center', marginLeft: '20px' }}><span id={styles.driverDashboard_HALFDATE}>{`Joined 09/2019`}</span><span id={styles.driverDashboard_FULLDATE}>{`Joined September 2019`}</span></p>
+                        <p className={styles.driverDashboard_BOXTITLE} style={{ margin: '0px', textAlign: 'center', marginLeft: '20px' }}><span id={styles.driverDashboard_FULLDATE}>{driverJoinedText}</span></p>
                     </div> :
-                    <p className={styles.title} style={{ color: colors.BLACK }}>Monthly history</p>}
+                    <p className={styles.title} style={{ color: colors.BLACK }}>Weekly history</p>}
 
                 <div className={styles.driverDashboardCont}>
                     <div className={styles.driverDashboard_TE}>
                         <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
                             <p className={styles.driverDashboard_BOXTITLE}>Total earnings</p>
-                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.BLUE }}>$ 1345.90</p>
+                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.BLUE }}>$ {this.rendervalid(data?.amountEarned).toFixed(2)}</p>
                         </div>
                     </div>
                     <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
@@ -83,30 +88,35 @@ class DriverDashBoardSummary extends React.Component {
 
                         <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
                             <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
-                            <p className={styles.driverDashboard_BOXTEXT} >7</p>
+                            <p className={styles.driverDashboard_BOXTEXT} >{this.rendervalid(data?.completedTrips)}</p>
                         </div>
 
-                        <div className={styles.driverDashboard_BOX}>
-                            <p className={styles.driverDashboard_BOXTITLE}>Average rating</p>
+                        {driverRating && <div className={styles.driverDashboard_BOX}>
+                            <p className={styles.driverDashboard_BOXTITLE}>Rating</p>
                             <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                <p className={styles.driverDashboard_BOXTEXT} >4.6</p>
+                                <p className={styles.driverDashboard_BOXTEXT}>{driverRating.toFixed(1)}</p>
                                 <AiFillStar size={'15px'} style={{ marginLeft: '5px' }} />
                             </div>
-                        </div>
+                        </div>}
 
                         <div className={styles.driverDashboard_BOX}>
                             <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
-                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>3</p>
+                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>{this.rendervalid(data?.cancelledTrips?.cancelled)}</p>
                         </div>
 
                         <div className={styles.driverDashboard_BOX}>
                             <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
-                            <p className={styles.driverDashboard_BOXTEXT} >17</p>
+                            <p className={styles.driverDashboard_BOXTEXT} >{this.rendervalid(data?.cancelledTrips?.cancelledOn)}</p>
                         </div>
 
                         <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
                             <p className={styles.driverDashboard_BOXTITLE}>Passengers carried</p>
-                            <p className={styles.driverDashboard_BOXTEXT} >237</p>
+                            <p className={styles.driverDashboard_BOXTEXT} >{this.rendervalid(data?.passengersCarried)}</p>
+                        </div>
+
+                        <div className={styles.driverDashboard_BOX}>
+                            <p className={styles.driverDashboard_BOXTITLE}>Driver timeouts</p>
+                            <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>{this.rendervalid(data?.driverTimeouts)}</p>
                         </div>
 
                     </div>

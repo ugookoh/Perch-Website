@@ -41,7 +41,8 @@
     /* Optional: just make scrollbar invisible */
 }
 
-.column, .column_d {
+.column,
+.column_d {
     display: flex;
     flex-direction: column;
     width: 88px;
@@ -81,7 +82,8 @@
     display: flex;
 }
 
-.text_, .text_d {
+.text_,
+.text_d {
     font-family: 'Gilroy-SemiBold';
     font-size: 18px;
     margin: 0px;
@@ -99,7 +101,8 @@
     cursor: default;
 }
 
-.link_, .link_d {
+.link_,
+.link_d {
     margin-left: 30px;
 }
 
@@ -113,7 +116,8 @@
     cursor: pointer;
 }
 
-.circle, .circle_d {
+.circle,
+.circle_d {
     background-color: #4EB848;
     width: 38px;
     height: 38px;
@@ -128,7 +132,8 @@
     background-color: #1970A7;
 }
 
-.circle, .circle_d:hover {
+.circle,
+.circle_d:hover {
     cursor: pointer;
 }
 
@@ -168,7 +173,8 @@
     cursor: pointer;
 }
 
-.logoBox, .logoBox_d {
+.logoBox,
+.logoBox_d {
     width: 88px;
     height: 100%;
     justify-content: center;
@@ -198,13 +204,17 @@
     -moz-box-shadow: 2px 6px 13px -8px rgba(0, 0, 0, 0.69);
 }
 
-.optionIcon, .optionIcon_Selected, .optionIcon_d, .optionIcon_Selected_d {
+.optionIcon,
+.optionIcon_Selected,
+.optionIcon_d,
+.optionIcon_Selected_d {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 76px;
     background-color: #4EB848;
+    position: relative;
 }
 
 .optionIcon_d {
@@ -219,7 +229,8 @@
     background-color: #105A89;
 }
 
-.optionDescriptionCont, .optionDescriptionCont_Selected {
+.optionDescriptionCont,
+.optionDescriptionCont_Selected {
     width: 100%;
     height: 76px;
     display: flex;
@@ -231,7 +242,12 @@
     background-color: rgba(167, 170, 189, 0.15);
 }
 
-.optionIcon, .optionIcon_Selected, .optionDescriptionCont, .optionDescriptionCont_Selected, .optionIcon_d, .optionIcon_Selected_d:hover {
+.optionIcon,
+.optionIcon_Selected,
+.optionDescriptionCont,
+.optionDescriptionCont_Selected,
+.optionIcon_d,
+.optionIcon_Selected_d:hover {
     cursor: pointer;
 }
 
@@ -300,16 +316,57 @@
     height: 38px;
 }
 
+.badgeIcon {
+    border-radius: 30px;
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    border: 3px solid #329B2C;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 22%;
+    left: 22%;
+    padding: 0px;
+}
+
+.badgeIcon_ {
+    border-radius: 30px;
+    width: 23px;
+    height: 23px;
+    background-color: #ffffff;
+    border: 3px solid #105A89;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 22%;
+    right: 15%;
+}
+
+.badgeText {
+    color: #4EB848;
+    font-family: "Gilroy-SemiBold";
+    font-size: 13px;
+    margin: 0px;
+    padding: 0px;
+}
+
 @media only screen and (max-width: 1024px) {
     .logo {
         width: 32.27px;
         height: 50.73px;
     }
     /*Tablets (portrait and landscape)*/
-    .text_, .text_d, .link_, .link_d {
+    .text_,
+    .text_d,
+    .link_,
+    .link_d {
         display: none;
     }
-    .circle, .circle_d {
+    .circle,
+    .circle_d {
         margin-left: 10px;
     }
     .textRow1 {
@@ -338,13 +395,19 @@
 
 @media only screen and (max-width: 480px) {
     /* Phones (portrait and landscape)*/
-    .column, .logoBox, .column_d, .logoBox_d {
+    .column,
+    .logoBox,
+    .column_d,
+    .logoBox_d {
         width: 58px;
     }
     .optionShadowBox {
         width: calc(100% - 58px);
     }
-    .optionIcon, .optionIcon_Selected, .optionIcon_d, .optionIcon_Selected_d {
+    .optionIcon,
+    .optionIcon_Selected,
+    .optionIcon_d,
+    .optionIcon_Selected_d {
         height: 60px;
     }
     .content {
