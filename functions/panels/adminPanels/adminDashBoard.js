@@ -15,8 +15,10 @@ export default class AdminDashBoard extends React.Component {
             numberOfDriverApplications: 0,
             unansweredMessages: 0,
             unansweredDriverMessages: 0,
-            numberOVehicleAdditionRequest: 0,
+            numberOfVehicleAdditionRequest: 0,
             numberOfCancelledTrips: 0,
+            allTimeAnalytics: {},
+            weeklyAnalytics: {},
         };
     };
     componentDidMount() {
@@ -29,74 +31,34 @@ export default class AdminDashBoard extends React.Component {
         firebase.database().ref(`analytics/numberOfDriverFeedbackMessages`).on('value', snapshot => {
             this.setState({ unansweredDriverMessages: snapshot.val() })
         });
-        firebase.database().ref(`analytics/numberOVehicleAdditionRequest`).on('value', snapshot => {
-            this.setState({ unansweredDriverMessages: snapshot.val() })
+        firebase.database().ref(`analytics/numberOfVehicleAdditionRequest`).on('value', snapshot => {
+            this.setState({ numberOfVehicleAdditionRequest: snapshot.val() })
         });
         firebase.database().ref(`analytics/numberOfDriverApplications`).on('value', snapshot => {
             this.setState({ numberOfDriverApplications: snapshot.val() })
         });
-    };
-    render() {
-        const unixTime = new Date().getTime();
-  const weekInMilliSecs = 604800 * 1000;
-  const sundayBuffer = 345600 * 1000;
-  const weekNumber = Math.floor(unixTime / weekInMilliSecs);
-  const dateOfWeekBeginning = weekNumber * weekInMilliSecs - sundayBuffer;
-  const dateOfWeekEnding = (weekNumber + 1) * weekInMilliSecs - sundayBuffer - 1;
-  const _5MinsAfterWeekBeginning = dateOfWeekBeginning + 5 * 60000;
 
-  console.log("weekNumber", weekNumber);
-  console.log("dateOfWeekBeginning", dateOfWeekBeginning);
-  console.log("_5MinsAfterWeekBeginning", _5MinsAfterWeekBeginning);
+        firebase.database().ref(`analytics/allTimeAnalytics/admin`).once('value', snapshot => {
+            this.setState({ allTimeAnalytics: snapshot.val() });
+        });
+        firebase.database().ref(`currentWeek/value`).once('value', week => {
+            firebase.database().ref(`analytics/weeklyAnalytics/${week.val()}/admin`).once('value', snapshot => {
+                this.setState({ weeklyAnalytics: snapshot.val() })
+            });
+        });
+    };
+
+    render() {
         return (
             <div className={styles.cont}>
-                <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
-                    {this.props.title == 'OH' ?
-                        <div className={styles.enterKilometerDiv}>
-                            <p className={styles.title} style={{ color: colors.BLACK, width: 'initial', }}>Overall history</p>
-                            <p className={styles.driverDashboard_BOXTITLE} style={{ margin: '0px', textAlign: 'center', marginLeft: '20px' }}><span id={styles.driverDashboard_HALFDATE}>{`Joined 09/2019`}</span><span id={styles.driverDashboard_FULLDATE}>{`Joined September 2019`}</span></p>
-                        </div> :
-                        <p className={styles.title} style={{ color: colors.BLACK }}>Breakdown</p>}
-
-                    <div className={styles.driverDashboardCont}>
-                        <div className={styles.driverDashboard_TE}>
-                            <div className={styles.driverDashboard_BOX} style={{ alignItems: 'flex-start', marginLeft: '0px' }}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Total number of users</p>
-                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.GREEN }}>1672</p>
-                            </div>
-                        </div>
-                        <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
-                        <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
-
-                            <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
-                                <p className={styles.driverDashboard_BOXTEXT} >7</p>
-                            </div>
-
-                            <div className={styles.driverDashboard_BOX}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Unread feedback</p>
-                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>328</p>
-                            </div>
-
-                            <div className={styles.driverDashboard_BOX}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
-                                <p className={styles.driverDashboard_BOXTEXT} >17</p>
-                            </div>
-
-                            <div className={styles.driverDashboard_BOX}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
-                                <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>3</p>
-                            </div>
-
-                            <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
-                                <p className={styles.driverDashboard_BOXTITLE}>Number of deleted accounts</p>
-                                <p className={styles.driverDashboard_BOXTEXT} style={{}}>132</p>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+                <AdminDashSummary
+                    title={'WH'}
+                    data={this.state.weeklyAnalytics}
+                />
+                <AdminDashSummary
+                    title={'OH'}
+                    data={this.state.allTimeAnalytics}
+                />
                 <div className={styles.container} style={{ backgroundColor: colors.GREEN, marginTop: '20px' }}>
                     <p className={styles.title} style={{ color: colors.WHITE }}>New driver applications</p>
                     <p className={styles.text} style={{ color: colors.WHITE }}>
@@ -107,7 +69,7 @@ export default class AdminDashBoard extends React.Component {
                 <div className={styles.container} style={{ backgroundColor: colors.GREEN, marginTop: '20px' }}>
                     <p className={styles.title} style={{ color: colors.WHITE }}>New vehicle applications</p>
                     <p className={styles.text} style={{ color: colors.WHITE }}>
-                        You have {this.state.numberOVehicleAdditionRequest} new vehicle applications left
+                        You have {this.state.numberOfVehicleAdditionRequest} new vehicle applications left
                     </p>
                 </div>
 
@@ -137,4 +99,72 @@ export default class AdminDashBoard extends React.Component {
         )
 
     }
+};
+
+const AdminDashSummary = ({ title, data }) => {
+    const rendervalid = (x) => {
+        if (x) return x;
+        else return 0;
+    }
+    return (
+        <div className={styles.container} style={{ backgroundColor: colors.WHITE, marginTop: '20px' }}>
+            {title == 'OH' ?
+                <div className={styles.enterKilometerDiv}>
+                    <p className={styles.title} style={{ color: colors.BLACK, width: 'initial', }}>Overall history</p>
+                </div> :
+                <p className={styles.title} style={{ color: colors.BLACK }}>Weekly History</p>}
+
+            <div className={styles.driverDashboardCont}>
+                <div className={styles.driverDashboard_TE}>
+                    <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Total number of users</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.GREEN }}>{rendervalid(data?.numberOfUsers)}</p>
+                    </div>
+                    <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Perch kms (Sign Up)</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{}}>{rendervalid(data?.perchKilometersGivenOut?.signUp)}</p>
+                    </div>
+                    <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Perch kms (Referrals)</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{}}>{rendervalid(data?.perchKilometersGivenOut?.referral)}</p>
+                    </div>
+                </div>
+                <div className={styles.sharedLine} style={{ width: '95%', backgroundColor: 'rgba(112, 112, 112, 0.19)' }}></div>
+                <div className={styles.driverDashboard_TE} style={{ marginBottom: '15px' }}>
+
+                    <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Completed trips</p>
+                        <p className={styles.driverDashboard_BOXTEXT} >{rendervalid(data?.completedTrips)}</p>
+                    </div>
+
+                    <div className={styles.driverDashboard_BOX} style={{ marginLeft: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Passengers carried</p>
+                        <p className={styles.driverDashboard_BOXTEXT} >{rendervalid(data?.passengersCarried)}</p>
+                    </div>
+
+                    <div className={styles.driverDashboard_BOX}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Driver's to be paid</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.BLUE }}>${rendervalid(data?.toBePaidToDrivers).toFixed(2)}</p>
+                    </div>
+
+                    <div className={styles.driverDashboard_BOX}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Rider cancellations</p>
+                        <p className={styles.driverDashboard_BOXTEXT} >{rendervalid(data?.cancelledTrips?.rider)}</p>
+                    </div>
+
+                    <div className={styles.driverDashboard_BOX}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Driver cancellations</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{ color: colors.RED }}>{rendervalid(data?.cancelledTrips?.driver)}</p>
+                    </div>
+
+                    <div className={styles.driverDashboard_BOX} style={{ marginRight: '0px' }}>
+                        <p className={styles.driverDashboard_BOXTITLE}>Number of deleted accounts</p>
+                        <p className={styles.driverDashboard_BOXTEXT} style={{}}>{rendervalid(data?.numberOfDeletedUsers)}</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    );
 };

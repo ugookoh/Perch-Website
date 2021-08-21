@@ -356,42 +356,43 @@ module.exports = require("next/router");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return signIn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return adminSignIn; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return signUp; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return signOut; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return sendVerification; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return changeEmailOrPhoneNumber; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return sendFeedback; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return changePassword; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return deleteAccount; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return sendPasswordResetLink; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "B", function() { return signIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return adminSignIn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return signUp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "C", function() { return signOut; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "A", function() { return sendVerification; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return changeEmailOrPhoneNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "x", function() { return sendFeedback; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return changePassword; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return deleteAccount; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return sendPasswordResetLink; });
 /* unused harmony export sendEmail */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return resetPassword; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return validateVehicle; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return replyFeedback; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "y", function() { return sendUserEmail; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return validateDriver; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return makeid; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return driverAppplicationAdvance; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "w", function() { return resetPassword; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "H", function() { return validateVehicle; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "v", function() { return replyFeedback; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "z", function() { return sendUserEmail; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "G", function() { return validateDriver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return makeid; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return driverApplicationAdvance; });
 /* unused harmony export getDate */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return dateformat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return polylineLenght; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return timeAndDate; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return distanceCalculator; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return emailFormat; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return dateOfQuery; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return dateformat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "u", function() { return polylineLenght; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "F", function() { return timeAndDate; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return distanceCalculator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return emailFormat; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return dateOfQuery; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return M; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return colors; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return isNumber; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return deleteCard; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "D", function() { return storeCard; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return colors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "p", function() { return isNumber; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return deleteCard; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "E", function() { return storeCard; });
 /* unused harmony export buyKilometers */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "n", function() { return formatDateAllValues; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "q", function() { return millisToMinutesAndSeconds; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return cancelledTripResolver; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return pendingProcessesFunction; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return pendingProcessesFunctionDelete; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "o", function() { return formatDateAllValues; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "r", function() { return millisToMinutesAndSeconds; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return cancelledTripResolver; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "s", function() { return pendingProcessesFunction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "t", function() { return pendingProcessesFunctionDelete; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return adminDeleteUser; });
 /* harmony import */ var firebase__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("pNaP");
 /* harmony import */ var firebase__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(firebase__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var next_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__("4Q3z");
@@ -744,7 +745,6 @@ function deleteAccount(email, password) {
       const userID = user.uid;
       user.delete().then(() => {
         axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`https://us-central1-perch-01.cloudfunctions.net/deleteUser`, {
-          userID: userID,
           deleteAccountReason: this.state.deleteAccountReason,
           userDetails: this.state.userDetails
         }).catch(error => {
@@ -903,50 +903,56 @@ function makeid(length) {
   return result;
 }
 ;
-function driverAppplicationAdvance() {
-  const {
-    selected
-  } = this.state;
+function driverApplicationAdvance(uID, dateFormat, maxSeatNumber) {
+  axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`https://us-central1-perch-01.cloudfunctions.net/vehicleMaxSeatNumber`, {
+    userID: uID,
+    dateFormat: dateFormat,
+    maxSeatNumber: maxSeatNumber
+  }).then(() => {
+    const {
+      selected
+    } = this.state;
 
-  switch (selected.stage) {
-    case 'three':
-      {
-        firebase__WEBPACK_IMPORTED_MODULE_0___default.a.database().ref(`driverApplications/${selected.userID}`).update({
-          progress: JSON.stringify(["done", "done", "done", "ongoing", "undone"]),
-          stage: "four"
-        }).then(() => {
-          //MAKE ARRANGEMENTS TO SEND DRIVER AN OFFER LETTER
-          this.setState({
-            showDocs: false
-          }, () => {
-            this.loadResult();
+    switch (selected.stage) {
+      case 'three':
+        {
+          firebase__WEBPACK_IMPORTED_MODULE_0___default.a.database().ref(`driverApplications/${selected.userID}`).update({
+            progress: JSON.stringify(["done", "done", "done", "ongoing", "undone"]),
+            stage: "four"
+          }).then(() => {
+            //MAKE ARRANGEMENTS TO SEND DRIVER AN OFFER LETTER
+            this.setState({
+              showDocs: false
+            }, () => {
+              this.loadResult();
+            });
+          }).catch(error => {
+            alert(error.message);
           });
-        }).catch(error => {
-          alert(error.message);
-        });
-      }
-      break;
+        }
+        break;
 
-    case 'four':
-      {
-        //THE INDEPENNDENT CONTRACTOR DOCUMENT HAS BEEN SIGNED AND WE ARE GOOD TO GO
-        firebase__WEBPACK_IMPORTED_MODULE_0___default.a.database().ref(`driverApplications/${selected.userID}`).update({
-          progress: JSON.stringify(["done", "done", "done", "done", "done"]),
-          stage: "five"
-        }).then(() => {
-          this.setState({
-            showDocs: false
-          }, () => {
-            this.loadResult();
+      case 'four':
+        {
+          //THE INDEPENNDENT CONTRACTOR DOCUMENT HAS BEEN SIGNED AND WE ARE GOOD TO GO
+          firebase__WEBPACK_IMPORTED_MODULE_0___default.a.database().ref(`driverApplications/${selected.userID}`).update({
+            progress: JSON.stringify(["done", "done", "done", "done", "done"]),
+            stage: "five"
+          }).then(() => {
+            this.setState({
+              showDocs: false
+            }, () => {
+              this.loadResult();
+            });
+          }).catch(error => {
+            alert(error.message);
           });
-        }).catch(error => {
-          alert(error.message);
-        });
-      }
-      break;
-  }
+        }
+        break;
+    }
 
-  ;
+    ;
+  }).catch(error => console.log(error.message));
 }
 function getDate() {
   const DAY = new Date().getDate();
@@ -1249,6 +1255,27 @@ function pendingProcessesFunctionDelete(pushId) {
   });
 }
 ;
+function adminDeleteUser(userDetails) {
+  this.setState({
+    loading1: true
+  }, () => {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(`https://us-central1-perch-01.cloudfunctions.net/deleteUser`, {
+      userDetails: userDetails,
+      adminDelete: true
+    }).then(() => {
+      this.setState({
+        idSearch: '',
+        result: null,
+        loading: false,
+        loading1: false,
+        deleteUser: false,
+        analytics: {}
+      });
+    }).catch(error => {
+      console.log(error.message);
+    });
+  });
+}
 
 /***/ }),
 
@@ -1532,7 +1559,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_1___default.a.Component {
           }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__["jsx"])("div", {
             className: _layout_module_css__WEBPACK_IMPORTED_MODULE_0___default.a.circle,
             onClick: () => {
-              _functions_functions__WEBPACK_IMPORTED_MODULE_9__[/* signOut */ "B"].call(this, true);
+              _functions_functions__WEBPACK_IMPORTED_MODULE_9__[/* signOut */ "C"].call(this, true);
             },
             children: /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__["jsx"])(react_icons_im__WEBPACK_IMPORTED_MODULE_7__["ImExit"], {
               color: '#FFFFFF',
@@ -1629,7 +1656,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_1___default.a.Component {
             }), /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__["jsx"])("a", {
               className: _layout_module_css__WEBPACK_IMPORTED_MODULE_0___default.a.lowerLink,
               onClick: () => {
-                _functions_functions__WEBPACK_IMPORTED_MODULE_9__[/* signOut */ "B"].call(this, true);
+                _functions_functions__WEBPACK_IMPORTED_MODULE_9__[/* signOut */ "C"].call(this, true);
               },
               children: /*#__PURE__*/Object(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__["jsx"])("p", {
                 className: _layout_module_css__WEBPACK_IMPORTED_MODULE_0___default.a.lowerLinkText,
@@ -2293,7 +2320,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
     if (this.props.mode == 'verifyEmail' && this.props.email) {
       const email = this.props.email;
       axios__WEBPACK_IMPORTED_MODULE_10___default.a.post(`https://us-central1-perch-01.cloudfunctions.net/findUidByEmail`, {
-        formattedEmail: Object(_functions_functions__WEBPACK_IMPORTED_MODULE_7__[/* emailFormat */ "m"])(email, 'emailToString')
+        formattedEmail: Object(_functions_functions__WEBPACK_IMPORTED_MODULE_7__[/* emailFormat */ "n"])(email, 'emailToString')
       }).then(r => {
         if (r.data == 'DOESNOTEXIST') this.setState({
           errorMessage: 'This user does not exist',
@@ -2472,7 +2499,7 @@ class index extends react__WEBPACK_IMPORTED_MODULE_2___default.a.Component {
                       errorMessage: 'Please enter a new password'
                     });else if (this.state.confirmPassword != this.state.password) this.setState({
                       errorMessage: 'Passwords do not match'
-                    });else _functions_functions__WEBPACK_IMPORTED_MODULE_7__[/* resetPassword */ "v"].call(this, oobCode, this.state.password, email);
+                    });else _functions_functions__WEBPACK_IMPORTED_MODULE_7__[/* resetPassword */ "w"].call(this, oobCode, this.state.password, email);
                   }
                   break;
 

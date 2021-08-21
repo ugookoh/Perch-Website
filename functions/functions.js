@@ -222,7 +222,6 @@ export function deleteAccount(email, password) {
                 user.delete()
                     .then(() => {
                         axios.post(`https://us-central1-perch-01.cloudfunctions.net/deleteUser`, {
-                            userID: userID,
                             deleteAccountReason: this.state.deleteAccountReason,
                             userDetails: this.state.userDetails,
                         }).catch(error => { alert(error.message) })
@@ -321,32 +320,39 @@ export function makeid(length) {
     }
     return result;
 };
-export function driverAppplicationAdvance() {
-    const { selected } = this.state;
-
-    switch (selected.stage) {
-        case 'three': {
-            firebase.database().ref(`driverApplications/${selected.userID}`)
-                .update({
-                    progress: JSON.stringify(["done", "done", "done", "ongoing", "undone"]),
-                    stage: "four",
-                })
-                .then(() => {
-                    //MAKE ARRANGEMENTS TO SEND DRIVER AN OFFER LETTER
-                    this.setState({ showDocs: false }, () => { this.loadResult() })
-                })
-                .catch(error => { alert(error.message) })
-        } break;
-        case 'four': {//THE INDEPENNDENT CONTRACTOR DOCUMENT HAS BEEN SIGNED AND WE ARE GOOD TO GO
-            firebase.database().ref(`driverApplications/${selected.userID}`)
-                .update({
-                    progress: JSON.stringify(["done", "done", "done", "done", "done"]),
-                    stage: "five",
-                })
-                .then(() => { this.setState({ showDocs: false }, () => { this.loadResult() }) })
-                .catch(error => { alert(error.message) })
-        } break;
-    };
+export function driverApplicationAdvance(uID, dateFormat, maxSeatNumber) {
+    axios.post(`https://us-central1-perch-01.cloudfunctions.net/vehicleMaxSeatNumber`, {
+        userID: uID,
+        dateFormat: dateFormat,
+        maxSeatNumber: maxSeatNumber
+    })
+        .then(() => {
+            const { selected } = this.state;
+            switch (selected.stage) {
+                case 'three': {
+                    firebase.database().ref(`driverApplications/${selected.userID}`)
+                        .update({
+                            progress: JSON.stringify(["done", "done", "done", "ongoing", "undone"]),
+                            stage: "four",
+                        })
+                        .then(() => {
+                            //MAKE ARRANGEMENTS TO SEND DRIVER AN OFFER LETTER
+                            this.setState({ showDocs: false }, () => { this.loadResult() })
+                        })
+                        .catch(error => { alert(error.message) })
+                } break;
+                case 'four': {//THE INDEPENNDENT CONTRACTOR DOCUMENT HAS BEEN SIGNED AND WE ARE GOOD TO GO
+                    firebase.database().ref(`driverApplications/${selected.userID}`)
+                        .update({
+                            progress: JSON.stringify(["done", "done", "done", "done", "done"]),
+                            stage: "five",
+                        })
+                        .then(() => { this.setState({ showDocs: false }, () => { this.loadResult() }) })
+                        .catch(error => { alert(error.message) })
+                } break;
+            };
+        })
+        .catch(error => console.log(error.message))
 }
 export function getDate() {
     const DAY = new Date().getDate();
@@ -586,3 +592,21 @@ export function pendingProcessesFunctionDelete(pushId) {
             }).catch(error => { alert(error.message); })
     });
 };
+export function adminDeleteUser(userDetails) {
+    this.setState({ loading1: true }, () => {
+        axios.post(`https://us-central1-perch-01.cloudfunctions.net/deleteUser`, {
+            userDetails: userDetails,
+            adminDelete: true
+        }).then(() => {
+            this.setState({
+                idSearch: '',
+                result: null,
+                loading: false,
+                loading1: false,
+                deleteUser: false,
+                analytics: {},
+            });
+        }).catch(error => { console.log(error.message) })
+    });
+
+}
