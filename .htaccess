@@ -2,7 +2,7 @@ RewriteEngine On
 RewriteCond %{SERVER_PORT} 80
 RewriteCond %{HTTP_HOST} ^(www\.)?perchrides\.com
 RewriteRule ^(.*)$ https://www.perchrides.com/$1 [R,L]
-RewriteRule ^$ http://127.0.0.1:8080/ [P,L]
+RewriteRule ^$ http://127.0.0.1:3000/ [P,L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ http://127.0.0.1:8080/$1 [P,L]
+RewriteRule ^(.*)$ http://127.0.0.1:3000/$1 [P,L]
