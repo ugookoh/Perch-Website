@@ -239,12 +239,12 @@
 @media only screen and (max-width: 1024px) {
     .card {
         width: 55%;
-        min-width: 460px;
+        min-width: 560px;
         height: 645px;
     }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 700px) {
     /*Tablets (portrait and landscape)*/
     .container {
         align-items: center;
@@ -289,7 +289,7 @@
     }
 }
 
-@media only screen and (max-height: 615px) {
+@media only screen and (max-height: 670px) {
     /* Phones (portrait and landscape)*/
     .container {
         align-items: center;
