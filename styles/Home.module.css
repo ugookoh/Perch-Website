@@ -1,244 +1,257 @@
 .container {
-  min-height: 100vh;
-  width: 100vw;
-  padding: 0px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    padding: 0px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .body {
-  margin-top: 100px;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 1;
-  max-width: 1486px;
+    margin-top: 100px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 1;
+    max-width: 1486px;
 }
 
 .mainPageBack1 {
-  width: 100vw;
-  height: auto;
-  position: absolute;
-  top: 60px;
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 60px;
 }
 
 .mainPageBack2 {
-  width: 100vw;
-  height: auto;
-  position: absolute;
-  top: 220vh;
+    width: 100vw;
+    height: auto;
+    position: absolute;
+    top: 220vh;
 }
 
-.c, .c_ {
-  width: 90%;
-  display: flex;
-  flex-direction: row;
-  z-index: 1;
-  align-items: center;
+.c,
+.c_ {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    align-items: center;
 }
 
 .carpoolOpenDoor {
-  width: 493.2px;
-  height: auto;
-  object-fit: fill;
-  margin-right: 5%;
+    width: 493.2px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
 }
 
 .map1Trip {
-  width: 495.48px;
-  height: auto;
-  object-fit: fill;
-  margin-left: 5%;
+    width: 495.48px;
+    height: auto;
+    object-fit: fill;
+    margin-left: 5%;
 }
 
 .girlsGivingGifts {
-  width: 611px;
-  height: auto;
-  object-fit: fill;
-  margin-right: 5%;
+    width: 611px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
 }
 
 .manOnCarMoney {
-  width: 611px;
-  height: auto;
-  object-fit: fill;
-  margin-right: 5%;
+    width: 611px;
+    height: auto;
+    object-fit: fill;
+    margin-right: 5%;
 }
 
 .downloadContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  max-width: 450px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 450px;
 }
 
 .appIcon {
-  width: auto;
-  height: 55px;
-  object-fit: fill;
+    width: auto;
+    height: 55px;
+    object-fit: fill;
 }
 
 #app2 {
-  display: none;
+    display: none;
 }
 
 .phonesPerch {
-  width: 495.48px;
-  height: auto;
-  object-fit: fill;
-  margin-left: 5%;
+    width: 495.48px;
+    height: auto;
+    object-fit: fill;
+    margin-left: 5%;
 }
 
 .t1 {
-  font-family: 'Gilroy-Bold';
-  font-size: 240%;
-  margin-bottom: 0px;
+    font-family: 'Gilroy-Bold';
+    font-size: 240%;
+    margin-bottom: 0px;
 }
 
 .t {
-  font-family: 'Gilroy-Bold';
-  font-size: 200%;
-  margin-bottom: 0px;
+    font-family: 'Gilroy-Bold';
+    font-size: 200%;
+    margin-bottom: 0px;
 }
 
 .text {
-  font-family: 'Gilroy-Regular';
-  color: #959AAC;
-  line-height: 190%;
-  font-size: larger;
-  text-size-adjust: none;
+    font-family: 'Gilroy-Regular';
+    color: #959AAC;
+    line-height: 190%;
+    font-size: larger;
+    text-size-adjust: none;
 }
 
 .buttonC {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .button1 {
-  background-color: #4EB848;
-  width: 80%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 5px;
-  min-height: 50px;
+    background-color: #4EB848;
+    width: 80%;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    min-height: 50px;
 }
 
 .button1:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .button1:active {
-  opacity: 0.6;
+    opacity: 0.6;
 }
 
 .buttonText1 {
-  font-family: 'Gilroy-SemiBold';
-  color: white;
-  font-size: larger;
+    font-family: 'Gilroy-SemiBold';
+    color: white;
+    font-size: larger;
 }
 
 @media only screen and (max-width: 1024px) {
-  /*Tablets (portrait and landscape)*/
-  .c {
-    flex-direction: column-reverse;
-    align-items: center;
-  }
-  .c_ {
-    flex-direction: column;
-    align-items: center;
-  }
-  .carpoolOpenDoor, .map1Trip, .girlsGivingGifts, .phonesPerch, .manOnCarMoney {
-    margin-right: 0px;
-    height: auto;
-    width: 80%;
-    object-fit: fill;
-    align-self: initial;
-    max-width: 400px;
-  }
-  .t1, .t {
-    text-align: center;
-  }
-  .t1 {
-    line-height: 140%;
-    margin-top: 60px;
-    font-size: 140%;
-  }
-  .t {
-    font-size: 140%;
-  }
-  .t1, .t {
-    margin-bottom: 0px;
-  }
-  .text {
-    line-height: 210%;
-    font-size: 100%;
-  }
-  .buttonText1 {
-    font-size: 100%;
-  }
-  .buttonC {
-    align-items: center;
-  }
-  .button1 {
-    width: 100%;
-    margin-bottom: 60px;
-  }
-  #app1 {
-    display: none;
-  }
-  .appIcon {
-    height: auto;
-    width: 45%;
-  }
-  .appIcon:hover {
-    cursor: pointer;
-  }
-  .appIcon:active {
-    opacity: 0.5;
-  }
-  #app2 {
-    margin-top: 40px;
-    display: flex;
-  }
-  .body {
-    margin-top: 50px;
-  }
-  .mainPageBack1, .mainPageBack2 {
-    width: 100vw;
-    height: 100vh;
-    object-fit: cover;
-  }
-  .mainPageBack2 {
-    top: 420vh;
-  }
+    /*Tablets (portrait and landscape)*/
+    .c {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .c_ {
+        flex-direction: column;
+        align-items: center;
+    }
+    .carpoolOpenDoor,
+    .map1Trip,
+    .girlsGivingGifts,
+    .phonesPerch,
+    .manOnCarMoney {
+        margin-right: 0px;
+        height: auto;
+        width: 80%;
+        object-fit: fill;
+        align-self: initial;
+        max-width: 400px;
+    }
+    .t1,
+    .t {
+        text-align: center;
+    }
+    .t1 {
+        line-height: 140%;
+        margin-top: 60px;
+        font-size: 140%;
+    }
+    .t {
+        font-size: 140%;
+    }
+    .t1,
+    .t {
+        margin-bottom: 0px;
+    }
+    .text {
+        line-height: 210%;
+        font-size: 100%;
+    }
+    .buttonText1 {
+        font-size: 100%;
+    }
+    .buttonC {
+        align-items: center;
+    }
+    .button1 {
+        width: 100%;
+        margin-bottom: 60px;
+    }
+    #app1 {
+        display: none;
+    }
+    .appIcon {
+        height: auto;
+        width: 45%;
+    }
+    .appIcon:hover {
+        cursor: pointer;
+    }
+    .appIcon:active {
+        opacity: 0.5;
+    }
+    #app2 {
+        margin-top: 40px;
+        display: flex;
+    }
+    .body {
+        margin-top: 50px;
+    }
+    .mainPageBack1,
+    .mainPageBack2 {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+    }
+    .mainPageBack2 {
+        top: 420vh;
+    }
 }
 
 @media only screen and (max-width: 480px) {
-  /* Phones (portrait and landscape)*/
-  .carpoolOpenDoor, .map1Trip, .girlsGivingGifts {
-    margin-right: 0px;
-    height: auto;
-    width: 80vw;
-    object-fit: fill;
-  }
-  .t1 {
-    line-height: 130%;
-  }
-  #map1Trip {
-    margin-right: 25px;
-  }
-  .text {
-    line-height: 190%;
-  }
+    /* Phones (portrait and landscape)*/
+    .carpoolOpenDoor,
+    .map1Trip,
+    .girlsGivingGifts {
+        margin-right: 0px;
+        height: auto;
+        width: 80vw;
+        object-fit: fill;
+    }
+    .t1 {
+        line-height: 130%;
+    }
+    #map1Trip {
+        margin-right: 25px;
+    }
+    .text {
+        line-height: 190%;
+    }
 }
 
 @media only screen and (max-height:500px) {
-  .mainPageBack2 {
-    top: 320vh;
-  }
+    .mainPageBack2 {
+        top: 320vh;
+    }
 }
