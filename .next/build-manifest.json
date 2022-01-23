@@ -5,8 +5,8 @@
   "devFiles": [],
   "ampDevFiles": [],
   "lowPriorityFiles": [
-    "static/Odz9XFd-Qgve7DFrveme7/_buildManifest.js",
-    "static/Odz9XFd-Qgve7DFrveme7/_ssgManifest.js"
+    "static/6xRll-6cIA7ICAW4BRhPF/_buildManifest.js",
+    "static/6xRll-6cIA7ICAW4BRhPF/_ssgManifest.js"
   ],
   "pages": {
     "/": [
@@ -150,7 +150,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/e4faba7d5d0425dbe5dad60b304556b98f95d478.48f023ab66dfafd68626.js",
       "static/chunks/pages/contact_us-f528bb32d32d3c797b70.js"
@@ -169,7 +169,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/available_locations-eb95631c1515b4c34bdc.js"
     ],
@@ -187,7 +187,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/booking_a_ride_and_ride_controls-c4267a19bbb0404eee98.js"
     ],
@@ -205,7 +205,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/driver_controls-ea37e65e5476f8ffc58c.js"
     ],
@@ -223,7 +223,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/guidelines_for_drivers_and_riders-566ced92c4d33a402b91.js"
     ],
@@ -241,7 +241,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/help_and_frequently_asked_questions-29ef61db5d931fa363be.js"
     ],
@@ -259,7 +259,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/how_perch_works-5b44a767870eb7e01268.js"
     ],
@@ -277,7 +277,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/how_prices_are_estimated-26b38e39c86613c3e4e1.js"
     ],
@@ -295,7 +295,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/joint_rides-00d096102c5bbbdda5f9.js"
     ],
@@ -313,7 +313,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/procedures_for_taking_a_picture-20f29659bb90a0490f7a.js"
     ],
@@ -331,7 +331,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/promos_and_freebies-aa2a1d9a9dde015a641e.js"
     ],
@@ -349,7 +349,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/refunds_and_disputes-42651fb3c0d511385a3e.js"
     ],
@@ -367,7 +367,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/scheduling_driver_trips-bba735aae6ecef4f0d43.js"
     ],
@@ -385,7 +385,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/scheduling_rides-6f3bca653015f80b6424.js"
     ],
@@ -403,7 +403,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/starting_a_driver_trip-f5520b2f7d1025e8dc89.js"
     ],
@@ -421,7 +421,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/steps_to_becoming_a_perch_driver-1e8a0693409c12b18639.js"
     ],
@@ -439,7 +439,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/why_should_you_be_a_perch_driver-7f37254b18a19fb56fe3.js"
     ],
@@ -457,7 +457,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/pages/s/articles/why_should_you_join_perch-0364652ef1bb7ebf4cad.js"
     ],
@@ -597,7 +597,7 @@
       "static/chunks/bca0b60b39d1a18c60d587bf2d5855ba3fa0c05d.2c3580766b9f3cd2fd85.js",
       "static/chunks/943a93c40f361587041535ae5ff8b0c37d0efffc.54deff81798bc01e343b.js",
       "static/chunks/a3159016469acf3cf46801523a0f6a683d829dc2.40f28429137e55281a73.js",
-      "static/css/e01bb8108c9a5b59c96d.css",
+      "static/css/4482845868d0bf71f5c8.css",
       "static/chunks/8ab46dd8915e98f851cf8e1c4adcf38b9a8f6602_CSS.7b37a38a8911fc5fb44b.js",
       "static/chunks/e4faba7d5d0425dbe5dad60b304556b98f95d478.48f023ab66dfafd68626.js",
       "static/chunks/pages/validation-8369386657309a3c29b7.js"
