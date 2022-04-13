@@ -46,7 +46,7 @@ export default class index extends React.Component {
                     <div className={styles.c_} style={{}}>
                         <div >
                             <p className={styles.t}>No schedule, no commitment</p>
-                            <p className={styles.text}>{`Considering joining Perch but doubtful? What if we told you the you do not need any schedule or any commitment to work with us? That’s right, Perch pairs you with riders already going in your direction so you do not need to worry about going out of your way to pick up riders. Because of this, you can expect to make money going to your workplace, going to the gym, going to school, going anywhere.  You don’t need any commitment or any schedule, just set your trip in the driver’s app and start earning as you go about your busy life!`}</p>
+                            <p className={styles.text}>{`Considering joining Perch but doubtful? What if we told you that you do not need any schedule or any commitment to work with us? That’s right, Perch pairs you with riders already going in your direction so you do not need to worry about going out of your way to pick up riders. Because of this, you can expect to make money going to your workplace, going to the gym, going to school, going anywhere.  You don’t need any commitment or any schedule, just set your trip in the driver’s app and start earning as you go about your busy life!`}</p>
 
                         </div>
                         <img src="/noCommitmentNoSchedule.svg" alt="Perch Carpool" className={styles.noCommitmentNoSchedule} />
