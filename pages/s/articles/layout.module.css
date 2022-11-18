@@ -399,12 +399,14 @@
     width: 502.06px;
     height: auto;
     object-fit: fill;
+    z-index: 1;
 }
 
 .referralCodeImage {
     width: 502.06px;
     height: auto;
     object-fit: fill;
+    z-index: 1;
 }
 
 .handShakeGreen {
@@ -423,6 +425,7 @@
     width: 502.06px;
     height: auto;
     object-fit: fill;
+    z-index: 1;
 }
 
 .em {
