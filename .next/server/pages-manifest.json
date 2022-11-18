@@ -2,6 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/s/db/ddash": "pages/s/db/ddash.js",
-  "/s/auth/d_si_su": "pages/s/auth/d_si_su.js"
+  "/": "pages/index.js",
+  "/privacy-policy": "pages/privacy-policy.js"
 }
