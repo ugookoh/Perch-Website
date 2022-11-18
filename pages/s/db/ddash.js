@@ -108,7 +108,6 @@ export default class index extends React.Component {
             } break;
             case 'md': {
                 option = 'My Documents';
-                content = <DriverDocuments userDetails={this.state.userDetails} />;
             } break;
             case 'pi': { option = 'Payout Information' } break;
             case 'cu': {

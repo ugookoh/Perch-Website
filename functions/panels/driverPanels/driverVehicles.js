@@ -51,7 +51,7 @@ export default class DriverVehicles extends React.Component {
             firebase.storage().ref(`driverVehicleDocs/${this.state.userDetails.userID}/${randomID}/vehicleInsurance`).put(this.state.insurance).catch(error => { console.log(error.message) });
             firebase.storage().ref(`driverVehicleDocs/${this.state.userDetails.userID}/${randomID}/vehicleInspection`).put(this.state.inspection).catch(error => { console.log(error.message) });
             firebase.storage().ref(`driverVehicleDocs/${this.state.userDetails.userID}/${randomID}/vehicleImage`).put(this.state.vehicleImage).catch(error => { console.log(error.message) });
-            firebase.storage().ref(`vehicles/${this.state.userDetails.userID}/${randomID}`).put(this.state.vehicleImage).catch(error => { console.log(error.message) });
+            firebase.storage().ref(`vehicles/${this.state.userDetails.userID}/${randomID}/vehicleImage`).put(this.state.vehicleImage).catch(error => { console.log(error.message) });
 
             axios.post('https://us-central1-perch-01.cloudfunctions.net/addVehicle', {
                 userID: this.state.userDetails.userID,
@@ -62,7 +62,7 @@ export default class DriverVehicles extends React.Component {
                     year: this.state.year,
                     plateNumber: this.state.plateNumber.toUpperCase(),
                     maxSeatNumber: 3,
-                    displayImage: `driverVehicleDocs/${this.state.userDetails.userID}/${randomID}/vehicleImage.jpeg`,
+                    displayImage: `driverVehicleDocs/${this.state.userDetails.userID}/${randomID}/vehicleImage`,
                     documentStorageID: randomID,
                 },
             })
@@ -76,7 +76,7 @@ export default class DriverVehicles extends React.Component {
     loadResult = () => {
         if (this.state.userDetails)
             firebase.database().ref(`vehicles/${this.state.userDetails.userID}`).once('value', snapshot => {
-                this.setState({ result: snapshot.val() });
+                this.setState({ result: snapshot.val() || 'NORESULTS' });
             }).catch(error => { console.log(error.message) });
     };
     render() {
@@ -149,7 +149,7 @@ export default class DriverVehicles extends React.Component {
                                                 <AiOutlineCamera className={styles.driverVehicle_CAMERA} />
                                                 <p className={styles.driverVehicle_CAMERATEXT}>
                                                     UPLOAD A PICTURE OF YOUR VEHICLE
-                                        </p>
+                                                </p>
                                             </div> :
                                             <img className={styles.driver_ADD_VEHICLE_IMGUPLOAD} src={this.state.vehicleImagePreview} onClick={() => { this.vehicleImage.click() }} />
                                     }
@@ -157,7 +157,18 @@ export default class DriverVehicles extends React.Component {
                                         <img src="/cameraGuidelinesForPictures.svg" className={styles.driverVehicle_GUIDELINES_CAM} />
                                         <p className={styles.driverVehicle_GUIDELINES_CAM_TEXT}>Guidelines for taking a picture of your vehicle</p>
                                     </a>
-                                    <div className={styles.driver_ADD_VEHICLE_DOCSUPLOAD}>
+                                    <input type='file'
+                                        ref={(ref) => this.vehicleImage = ref}
+                                        className={styles.driverVehicle_INPUT}
+                                        onChange={event => {
+                                            if (event.target.files.length != 0) {
+                                                if (((event.target.files[0].size / 1024) / 1024) > 10)
+                                                    this.setState({ errorMessage: 'File size is too large. A maximum of 10 megabytes is permitted for uploads' })
+                                                else
+                                                    this.setState({ vehicleImage: event.target.files[0], vehicleImagePreview: URL.createObjectURL(event.target.files[0]) })
+                                            }
+                                        }} />
+                                    {/* <div className={styles.driver_ADD_VEHICLE_DOCSUPLOAD}>
 
                                         <input type='file'
                                             ref={(ref) => this.vehicleRegistrationRef = ref}
@@ -195,17 +206,7 @@ export default class DriverVehicles extends React.Component {
                                                 }
                                             }} />
 
-                                        <input type='file'
-                                            ref={(ref) => this.vehicleImage = ref}
-                                            className={styles.driverVehicle_INPUT}
-                                            onChange={event => {
-                                                if (event.target.files.length != 0) {
-                                                    if (((event.target.files[0].size / 1024) / 1024) > 10)
-                                                        this.setState({ errorMessage: 'File size is too large. A maximum of 10 megabytes is permitted for uploads' })
-                                                    else
-                                                        this.setState({ vehicleImage: event.target.files[0], vehicleImagePreview: URL.createObjectURL(event.target.files[0]) })
-                                                }
-                                            }} />
+
 
                                         <div
                                             className={styles.driverVehicle_UPLOADCONT} id={styles.driverVehicle_UPLOADCONT_}
@@ -233,7 +234,7 @@ export default class DriverVehicles extends React.Component {
                                                 <BsCloudUpload size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={colors.WHITE} /> :
                                                 <AiOutlineCheck size={'20px'} style={{ marginLeft: '10px', minWidth: '20px' }} color={colors.WHITE} />}
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                                 <p className={styles.em} style={{ textAlign: 'initial' }}>{this.state.errorMessage}</p>
                             </div>
@@ -251,8 +252,8 @@ export default class DriverVehicles extends React.Component {
                                         if (!this.state.loading) {
                                             if (this.state.color == '' || this.state.model == '' || this.state.make == '' || this.state.year == '' || this.state.plateNumber == '')
                                                 this.setState({ errorMessage: 'Please fill all fields' });
-                                            else if (this.state.inspection == '' || this.state.registration == '' || this.state.insurance == '')
-                                                this.setState({ errorMessage: 'Please upload all documents needed' });
+                                            // else if (this.state.inspection == '' || this.state.registration == '' || this.state.insurance == '')
+                                            //     this.setState({ errorMessage: 'Please upload all documents needed' });
                                             else if (this.state.vehicleImage == '')
                                                 this.setState({ errorMessage: 'Please upload an image of your vehicle. It does not have to fit perfectly in frame.' });
                                             else
@@ -285,7 +286,7 @@ export default class DriverVehicles extends React.Component {
                                         <img src="/noResultsWoman.svg" className={styles.noResultsWoman} alt="No Results" />
                                         <p className={styles.contactUsLasttext} style={{ width: 'initial', fontSize: '90%', margin: '0px' }} id={styles.tripPanelLoadingText}>
                                             We can't find any vehicles in your name at the moment
-                                </p>
+                                        </p>
                                     </div> :
                                     vehicle :
                                 <div className={styles.tripPanelLoading}>
