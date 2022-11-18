@@ -14,6 +14,11 @@
     "static/development/_ssgManifest.js"
   ],
   "pages": {
+    "/": [
+      "static/chunks/main.js",
+      "static/chunks/webpack.js",
+      "static/chunks/pages/index.js"
+    ],
     "/_app": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
@@ -24,15 +29,10 @@
       "static/chunks/webpack.js",
       "static/chunks/pages/_error.js"
     ],
-    "/s/auth/d_si_su": [
+    "/privacy-policy": [
       "static/chunks/main.js",
       "static/chunks/webpack.js",
-      "static/chunks/pages/s/auth/d_si_su.js"
-    ],
-    "/s/db/ddash": [
-      "static/chunks/main.js",
-      "static/chunks/webpack.js",
-      "static/chunks/pages/s/db/ddash.js"
+      "static/chunks/pages/privacy-policy.js"
     ]
   },
   "ampFirstPages": []
